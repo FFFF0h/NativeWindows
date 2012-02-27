@@ -91,6 +91,9 @@
   <ItemGroup>
     <Compile Include="IO\FileHandle.cs" />
     <Compile Include="SafeHandleZeroIsInvalid.cs" />
+    <Compile Include="User\DesktopAccessRights.cs" />
+    <Compile Include="User\DesktopHandle.cs" />
+    <Compile Include="User\DesktopOpenFlags.cs" />
     <Compile Include="IntPtrExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
