@@ -95,6 +95,17 @@
     <Compile Include="User\DesktopHandle.cs" />
     <Compile Include="User\DesktopOpenFlags.cs" />
     <Compile Include="IntPtrExtensions.cs" />
+    <Compile Include="JobObject\BasicAndIoAccountingInformation.cs" />
+    <Compile Include="JobObject\BasicUiRestrictions.cs" />
+    <Compile Include="JobObject\ExtendedLimitInformation.cs" />
+    <Compile Include="JobObject\IJobObjectQueryable.cs" />
+    <Compile Include="JobObject\IJobObjectSettable.cs" />
+    <Compile Include="JobObject\IJobStructure.cs" />
+    <Compile Include="JobObject\JobObjectHandle.cs" />
+    <Compile Include="JobObject\JobObjectAccessRights.cs" />
+    <Compile Include="JobObject\JobObjectAccessRule.cs" />
+    <Compile Include="JobObject\JobObjectSecurity.cs" />
+    <Compile Include="JobObject\JobObjectType.cs" />
     <Compile Include="ProcessAndThread\DuplicateHandleOptions.cs" />
     <Compile Include="ProcessAndThread\ProcessCreationFlags.cs" />
     <Compile Include="ProcessAndThread\ProcessHandle.cs" />
