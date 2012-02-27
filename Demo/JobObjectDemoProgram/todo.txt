@@ -1,0 +1,7 @@
+﻿1. Disable UAC - using the included manifest in the app.
+2. Disable compatibility mode crap
+   - http://stackoverflow.com/questions/89791/how-to-stop-the-visual-studio-debugger-starting-my-process-in-a-job-object/4232259#4232259
+	 You can globally disable PCA using Run -> gpedit.msc -> Administrative Templates\Windows Components\Application Compatibility -> Turn off Program Compatibility Assistant -> Enable.
+	 or ...
+		[HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\AppCompat]
+		"DisablePCA"=dword:00000001
