@@ -89,6 +89,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IO\FileHandle.cs" />
     <Compile Include="SafeHandleZeroIsInvalid.cs" />
     <Compile Include="IntPtrExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
