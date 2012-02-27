@@ -117,6 +117,7 @@
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="User\EnvironmentBlockHandle.cs" />
+    <Compile Include="ProcessAndThread\ThreadHandle.cs" />
     <Compile Include="SecurityAttributes.cs" />
     <Compile Include="User\UserHandle.cs" />
     <Compile Include="User\UserLogonProvider.cs" />
