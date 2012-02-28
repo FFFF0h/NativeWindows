@@ -19,10 +19,6 @@ namespace NativeWindows.ProcessAndThread
 			[DllImport("kernel32.dll", CharSet = CharSet.Ansi, SetLastError = true)]
 			[ResourceExposure(ResourceScope.Process)]
 			public static extern ProcessHandle GetCurrentProcess();
-
-			[DllImport("kernel32.dll", CharSet = CharSet.Ansi, SetLastError = true, BestFitMapping = false)]
-			[ResourceExposure(ResourceScope.Machine)]
-			public static extern bool DuplicateHandle<T>(ProcessHandle sourceProcessHandle, SafeHandle sourceHandle, ProcessHandle targetProcess, out T targetHandle, uint desiredAccess, bool inheritHandle, DuplicateHandleOptions options) where T : SafeHandle;
 		}
 
 		public static ProcessInformation CreateAsUser(UserHandle userHandle, string applicationName, string commandLine, bool inheritHandles, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environmentHandle, string currentDirectory, ProcessStartInfo startInfo)
@@ -44,26 +40,6 @@ namespace NativeWindows.ProcessAndThread
 		public static ProcessHandle GetCurrentProcess()
 		{
 			return NativeMethods.GetCurrentProcess();
-		}
-
-		public T DuplicateHandle<T>(T sourceHandle, ProcessHandle targetProcess, uint desiredAccess, bool inheritHandle, DuplicateHandleOptions options) where T : SafeHandle
-		{
-			T targetHandle;
-			if (!NativeMethods.DuplicateHandle(this, sourceHandle, targetProcess, out targetHandle, desiredAccess, inheritHandle, options))
-			{
-				throw new Win32Exception();
-			}
-			return targetHandle;
-		}
-
-		public T DuplicateHandle<T>(T sourceHandle, uint desiredAccess, bool inheritHandle, DuplicateHandleOptions options) where T : SafeHandle
-		{
-			T targetHandle;
-			if (!NativeMethods.DuplicateHandle(this, sourceHandle, this, out targetHandle, desiredAccess, inheritHandle, options))
-			{
-				throw new Win32Exception();
-			}
-			return targetHandle;
 		}
 
 		public ProcessHandle()
