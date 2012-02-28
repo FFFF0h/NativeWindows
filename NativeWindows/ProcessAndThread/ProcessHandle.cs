@@ -20,6 +20,7 @@ namespace NativeWindows.ProcessAndThread
 			public int ThreadId;
 		}
 
+
 		private static class NativeMethods
 		{
 			[DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Auto)]
@@ -28,6 +29,10 @@ namespace NativeWindows.ProcessAndThread
 			[DllImport("kernel32.dll", CharSet = CharSet.Ansi, SetLastError = true)]
 			[ResourceExposure(ResourceScope.Process)]
 			public static extern ProcessHandle GetCurrentProcess();
+
+			[DllImport("kernel32.dll", SetLastError = true)]
+			[return: MarshalAs(UnmanagedType.Bool)]
+			public static extern bool GetExitCodeProcess(ProcessHandle processHandle, out int exitCode);
 		}
 
 		public static ProcessInformation CreateAsUser(UserHandle userHandle, string applicationName, string commandLine, bool inheritHandles, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environmentHandle, string currentDirectory, ProcessStartInfo startInfo)
@@ -60,6 +65,16 @@ namespace NativeWindows.ProcessAndThread
 			: base(ownsHandle)
 		{
 			SetHandle(handle);
+		}
+
+		public int GetExitCode()
+		{
+			int exitCode;
+			if (!NativeMethods.GetExitCodeProcess(this, out exitCode))
+			{
+				throw new Win32Exception();
+			}
+			return exitCode;
 		}
 
 		protected override bool ReleaseHandle()
