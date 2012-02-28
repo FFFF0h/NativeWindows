@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using Microsoft.Win32.SafeHandles;
+using NativeWindows.ProcessAndThread;
 
 namespace NativeWindows.IO
 {
@@ -21,6 +23,10 @@ namespace NativeWindows.IO
 
 			[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
 			public static extern bool CreatePipe(out SafeFileHandle readPipeHandle, out SafeFileHandle writePipeHandle, SecurityAttributes pipeAttributes, int size);
+
+			[DllImport("kernel32.dll", CharSet = CharSet.Ansi, SetLastError = true, BestFitMapping = false)]
+			[ResourceExposure(ResourceScope.Machine)]
+			public static extern bool DuplicateHandle(ProcessHandle sourceProcessHandle, SafeHandle sourceHandle, ProcessHandle targetProcess, out SafeFileHandle targetHandle, FileAccessRights desiredAccess, bool inheritHandle, DuplicateHandleOptions options);
 		}
 
 		public static SafeFileHandle GetStandardInput()
@@ -39,6 +45,26 @@ namespace NativeWindows.IO
 		{
 			IntPtr standardOutput = NativeMethods.GetStdHandle(StandardHandleType.Output);
 			return new SafeFileHandle(standardOutput, false);
+		}
+
+		public static SafeFileHandle DuplicateHandle(this SafeFileHandle sourceHandle, ProcessHandle sourceProcess, ProcessHandle targetProcess, FileAccessRights desiredAccess, bool inheritHandle, DuplicateHandleOptions options)
+		{
+			SafeFileHandle targetHandle;
+			if (!NativeMethods.DuplicateHandle(sourceProcess, sourceHandle, targetProcess, out targetHandle, desiredAccess, inheritHandle, options))
+			{
+				throw new Win32Exception();
+			}
+			return targetHandle;
+		}
+
+		public static SafeFileHandle DuplicateHandle(this SafeFileHandle sourceHandle, ProcessHandle sourceAndTargetProcess, FileAccessRights desiredAccess, bool inheritHandle, DuplicateHandleOptions options)
+		{
+			SafeFileHandle targetHandle;
+			if (!NativeMethods.DuplicateHandle(sourceAndTargetProcess, sourceHandle, sourceAndTargetProcess, out targetHandle, desiredAccess, inheritHandle, options))
+			{
+				throw new Win32Exception();
+			}
+			return targetHandle;
 		}
 
 		public static void CreatePipe(out SafeFileHandle readPipeHandle, out SafeFileHandle writePipeHandle)
