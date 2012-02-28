@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using NativeWindows.User;
@@ -65,8 +66,6 @@ namespace NativeWindows.ProcessAndThread
 			return targetHandle;
 		}
 
-
-
 		public ProcessHandle()
 			: base(true)
 		{
@@ -74,7 +73,11 @@ namespace NativeWindows.ProcessAndThread
 
 		protected override bool ReleaseHandle()
 		{
-			return handle.CloseHandle();
+			if (handle != new IntPtr(-1))
+			{
+				return handle.CloseHandle();
+			}
+			return true;
 		}
 	}
 }
