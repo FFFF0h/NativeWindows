@@ -10,17 +10,17 @@ namespace NativeWindows.User
 		private static class NativeMethods
 		{
 			[DllImport("userenv.dll", CharSet = CharSet.Auto, SetLastError = true)]
-			public static extern bool CreateEnvironmentBlock(out EnvironmentBlockHandle lpEnvironment, IntPtr userToken, bool inherit);
+			public static extern bool CreateEnvironmentBlock(out EnvironmentBlockHandle lpEnvironment, UserHandle userHandle, bool inherit);
 
 			[DllImport("userenv.dll", SetLastError = true)]
 			[return: MarshalAs(UnmanagedType.Bool)]
 			public static extern bool DestroyEnvironmentBlock(IntPtr environment);
 		}
 
-		public static EnvironmentBlockHandle Create(IntPtr userToken, bool inherit)
+		public static EnvironmentBlockHandle Create(UserHandle userHandle, bool inherit)
 		{
 			EnvironmentBlockHandle environmentBlockHandle;
-			if (!NativeMethods.CreateEnvironmentBlock(out environmentBlockHandle, userToken, inherit))
+			if (!NativeMethods.CreateEnvironmentBlock(out environmentBlockHandle, userHandle, inherit))
 			{
 				throw new Win32Exception();
 			}
