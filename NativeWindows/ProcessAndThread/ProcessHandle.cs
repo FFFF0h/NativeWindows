@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
+using System.Threading;
+using Microsoft.Win32.SafeHandles;
 using NativeWindows.User;
 
 namespace NativeWindows.ProcessAndThread
@@ -20,6 +22,18 @@ namespace NativeWindows.ProcessAndThread
 			public int ThreadId;
 		}
 
+		private class ProcessWaitHandle : WaitHandle
+		{
+			public ProcessWaitHandle(ProcessHandle processHandle)
+			{
+				SafeWaitHandle waitHandle;
+				if (!NativeMethods.DuplicateHandle(GetCurrentProcess(), processHandle, GetCurrentProcess(), out waitHandle, 0, false, DuplicateHandleOptions.DuplicateSameAccess))
+				{
+					throw new Win32Exception();
+				}
+				SafeWaitHandle = waitHandle;
+			}
+		}
 
 		private static class NativeMethods
 		{
@@ -33,6 +47,10 @@ namespace NativeWindows.ProcessAndThread
 			[DllImport("kernel32.dll", SetLastError = true)]
 			[return: MarshalAs(UnmanagedType.Bool)]
 			public static extern bool GetExitCodeProcess(ProcessHandle processHandle, out int exitCode);
+
+			[DllImport("kernel32.dll", CharSet = CharSet.Ansi, SetLastError = true, BestFitMapping = false)]
+			[ResourceExposure(ResourceScope.Machine)]
+			public static extern bool DuplicateHandle(ProcessHandle sourceProcessHandle, ProcessHandle sourceHandle, ProcessHandle targetProcess, out SafeWaitHandle targetHandle, uint desiredAccess, bool inheritHandle, DuplicateHandleOptions options);
 		}
 
 		public static ProcessInformation CreateAsUser(UserHandle userHandle, string applicationName, string commandLine, bool inheritHandles, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environmentHandle, string currentDirectory, ProcessStartInfo startInfo)
@@ -75,6 +93,18 @@ namespace NativeWindows.ProcessAndThread
 				throw new Win32Exception();
 			}
 			return exitCode;
+		}
+
+		public bool WaitForExit(TimeSpan timeout)
+		{
+			if (IsInvalid || IsClosed)
+			{
+				return true;
+			}
+			using (var waitHandle = new ProcessWaitHandle(this))
+			{
+				return waitHandle.WaitOne(timeout);
+			}
 		}
 
 		protected override bool ReleaseHandle()
