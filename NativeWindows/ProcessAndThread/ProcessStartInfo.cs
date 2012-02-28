@@ -22,9 +22,9 @@ namespace NativeWindows.ProcessAndThread
 		public ushort ShowWindow;
 		private ushort Reserved2;
 		private byte Reserved3;
-		public SafeFileHandle StdInput;
-		public SafeFileHandle StdOutput;
-		public SafeFileHandle StdError;
+		public SafeFileHandle StdInput = new SafeFileHandle(IntPtr.Zero, false);
+		public SafeFileHandle StdOutput = new SafeFileHandle(IntPtr.Zero, false);
+		public SafeFileHandle StdError = new SafeFileHandle(IntPtr.Zero, false);
 
 		public void Dispose()
 		{

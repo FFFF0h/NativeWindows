@@ -23,6 +23,12 @@ namespace NativeWindows.ProcessAndThread
 		{
 		}
 
+		public ThreadHandle(IntPtr handle, bool ownsHandle = true)
+			: base(ownsHandle)
+		{
+			SetHandle(handle);
+		}
+
 		public uint Resume()
 		{
 			int result = NativeMethods.ResumeThread(this);
