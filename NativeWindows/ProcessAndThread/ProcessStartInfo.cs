@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using NativeWindows.IO;
+using Microsoft.Win32.SafeHandles;
 
 namespace NativeWindows.ProcessAndThread
 {
@@ -21,8 +22,8 @@ namespace NativeWindows.ProcessAndThread
 		public ushort ShowWindow;
 		private ushort Reserved2;
 		private byte Reserved3;
-		public FileHandle StdInput;
-		public FileHandle StdOutput;
-		public FileHandle StdError;
+		public SafeFileHandle StdInput;
+		public SafeFileHandle StdOutput;
+		public SafeFileHandle StdError;
 	}
 }

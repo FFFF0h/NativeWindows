@@ -1,10 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using Microsoft.Win32.SafeHandles;
 
 namespace NativeWindows.IO
 {
-	public sealed class FileHandle : SafeHandle
+	public static class SafeFileHandleExtensions
 	{
 		private enum StandardHandleType
 		{
@@ -19,38 +20,28 @@ namespace NativeWindows.IO
 			public static extern IntPtr GetStdHandle(StandardHandleType stdHandleType);
 
 			[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-			public static extern bool CreatePipe(out FileHandle readPipeHandle, out FileHandle writePipeHandle, SecurityAttributes pipeAttributes, int size);
+			public static extern bool CreatePipe(out SafeFileHandle readPipeHandle, out SafeFileHandle writePipeHandle, SecurityAttributes pipeAttributes, int size);
 		}
 
-		public FileHandle()
-			: base(IntPtr.Zero, true)
-		{
-		}
-
-		private FileHandle(IntPtr invalidHandleValue, bool ownsHandle)
-			: base(invalidHandleValue, ownsHandle)
-		{
-		}
-
-		public static FileHandle GetStandardInput()
+		public static SafeFileHandle GetStandardInput()
 		{
 			IntPtr standardInput = NativeMethods.GetStdHandle(StandardHandleType.Input);
-			return new FileHandle(standardInput, false);
+			return new SafeFileHandle(standardInput, false);
 		}
 
-		public static FileHandle GetStandardError()
+		public static SafeFileHandle GetStandardError()
 		{
 			IntPtr standardError = NativeMethods.GetStdHandle(StandardHandleType.Error);
-			return new FileHandle(standardError, false);
+			return new SafeFileHandle(standardError, false);
 		}
 
-		public static FileHandle GetStandardOutput()
+		public static SafeFileHandle GetStandardOutput()
 		{
 			IntPtr standardOutput = NativeMethods.GetStdHandle(StandardHandleType.Output);
-			return new FileHandle(standardOutput, false);
+			return new SafeFileHandle(standardOutput, false);
 		}
 
-		public static void CreatePipe(out FileHandle readPipeHandle, out FileHandle writePipeHandle)
+		public static void CreatePipe(out SafeFileHandle readPipeHandle, out SafeFileHandle writePipeHandle)
 		{
 			using (var securityAttributes = new SecurityAttributes())
 			{
@@ -58,19 +49,6 @@ namespace NativeWindows.IO
 				{
 					throw new Win32Exception();
 				}
-			}
-		}
-
-		protected override bool ReleaseHandle()
-		{
-			return handle.CloseHandle();
-		}
-
-		public override bool IsInvalid
-		{
-			get
-			{
-				return handle == IntPtr.Zero || handle == new IntPtr(-1);
 			}
 		}
 	}
