@@ -21,6 +21,19 @@ namespace NativeWindows.User
 			public static extern bool DestroyEnvironmentBlock(IntPtr environment);
 		}
 
+		public static EnvironmentBlockHandle Create(UserHandle userToken, IDictionary<string, string> extraEnvironmentVariables)
+		{
+			using (var environment = Create(userToken, false))
+			{
+				var current = environment.GetEnvironmentVariables();
+				foreach (var extraEnvironmentVariable in extraEnvironmentVariables)
+				{
+					current[extraEnvironmentVariable.Key] = extraEnvironmentVariable.Value;
+				}
+				return Create(current);
+			}
+		}
+
 		public static EnvironmentBlockHandle Create(IDictionary<string, string> environmentVariables)
 		{
 			var memoryStream = new MemoryStream();
