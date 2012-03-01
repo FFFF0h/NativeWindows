@@ -34,6 +34,39 @@ namespace NativeWindows.User
 		{
 		}
 
+		public unsafe IDictionary<string, string> GetEnvironmentVariables()
+		{
+			if (IsInvalid)
+			{
+				throw new InvalidOperationException("Cannot get envronmentvariable on an Invalid EnvironmentBlockHandle");
+			}
+
+			Environment.GetEnvironmentVariables();
+			var dictionary = new Dictionary<string, string>();
+			var builder = new StringBuilder();
+			var pointer = (char*)handle.ToPointer();
+			while (true)
+			{
+				char c = *pointer;
+				if (c == (char)0)
+				{
+					if (builder.Length == 0)
+					{
+						break;
+					}
+					string[] tokens = builder.ToString().Split(new[] { '=' }, 2, StringSplitOptions.None);
+					dictionary[tokens[0]] = tokens[1];
+					builder = new StringBuilder();
+				}
+				else
+				{
+					builder.Append(c);
+				}
+				pointer++;
+			}
+			return dictionary;
+		}
+
 		protected override bool ReleaseHandle()
 		{
 			return NativeMethods.DestroyEnvironmentBlock(handle);
