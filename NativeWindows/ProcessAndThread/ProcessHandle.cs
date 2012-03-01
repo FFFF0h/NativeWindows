@@ -125,6 +125,14 @@ namespace NativeWindows.ProcessAndThread
 			SetHandle(handle);
 		}
 
+		public bool HasExited
+		{
+			get
+			{
+				return WaitForExit(TimeSpan.Zero);
+			}
+		}
+
 		public Task<int> Completion
 		{
 			get
