@@ -5,7 +5,9 @@ using Microsoft.Win32.SafeHandles;
 
 namespace NativeWindows.User
 {
-	public sealed class EnvironmentBlockHandle : SafeHandleZeroOrMinusOneIsInvalid
+	// For information about the environment block layout see:
+	// http://msdn.microsoft.com/en-us/library/windows/desktop/ms682653(v=vs.85).aspx
+	public sealed class EnvironmentBlockHandle : SafeHandle
 	{
 		private static class NativeMethods
 		{
@@ -28,13 +30,21 @@ namespace NativeWindows.User
 		}
 
 		public EnvironmentBlockHandle()
-			: base(true)
+			: base(IntPtr.Zero, true)
 		{
 		}
 
 		protected override bool ReleaseHandle()
 		{
 			return NativeMethods.DestroyEnvironmentBlock(handle);
+		}
+
+		public override bool IsInvalid
+		{
+			get
+			{
+				return handle == IntPtr.Zero || handle == new IntPtr(-1);
+			}
 		}
 	}
 }
