@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Win32.SafeHandles;
 using NativeWindows.User;
 
@@ -13,6 +14,8 @@ namespace NativeWindows.ProcessAndThread
 	/// </remarks>>
 	public sealed class ProcessHandle : SafeHandleZeroIsInvalid
 	{
+		private readonly Lazy<ProcessExitMonitor> _exitMonitor;
+
 		[StructLayout(LayoutKind.Sequential)]
 		private struct ProcessInformationOut
 		{
@@ -35,6 +38,37 @@ namespace NativeWindows.ProcessAndThread
 			}
 		}
 
+		private class ProcessExitMonitor
+		{
+			private readonly ProcessWaitHandle _processWaitHandle;
+			private readonly TaskCompletionSource<int> _completion = new TaskCompletionSource<int>();
+
+			public ProcessExitMonitor(ProcessHandle processHandle)
+			{
+				_processWaitHandle = new ProcessWaitHandle(processHandle);
+				ThreadPool.RegisterWaitForSingleObject(_processWaitHandle, HandleExited, null, -1, true);
+			}
+
+			private void HandleExited(object state, bool timedout)
+			{
+				int exitCode;
+				if (!NativeMethods.GetExitCodeProcess(_processWaitHandle.SafeWaitHandle, out exitCode))
+				{
+					_completion.SetException(new Win32Exception());
+				}
+				_processWaitHandle.Dispose();
+				_completion.SetResult(exitCode);
+			}
+
+			public Task<int> Task
+			{
+				get
+				{
+					return _completion.Task;
+				}
+			}
+		}
+
 		private static class NativeMethods
 		{
 			[DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Auto)]
@@ -43,6 +77,10 @@ namespace NativeWindows.ProcessAndThread
 			[DllImport("kernel32.dll", CharSet = CharSet.Ansi, SetLastError = true)]
 			[ResourceExposure(ResourceScope.Process)]
 			public static extern ProcessHandle GetCurrentProcess();
+
+			[DllImport("kernel32.dll", SetLastError = true)]
+			[return: MarshalAs(UnmanagedType.Bool)]
+			public static extern bool GetExitCodeProcess(SafeWaitHandle processHandle, out int exitCode);
 
 			[DllImport("kernel32.dll", SetLastError = true)]
 			[return: MarshalAs(UnmanagedType.Bool)]
@@ -77,12 +115,22 @@ namespace NativeWindows.ProcessAndThread
 		public ProcessHandle()
 			: base(true)
 		{
+			_exitMonitor = new Lazy<ProcessExitMonitor>(() => new ProcessExitMonitor(this));
 		}
 
 		public ProcessHandle(IntPtr handle, bool ownsHandle = true)
 			: base(ownsHandle)
 		{
+			_exitMonitor = new Lazy<ProcessExitMonitor>(() => new ProcessExitMonitor(this));
 			SetHandle(handle);
+		}
+
+		public Task<int> Completion
+		{
+			get
+			{
+				return _exitMonitor.Value.Task;
+			}
 		}
 
 		public int GetExitCode()
