@@ -89,6 +89,10 @@ namespace NativeWindows.ProcessAndThread
 			[DllImport("kernel32.dll", CharSet = CharSet.Ansi, SetLastError = true, BestFitMapping = false)]
 			[ResourceExposure(ResourceScope.Machine)]
 			public static extern bool DuplicateHandle(ProcessHandle sourceProcessHandle, ProcessHandle sourceHandle, ProcessHandle targetProcess, out SafeWaitHandle targetHandle, uint desiredAccess, bool inheritHandle, DuplicateHandleOptions options);
+
+			[DllImport("kernel32.dll", SetLastError = true)]
+			[return: MarshalAs(UnmanagedType.Bool)]
+			public static extern bool TerminateProcess(ProcessHandle processHandle, int exitCode);
 		}
 
 		public static ProcessInformation CreateAsUser(UserHandle userHandle, string applicationName, string commandLine, bool inheritHandles, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environmentHandle, string currentDirectory, ProcessStartInfo startInfo)
@@ -130,6 +134,14 @@ namespace NativeWindows.ProcessAndThread
 			get
 			{
 				return WaitForExit(TimeSpan.Zero);
+			}
+		}
+
+		public void Terminate(int exitCode)
+		{
+			if (!NativeMethods.TerminateProcess(this, exitCode))
+			{
+				throw new Win32Exception();
 			}
 		}
 
