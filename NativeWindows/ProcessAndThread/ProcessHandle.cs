@@ -30,7 +30,7 @@ namespace NativeWindows.ProcessAndThread
 			public ProcessWaitHandle(ProcessHandle processHandle)
 			{
 				SafeWaitHandle waitHandle;
-				if (!NativeMethods.DuplicateHandle(GetCurrentProcess(), processHandle, GetCurrentProcess(), out waitHandle, 0, false, DuplicateHandleOptions.DuplicateSameAccess))
+				if (!NativeMethods.DuplicateHandle(GetCurrentProcess(), processHandle, GetCurrentProcess(), out waitHandle, 0, false, DuplicateHandleOptions.SameAccess))
 				{
 					throw new Win32Exception();
 				}
