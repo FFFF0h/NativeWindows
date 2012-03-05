@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 using NativeWindows.ProcessAndThread;
@@ -84,7 +85,7 @@ namespace NativeWindows.JobObject
 		/// to disable those before attaching to a process.
 		/// http://stackoverflow.com/questions/89588/assignprocesstojobobject-fails-with-access-denied-error-when-running-under-the
 		/// </remarks>
-		public void AssignProcess(System.Diagnostics.Process process)
+		public void AssignProcess(Process process)
 		{
 			if (!NativeMethods.AssignProcessToJobObject(this, process.Handle))
 			{
