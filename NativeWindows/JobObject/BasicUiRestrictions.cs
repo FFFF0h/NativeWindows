@@ -9,14 +9,14 @@ namespace NativeWindows.JobObject
 		[Flags]
 		private enum UiRestrictionsTypes : uint
 		{
-			LimitHandles = 0x00000001,
-			LimitReadClipboard = 0x00000002,
-			LimitWriteClipboard = 0x00000004,
-			LimitSystemParameters = 0x00000008,
-			LimitDisplaySettings = 0x00000010,
-			LimitGlobalAtoms = 0x00000020,
-			LimitDesktop = 0x00000040,
-			LimitExitWindows = 0x00000080,
+			Handles = 0x00000001,
+			ReadClipboard = 0x00000002,
+			WriteClipboard = 0x00000004,
+			SystemParameters = 0x00000008,
+			DisplaySettings = 0x00000010,
+			GlobalAtoms = 0x00000020,
+			Desktop = 0x00000040,
+			ExitWindows = 0x00000080,
 		}
 
 		private UiRestrictionsTypes _restrictionsTypes;
@@ -28,11 +28,11 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return _restrictionsTypes.HasFlag(UiRestrictionsTypes.LimitDesktop);
+				return _restrictionsTypes.HasFlag(UiRestrictionsTypes.Desktop);
 			}
 			set
 			{
-				ChangeFlag(value, UiRestrictionsTypes.LimitDesktop);
+				ChangeFlag(value, UiRestrictionsTypes.Desktop);
 			}
 		}
 
@@ -43,11 +43,11 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return _restrictionsTypes.HasFlag(UiRestrictionsTypes.LimitDisplaySettings);
+				return _restrictionsTypes.HasFlag(UiRestrictionsTypes.DisplaySettings);
 			}
 			set
 			{
-				ChangeFlag(value, UiRestrictionsTypes.LimitDisplaySettings);
+				ChangeFlag(value, UiRestrictionsTypes.DisplaySettings);
 			}
 		}
 
@@ -58,11 +58,11 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return _restrictionsTypes.HasFlag(UiRestrictionsTypes.LimitExitWindows);
+				return _restrictionsTypes.HasFlag(UiRestrictionsTypes.ExitWindows);
 			}
 			set
 			{
-				ChangeFlag(value, UiRestrictionsTypes.LimitExitWindows);
+				ChangeFlag(value, UiRestrictionsTypes.ExitWindows);
 			}
 		}
 
@@ -73,11 +73,11 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return _restrictionsTypes.HasFlag(UiRestrictionsTypes.LimitGlobalAtoms);
+				return _restrictionsTypes.HasFlag(UiRestrictionsTypes.GlobalAtoms);
 			}
 			set
 			{
-				ChangeFlag(value, UiRestrictionsTypes.LimitGlobalAtoms);
+				ChangeFlag(value, UiRestrictionsTypes.GlobalAtoms);
 			}
 		}
 
@@ -88,11 +88,11 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return _restrictionsTypes.HasFlag(UiRestrictionsTypes.LimitHandles);
+				return _restrictionsTypes.HasFlag(UiRestrictionsTypes.Handles);
 			}
 			set
 			{
-				ChangeFlag(value, UiRestrictionsTypes.LimitHandles);
+				ChangeFlag(value, UiRestrictionsTypes.Handles);
 			}
 		}
 
@@ -103,11 +103,11 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return _restrictionsTypes.HasFlag(UiRestrictionsTypes.LimitReadClipboard);
+				return _restrictionsTypes.HasFlag(UiRestrictionsTypes.ReadClipboard);
 			}
 			set
 			{
-				ChangeFlag(value, UiRestrictionsTypes.LimitReadClipboard);
+				ChangeFlag(value, UiRestrictionsTypes.ReadClipboard);
 			}
 		}
 
@@ -118,11 +118,11 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return _restrictionsTypes.HasFlag(UiRestrictionsTypes.LimitSystemParameters);
+				return _restrictionsTypes.HasFlag(UiRestrictionsTypes.SystemParameters);
 			}
 			set
 			{
-				ChangeFlag(value, UiRestrictionsTypes.LimitSystemParameters);
+				ChangeFlag(value, UiRestrictionsTypes.SystemParameters);
 			}
 		}
 
@@ -133,11 +133,11 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return _restrictionsTypes.HasFlag(UiRestrictionsTypes.LimitWriteClipboard);
+				return _restrictionsTypes.HasFlag(UiRestrictionsTypes.WriteClipboard);
 			}
 			set
 			{
-				ChangeFlag(value, UiRestrictionsTypes.LimitWriteClipboard);
+				ChangeFlag(value, UiRestrictionsTypes.WriteClipboard);
 			}
 		}
 
