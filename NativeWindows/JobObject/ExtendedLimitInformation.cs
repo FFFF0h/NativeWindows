@@ -118,7 +118,6 @@ namespace NativeWindows.JobObject
 			}
 		}
 
-		// TODO: Not complete JOBOBJECT_END_OF_JOB_TIME_INFORMATION has not been defined yet
 		/// <summary>
 		/// If the PerJobUserTimeLimit is not null then, this member is the per-job user-mode execution time limit, in 100-nanosecond ticks. Otherwise, this member is ignored.
 		/// The system adds the current time of the processes associated with the job to this limit. For example, if you set this limit to 1 minute, and the job has a process that has accumulated 5 minutes of user-mode time, the limit actually enforced is 6 minutes.
@@ -243,7 +242,6 @@ namespace NativeWindows.JobObject
 			}
 		}
 
-		// TODO: GetProcessAffinityMask
 		/// <summary>
 		/// If the Affinity is not null then, this member is the processor affinity for all processes associated with the job. Otherwise, this member is ignored.
 		/// The affinity must be a subset of the system affinity mask obtained by calling the GetProcessAffinityMask function. The affinity of each thread is set to this value, but threads are free to subsequently set their affinity, as long as it is a subset of the specified affinity mask. Processes cannot set their own affinity mask.
