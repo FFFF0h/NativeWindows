@@ -18,7 +18,7 @@ namespace NativeWindows.JobObject
 			public static extern bool AssignProcessToJobObject(JobObjectHandle handle, ProcessHandle processHandle);
 
 			[DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
-			public static extern JobObjectHandle CreateJobObject(IntPtr jobAttributes, string name);
+			public static extern JobObjectHandle CreateJobObject(SecurityAttributes jobAttributes, string name);
 
 			[DllImport("kernel32.dll")]
 			public static extern JobObjectHandle OpenJobObject(JobObjectAccessRights desiredAccess, bool inheritHandle, string name);
@@ -45,23 +45,14 @@ namespace NativeWindows.JobObject
 
 		public static JobObjectHandle Create(JobObjectSecurity security, string name = null)
 		{
-			var securityAttributes = new SecurityAttributes(security);
-
-			int length = Marshal.SizeOf(typeof(SecurityAttributes));
-			IntPtr structurePtr = Marshal.AllocHGlobal(length);
-			try
+			using (var securityAttributes = new SecurityAttributes(security))
 			{
-				Marshal.StructureToPtr(securityAttributes, structurePtr, false);
-				JobObjectHandle jobObjectHandle = NativeMethods.CreateJobObject(structurePtr, name);
+				JobObjectHandle jobObjectHandle = NativeMethods.CreateJobObject(securityAttributes, name);
 				if (jobObjectHandle.IsInvalid)
 				{
 					throw new Win32Exception();
 				}
 				return jobObjectHandle;
-			}
-			finally
-			{
-				Marshal.FreeHGlobal(structurePtr);
 			}
 		}
 
