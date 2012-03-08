@@ -17,21 +17,21 @@ namespace NativeWindows.JobObject
 		[Flags]
 		private enum JobObjectLimitFlags : uint
 		{
-			LimitWorkingset = 0x00000001,
-			LimitProcessTime = 0x00000002,
-			LimitJobTime = 0x00000004,
-			LimitActiveProcess = 0x00000008,
-			LimitAffinity = 0x00000010,
-			LimitPriorityClass = 0x00000020,
-			LimitPreserveJobTime = 0x00000040,
-			LimitSchedulingClass = 0x00000080,
-			LimitProcessMemory = 0x00000100,
-			LimitJobMemory = 0x00000200,
-			LimitDieOnUnhandledException = 0x00000400,
-			LimitBreakawayOk = 0x00000800,
-			LimitSilentBreakawayOk = 0x00001000,
-			LimitKillOnJobClose = 0x00002000,
-			LimitSubsetAffinity = 0x00004000,
+			Workingset = 0x00000001,
+			ProcessTime = 0x00000002,
+			JobTime = 0x00000004,
+			ActiveProcess = 0x00000008,
+			Affinity = 0x00000010,
+			PriorityClass = 0x00000020,
+			PreserveJobTime = 0x00000040,
+			SchedulingClass = 0x00000080,
+			ProcessMemory = 0x00000100,
+			JobMemory = 0x00000200,
+			DieOnUnhandledException = 0x00000400,
+			BreakawayOk = 0x00000800,
+			SilentBreakawayOk = 0x00001000,
+			KillOnJobClose = 0x00002000,
+			SubsetAffinity = 0x00004000,
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
@@ -68,7 +68,7 @@ namespace NativeWindows.JobObject
 
 		public ExtendedLimitInformation()
 		{
-			_basicLimitInformation.LimitFlags |= JobObjectLimitFlags.LimitPreserveJobTime;
+			_basicLimitInformation.LimitFlags |= JobObjectLimitFlags.PreserveJobTime;
 		}
 
 		/// <summary>
@@ -78,11 +78,11 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return GetWithFlag(() => _jobMemoryLimit.ToUInt64(), JobObjectLimitFlags.LimitJobMemory);
+				return GetWithFlag(() => _jobMemoryLimit.ToUInt64(), JobObjectLimitFlags.JobMemory);
 			}
 			set
 			{
-				SetWithFlag(x => _jobMemoryLimit = new UIntPtr(x), value, JobObjectLimitFlags.LimitJobMemory);
+				SetWithFlag(x => _jobMemoryLimit = new UIntPtr(x), value, JobObjectLimitFlags.JobMemory);
 			}
 		}
 
@@ -93,11 +93,11 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return GetWithFlag(() => _processMemoryLimit.ToUInt64(), JobObjectLimitFlags.LimitProcessMemory);
+				return GetWithFlag(() => _processMemoryLimit.ToUInt64(), JobObjectLimitFlags.ProcessMemory);
 			}
 			set
 			{
-				SetWithFlag(x => _processMemoryLimit = new UIntPtr(x), value, JobObjectLimitFlags.LimitProcessMemory);
+				SetWithFlag(x => _processMemoryLimit = new UIntPtr(x), value, JobObjectLimitFlags.ProcessMemory);
 			}
 		}
 
@@ -110,15 +110,14 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return GetWithFlag(() => _basicLimitInformation.PerProcessUserTimeLimit, JobObjectLimitFlags.LimitProcessTime);
+				return GetWithFlag(() => _basicLimitInformation.PerProcessUserTimeLimit, JobObjectLimitFlags.ProcessTime);
 			}
 			set
 			{
-				SetWithFlag(x => _basicLimitInformation.PerProcessUserTimeLimit = x, value, JobObjectLimitFlags.LimitProcessTime);
+				SetWithFlag(x => _basicLimitInformation.PerProcessUserTimeLimit = x, value, JobObjectLimitFlags.ProcessTime);
 			}
 		}
 
-		// TODO: Not complete JOBOBJECT_END_OF_JOB_TIME_INFORMATION has not been defined yet
 		/// <summary>
 		/// If the PerJobUserTimeLimit is not null then, this member is the per-job user-mode execution time limit, in 100-nanosecond ticks. Otherwise, this member is ignored.
 		/// The system adds the current time of the processes associated with the job to this limit. For example, if you set this limit to 1 minute, and the job has a process that has accumulated 5 minutes of user-mode time, the limit actually enforced is 6 minutes.
@@ -129,7 +128,7 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				if (_basicLimitInformation.LimitFlags.HasFlag(JobObjectLimitFlags.LimitJobTime))
+				if (_basicLimitInformation.LimitFlags.HasFlag(JobObjectLimitFlags.JobTime))
 				{
 					return _basicLimitInformation.PerJobUserTimeLimit;
 				}
@@ -139,13 +138,13 @@ namespace NativeWindows.JobObject
 			{
 				if (value == null)
 				{
-					_basicLimitInformation.LimitFlags &= ~JobObjectLimitFlags.LimitJobTime;
-					_basicLimitInformation.LimitFlags |= JobObjectLimitFlags.LimitPreserveJobTime;
+					_basicLimitInformation.LimitFlags &= ~JobObjectLimitFlags.JobTime;
+					_basicLimitInformation.LimitFlags |= JobObjectLimitFlags.PreserveJobTime;
 				}
 				else
 				{
-					_basicLimitInformation.LimitFlags |= JobObjectLimitFlags.LimitJobTime;
-					_basicLimitInformation.LimitFlags &= ~JobObjectLimitFlags.LimitPreserveJobTime;
+					_basicLimitInformation.LimitFlags |= JobObjectLimitFlags.JobTime;
+					_basicLimitInformation.LimitFlags &= ~JobObjectLimitFlags.PreserveJobTime;
 					_basicLimitInformation.PerJobUserTimeLimit = value.Value;
 				}
 			}
@@ -159,11 +158,11 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return GetWithFlag(() => _basicLimitInformation.ActiveProcessLimit, JobObjectLimitFlags.LimitActiveProcess);
+				return GetWithFlag(() => _basicLimitInformation.ActiveProcessLimit, JobObjectLimitFlags.ActiveProcess);
 			}
 			set
 			{
-				SetWithFlag(x => _basicLimitInformation.ActiveProcessLimit = x, value, JobObjectLimitFlags.LimitActiveProcess);
+				SetWithFlag(x => _basicLimitInformation.ActiveProcessLimit = x, value, JobObjectLimitFlags.ActiveProcess);
 			}
 		}
 
@@ -175,11 +174,11 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return GetWithFlag(() => _basicLimitInformation.MinimumWorkingSetSize.ToUInt64(), JobObjectLimitFlags.LimitWorkingset);
+				return GetWithFlag(() => _basicLimitInformation.MinimumWorkingSetSize.ToUInt64(), JobObjectLimitFlags.Workingset);
 			}
 			set
 			{
-				SetWithFlag(x => _basicLimitInformation.MinimumWorkingSetSize = new UIntPtr(x), value, JobObjectLimitFlags.LimitWorkingset);
+				SetWithFlag(x => _basicLimitInformation.MinimumWorkingSetSize = new UIntPtr(x), value, JobObjectLimitFlags.Workingset);
 			}
 		}
 
@@ -191,11 +190,11 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return GetWithFlag(() => _basicLimitInformation.MaximumWorkingSetSize.ToUInt64(), JobObjectLimitFlags.LimitWorkingset);
+				return GetWithFlag(() => _basicLimitInformation.MaximumWorkingSetSize.ToUInt64(), JobObjectLimitFlags.Workingset);
 			}
 			set
 			{
-				SetWithFlag(x => _basicLimitInformation.MaximumWorkingSetSize = new UIntPtr(x), value, JobObjectLimitFlags.LimitWorkingset);
+				SetWithFlag(x => _basicLimitInformation.MaximumWorkingSetSize = new UIntPtr(x), value, JobObjectLimitFlags.Workingset);
 			}
 		}
 
@@ -228,22 +227,21 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return _basicLimitInformation.LimitFlags.HasFlag(JobObjectLimitFlags.LimitKillOnJobClose);
+				return _basicLimitInformation.LimitFlags.HasFlag(JobObjectLimitFlags.KillOnJobClose);
 			}
 			set
 			{
 				if (value)
 				{
-					_basicLimitInformation.LimitFlags |= JobObjectLimitFlags.LimitKillOnJobClose;
+					_basicLimitInformation.LimitFlags |= JobObjectLimitFlags.KillOnJobClose;
 				}
 				else
 				{
-					_basicLimitInformation.LimitFlags &= ~JobObjectLimitFlags.LimitKillOnJobClose;
+					_basicLimitInformation.LimitFlags &= ~JobObjectLimitFlags.KillOnJobClose;
 				}
 			}
 		}
 
-		// TODO: GetProcessAffinityMask
 		/// <summary>
 		/// If the Affinity is not null then, this member is the processor affinity for all processes associated with the job. Otherwise, this member is ignored.
 		/// The affinity must be a subset of the system affinity mask obtained by calling the GetProcessAffinityMask function. The affinity of each thread is set to this value, but threads are free to subsequently set their affinity, as long as it is a subset of the specified affinity mask. Processes cannot set their own affinity mask.
@@ -252,11 +250,11 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return GetWithFlag(() => _basicLimitInformation.Affinity.ToUInt64(), JobObjectLimitFlags.LimitAffinity);
+				return GetWithFlag(() => _basicLimitInformation.Affinity.ToUInt64(), JobObjectLimitFlags.Affinity);
 			}
 			set
 			{
-				SetWithFlag(x => _basicLimitInformation.Affinity = new UIntPtr(x), value, JobObjectLimitFlags.LimitAffinity);
+				SetWithFlag(x => _basicLimitInformation.Affinity = new UIntPtr(x), value, JobObjectLimitFlags.Affinity);
 			}
 		}
 
@@ -268,11 +266,11 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return GetWithFlag(() => _basicLimitInformation.PriorityClass, JobObjectLimitFlags.LimitPriorityClass);
+				return GetWithFlag(() => _basicLimitInformation.PriorityClass, JobObjectLimitFlags.PriorityClass);
 			}
 			set
 			{
-				SetWithFlag(x => _basicLimitInformation.PriorityClass = x, value, JobObjectLimitFlags.LimitPriorityClass);
+				SetWithFlag(x => _basicLimitInformation.PriorityClass = x, value, JobObjectLimitFlags.PriorityClass);
 			}
 		}
 
@@ -284,11 +282,11 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return GetWithFlag(() => _basicLimitInformation.SchedulingClass, JobObjectLimitFlags.LimitSchedulingClass);
+				return GetWithFlag(() => _basicLimitInformation.SchedulingClass, JobObjectLimitFlags.SchedulingClass);
 			}
 			set
 			{
-				SetWithFlag(x => _basicLimitInformation.SchedulingClass = x, value, JobObjectLimitFlags.LimitSchedulingClass);
+				SetWithFlag(x => _basicLimitInformation.SchedulingClass = x, value, JobObjectLimitFlags.SchedulingClass);
 			}
 		}
 

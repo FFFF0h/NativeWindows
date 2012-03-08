@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 using NativeWindows.ProcessAndThread;
@@ -17,7 +18,7 @@ namespace NativeWindows.JobObject
 			public static extern bool AssignProcessToJobObject(JobObjectHandle handle, ProcessHandle processHandle);
 
 			[DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
-			public static extern JobObjectHandle CreateJobObject(IntPtr jobAttributes, string name);
+			public static extern JobObjectHandle CreateJobObject(SecurityAttributes jobAttributes, string name);
 
 			[DllImport("kernel32.dll")]
 			public static extern JobObjectHandle OpenJobObject(JobObjectAccessRights desiredAccess, bool inheritHandle, string name);
@@ -44,23 +45,14 @@ namespace NativeWindows.JobObject
 
 		public static JobObjectHandle Create(JobObjectSecurity security, string name = null)
 		{
-			var securityAttributes = new SecurityAttributes(security);
-
-			int length = Marshal.SizeOf(typeof(SecurityAttributes));
-			IntPtr structurePtr = Marshal.AllocHGlobal(length);
-			try
+			using (var securityAttributes = new SecurityAttributes(security))
 			{
-				Marshal.StructureToPtr(securityAttributes, structurePtr, false);
-				JobObjectHandle jobObjectHandle = NativeMethods.CreateJobObject(structurePtr, name);
+				JobObjectHandle jobObjectHandle = NativeMethods.CreateJobObject(securityAttributes, name);
 				if (jobObjectHandle.IsInvalid)
 				{
 					throw new Win32Exception();
 				}
 				return jobObjectHandle;
-			}
-			finally
-			{
-				Marshal.FreeHGlobal(structurePtr);
 			}
 		}
 
@@ -84,7 +76,7 @@ namespace NativeWindows.JobObject
 		/// to disable those before attaching to a process.
 		/// http://stackoverflow.com/questions/89588/assignprocesstojobobject-fails-with-access-denied-error-when-running-under-the
 		/// </remarks>
-		public void AssignProcess(System.Diagnostics.Process process)
+		public void AssignProcess(Process process)
 		{
 			if (!NativeMethods.AssignProcessToJobObject(this, process.Handle))
 			{
