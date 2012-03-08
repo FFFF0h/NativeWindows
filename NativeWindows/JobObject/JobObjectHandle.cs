@@ -35,7 +35,7 @@ namespace NativeWindows.JobObject
 
 		public static JobObjectHandle Create(string name = null)
 		{
-			JobObjectHandle jobObjectHandle = NativeMethods.CreateJobObject(IntPtr.Zero, name);
+			JobObjectHandle jobObjectHandle = NativeMethods.CreateJobObject(null, name);
 			if (jobObjectHandle.IsInvalid)
 			{
 				throw new Win32Exception();
