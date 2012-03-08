@@ -65,6 +65,7 @@
     <Compile Include="ProcessAndThread\ProcessAccessRights.cs" />
     <Compile Include="ProcessAndThread\ThreadAccessRights.cs" />
     <Compile Include="SafeHandleZeroIsInvalid.cs" />
+    <Compile Include="StandardAccessRights.cs" />
     <Compile Include="User\DesktopAccessRights.cs" />
     <Compile Include="User\DesktopHandle.cs" />
     <Compile Include="User\DesktopOpenFlags.cs" />
