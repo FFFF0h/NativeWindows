@@ -62,6 +62,11 @@
     <Compile Include="IO\DirectoryAccessRights.cs" />
     <Compile Include="IO\FileAccessRights.cs" />
     <Compile Include="IO\PipeAccessRights.cs" />
+    <Compile Include="IO\FileSecurity.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FileSecurity.tt</DependentUpon>
+    </Compile>
     <Compile Include="IO\SafeFileHandleExtensions.cs" />
     <Compile Include="ProcessAndThread\ProcessAccessRights.cs" />
     <Compile Include="ProcessAndThread\ThreadAccessRights.cs" />
@@ -152,6 +157,10 @@
     <None Include="User\WindowStationSecurity.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>WindowStationSecurity.cs</LastGenOutput>
+    </None>
+    <None Include="IO\FileSecurity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>FileSecurity.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
