@@ -62,6 +62,7 @@
     <Compile Include="IO\DirectoryAccessRights.cs" />
     <Compile Include="IO\FileAccessRights.cs" />
     <Compile Include="IO\SafeFileHandleExtensions.cs" />
+    <Compile Include="ProcessAndThread\ProcessAccessRights.cs" />
     <Compile Include="SafeHandleZeroIsInvalid.cs" />
     <Compile Include="User\DesktopAccessRights.cs" />
     <Compile Include="User\DesktopHandle.cs" />
