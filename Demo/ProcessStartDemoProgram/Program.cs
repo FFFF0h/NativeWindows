@@ -18,13 +18,19 @@ namespace ProcessStartDemoProgram
 
 			GetOrCreateUser(username, password);
 
+			UserHandle primaryUserHandle;
 			using (var userHandle = UserHandle.Logon(username, ".", GetSecureString(password)))
 			{
-				using (var environmentBlockHandle = EnvironmentBlockHandle.Create(userHandle, false))
+				primaryUserHandle = userHandle.DuplicateTokenEx(TokenAccessRights.AllAccess, SecurityImpersonationLevel.SecurityImpersonation, TokenType.TokenPrimary);
+			}
+
+			using (primaryUserHandle)
+			{
+				using (var environmentBlockHandle = EnvironmentBlockHandle.Create(primaryUserHandle, false))
 				{
 					var processStartInfo = new ProcessStartInfo();
 					string commandLine = string.Format("\"{0}\"", typeof(TestProgramWhileTrue.Program).Assembly.Location);
-					using (var processInformation = ProcessHandle.CreateAsUser(userHandle, null, commandLine, false, ProcessCreationFlags.NewConsole | ProcessCreationFlags.Suspended | ProcessCreationFlags.UnicodeEnvironment, environmentBlockHandle, Environment.CurrentDirectory, processStartInfo))
+					using (var processInformation = ProcessHandle.CreateAsUser(primaryUserHandle, null, commandLine, false, ProcessCreationFlags.NewConsole | ProcessCreationFlags.Suspended | ProcessCreationFlags.UnicodeEnvironment, environmentBlockHandle, Environment.CurrentDirectory, processStartInfo))
 					{
 						Process process = Process.GetProcessById(processInformation.ProcessId);
 						processInformation.ThreadHandle.Resume();
