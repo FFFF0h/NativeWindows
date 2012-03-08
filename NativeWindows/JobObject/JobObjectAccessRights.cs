@@ -3,20 +3,26 @@
 namespace NativeWindows.JobObject
 {
 	[Flags]
-	public enum JobObjectAccessRights : int
+	public enum JobObjectAccessRights : uint
 	{
+		None = 0,
+
+		AssignProcess = 1,
+		SetAttributes = 2,
+		Query = 4,
+		Terminate = 8,
+		SetSecurityAttributes = 16,
+
 		Delete = 0x00010000,
-		ReadControl = 0x00020000,
-		WriteDac = 0x00040000,
-		WriteOwner = 0x00080000,
+		ReadPermissions = 0x00020000,
+		WritePermissions = 0x00040000,
+		TakeOwnership = 0x00080000,
 		Synchronize = 0x00100000,
 
-		AssignProcess = 0x00000001,
-		SetAttributes = 0x00000002,
-		Query = 0x00000004,
-		Terminate = 0x00000008,
-		SetSecurityAttributes = 0x00000010,
+		Read = StandardAccessRights.Read | Query,
+		Write = StandardAccessRights.Write | AssignProcess | SetAttributes | Terminate,
+		Execute = StandardAccessRights.Execute | Synchronize,
 
-		All = 0x001F001F,
+		AllAccess = StandardAccessRights.Required | AssignProcess | SetAttributes | Query | Terminate | SetSecurityAttributes | Synchronize,
 	}
 }

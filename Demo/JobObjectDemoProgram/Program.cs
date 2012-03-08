@@ -16,7 +16,7 @@ namespace JobObjectDemoProgram
 			var process2 = Process.Start(filepath);
 
 			var security = new JobObjectSecurity(true);
-			security.AddAccessRule(new NTAccount("Everyone"), JobObjectAccessRights.All, AccessControlType.Allow);
+			security.AddAccessRule(new NTAccount("Everyone"), JobObjectAccessRights.AllAccess, AccessControlType.Allow);
 
 			using (var job = JobObjectHandle.Create(security, "Foobar"))
 			{

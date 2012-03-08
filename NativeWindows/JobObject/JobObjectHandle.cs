@@ -56,7 +56,7 @@ namespace NativeWindows.JobObject
 			}
 		}
 
-		public static JobObjectHandle Open(string name, bool inheritHandle = false, JobObjectAccessRights desiredAccess = JobObjectAccessRights.All)
+		public static JobObjectHandle Open(string name, bool inheritHandle = false, JobObjectAccessRights desiredAccess = JobObjectAccessRights.AllAccess)
 		{
 			JobObjectHandle jobObjectHandle = NativeMethods.OpenJobObject(desiredAccess, inheritHandle, name);
 			if (jobObjectHandle.IsInvalid)
