@@ -110,6 +110,11 @@
     <Compile Include="User\UserLogonProvider.cs" />
     <Compile Include="User\UserLogonType.cs" />
     <Compile Include="User\WindowStationAccessRights.cs" />
+    <Compile Include="User\WindowStationSecurity.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WindowStationSecurity.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
@@ -143,6 +148,10 @@
     <None Include="User\DesktopSecurity.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DesktopSecurity.cs</LastGenOutput>
+    </None>
+    <None Include="User\WindowStationSecurity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>WindowStationSecurity.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
