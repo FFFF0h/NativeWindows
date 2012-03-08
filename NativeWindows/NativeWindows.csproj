@@ -90,6 +90,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>JobObjectSecurity.tt</DependentUpon>
     </Compile>
+    <Compile Include="ProcessAndThread\ThreadSecurity.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ThreadSecurity.tt</DependentUpon>
+    </Compile>
     <Compile Include="SafeHandleZeroIsInvalid.cs" />
     <Compile Include="StandardAccessRights.cs" />
     <Compile Include="User\DesktopAccessRights.cs" />
@@ -188,6 +193,10 @@
     <None Include="ProcessAndThread\ProcessSecurity.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ProcessSecurity.cs</LastGenOutput>
+    </None>
+    <None Include="ProcessAndThread\ThreadSecurity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ThreadSecurity.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
