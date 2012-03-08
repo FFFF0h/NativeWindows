@@ -98,6 +98,7 @@
     <Compile Include="User\UserHandle.cs" />
     <Compile Include="User\UserLogonProvider.cs" />
     <Compile Include="User\UserLogonType.cs" />
+    <Compile Include="User\WindowStationAccessRights.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
