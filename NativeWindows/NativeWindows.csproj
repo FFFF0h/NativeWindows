@@ -95,6 +95,11 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="User\DesktopSecurity.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DesktopSecurity.tt</DependentUpon>
+    </Compile>
     <Compile Include="User\EnvironmentBlockHandle.cs" />
     <Compile Include="ProcessAndThread\ThreadHandle.cs" />
     <Compile Include="SecurityAttributes.cs" />
@@ -134,6 +139,10 @@
     <None Include="JobObject\JobObjectSecurity.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>JobObjectSecurity.cs</LastGenOutput>
+    </None>
+    <None Include="User\DesktopSecurity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DesktopSecurity.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
