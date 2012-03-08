@@ -24,7 +24,7 @@ namespace ProcessStartDemoProgram
 				{
 					var processStartInfo = new ProcessStartInfo();
 					string commandLine = string.Format("\"{0}\"", typeof(TestProgramWhileTrue.Program).Assembly.Location);
-					using (var processInformation = ProcessHandle.CreateAsUser(userHandle, null, commandLine, false, ProcessCreationFlags.CreateNewConsole | ProcessCreationFlags.CreateSuspended | ProcessCreationFlags.CreateUnicodeEnvironment, environmentBlockHandle, Environment.CurrentDirectory, processStartInfo))
+					using (var processInformation = ProcessHandle.CreateAsUser(userHandle, null, commandLine, false, ProcessCreationFlags.NewConsole | ProcessCreationFlags.Suspended | ProcessCreationFlags.UnicodeEnvironment, environmentBlockHandle, Environment.CurrentDirectory, processStartInfo))
 					{
 						Process process = Process.GetProcessById(processInformation.ProcessId);
 						processInformation.ThreadHandle.Resume();
