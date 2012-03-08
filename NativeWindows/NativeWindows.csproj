@@ -59,6 +59,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IO\DirectoryAccessRights.cs" />
     <Compile Include="IO\FileAccessRights.cs" />
     <Compile Include="IO\SafeFileHandleExtensions.cs" />
     <Compile Include="SafeHandleZeroIsInvalid.cs" />
