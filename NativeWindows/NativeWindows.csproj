@@ -65,6 +65,11 @@
     <Compile Include="IO\SafeFileHandleExtensions.cs" />
     <Compile Include="ProcessAndThread\ProcessAccessRights.cs" />
     <Compile Include="ProcessAndThread\ThreadAccessRights.cs" />
+    <Compile Include="JobObject\JobObjectSecurity.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JobObjectSecurity.tt</DependentUpon>
+    </Compile>
     <Compile Include="SafeHandleZeroIsInvalid.cs" />
     <Compile Include="StandardAccessRights.cs" />
     <Compile Include="User\DesktopAccessRights.cs" />
@@ -79,8 +84,6 @@
     <Compile Include="JobObject\IJobStructure.cs" />
     <Compile Include="JobObject\JobObjectHandle.cs" />
     <Compile Include="JobObject\JobObjectAccessRights.cs" />
-    <Compile Include="JobObject\JobObjectAccessRule.cs" />
-    <Compile Include="JobObject\JobObjectSecurity.cs" />
     <Compile Include="JobObject\JobObjectType.cs" />
     <Compile Include="ProcessAndThread\DuplicateHandleOptions.cs" />
     <Compile Include="ProcessAndThread\ProcessCreationFlags.cs" />
@@ -127,6 +130,10 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="Security.ttinclude" />
+    <None Include="JobObject\JobObjectSecurity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>JobObjectSecurity.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
