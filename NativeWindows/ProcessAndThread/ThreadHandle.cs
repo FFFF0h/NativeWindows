@@ -36,7 +36,7 @@ namespace NativeWindows.ProcessAndThread
 			{
 				throw new Win32Exception();
 			}
-			return (uint) result;
+			return (uint)result;
 		}
 
 		public uint Suspend()

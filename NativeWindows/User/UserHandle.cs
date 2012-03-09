@@ -20,7 +20,7 @@ namespace NativeWindows.User
 			public static extern bool LogonUser(string username, string domain, string password, UserLogonType logonType, UserLogonProvider logonProvider, out UserHandle handle);
 
 			[DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-			public extern static bool DuplicateTokenEx(UserHandle handle, TokenAccessRights desiredAccess, SecurityAttributes securityAttributes, SecurityImpersonationLevel impersonationLevel, TokenType tokenType, out UserHandle newToken);
+			public static extern bool DuplicateTokenEx(UserHandle handle, TokenAccessRights desiredAccess, SecurityAttributes securityAttributes, SecurityImpersonationLevel impersonationLevel, TokenType tokenType, out UserHandle newToken);
 		}
 
 		public static UserHandle Logon(string username, string domain, SecureString password, UserLogonType logonType = UserLogonType.Interactive, UserLogonProvider logonProvider = UserLogonProvider.Default)
