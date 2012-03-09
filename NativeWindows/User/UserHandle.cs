@@ -51,7 +51,8 @@ namespace NativeWindows.User
 			return userHandle;
 		}
 
-		public UserHandle() : base(true)
+		public UserHandle()
+			: base(true)
 		{
 		}
 
