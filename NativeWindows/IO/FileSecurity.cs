@@ -7,7 +7,7 @@ namespace NativeWindows.IO
 	public sealed class FileAuditRule : AuditRule
 	{
 		public FileAuditRule(IdentityReference identity, FileAccessRights accessRights, AuditFlags type)
-			: base(identity, (int) accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
+			: base(identity, (int)accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
 		{
 		}
 
@@ -15,7 +15,7 @@ namespace NativeWindows.IO
 		{
 			get
 			{
-				return (FileAccessRights) AccessMask;
+				return (FileAccessRights)AccessMask;
 			}
 		}
 	}
@@ -23,7 +23,7 @@ namespace NativeWindows.IO
 	public sealed class FileAccessRule : AccessRule
 	{
 		public FileAccessRule(IdentityReference identity, FileAccessRights accessRights, AccessControlType type)
-			: base(identity, (int) accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
+			: base(identity, (int)accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
 		{
 		}
 
@@ -31,7 +31,7 @@ namespace NativeWindows.IO
 		{
 			get
 			{
-				return (FileAccessRights) AccessMask;
+				return (FileAccessRights)AccessMask;
 			}
 		}
 	}
@@ -45,12 +45,12 @@ namespace NativeWindows.IO
 
 		public override AccessRule AccessRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AccessControlType type)
 		{
-			return new FileAccessRule(identityReference, (FileAccessRights) accessMask, type);
+			return new FileAccessRule(identityReference, (FileAccessRights)accessMask, type);
 		}
 
 		public override AuditRule AuditRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AuditFlags flags)
 		{
-			return new FileAuditRule(identityReference, (FileAccessRights) accessMask, flags);
+			return new FileAuditRule(identityReference, (FileAccessRights)accessMask, flags);
 		}
 
 		public void AddAccessRule(IdentityReference identityReference, FileAccessRights accessMask, AccessControlType type)
@@ -67,7 +67,7 @@ namespace NativeWindows.IO
 		{
 			get
 			{
-				return typeof (FileAccessRights);
+				return typeof(FileAccessRights);
 			}
 		}
 
@@ -75,7 +75,7 @@ namespace NativeWindows.IO
 		{
 			get
 			{
-				return typeof (FileAccessRule);
+				return typeof(FileAccessRule);
 			}
 		}
 
@@ -83,7 +83,7 @@ namespace NativeWindows.IO
 		{
 			get
 			{
-				return typeof (FileAuditRule);
+				return typeof(FileAuditRule);
 			}
 		}
 	}

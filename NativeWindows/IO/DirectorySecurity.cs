@@ -7,7 +7,7 @@ namespace NativeWindows.IO
 	public sealed class DirectoryAuditRule : AuditRule
 	{
 		public DirectoryAuditRule(IdentityReference identity, DirectoryAccessRights accessRights, AuditFlags type)
-			: base(identity, (int) accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
+			: base(identity, (int)accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
 		{
 		}
 
@@ -15,7 +15,7 @@ namespace NativeWindows.IO
 		{
 			get
 			{
-				return (DirectoryAccessRights) AccessMask;
+				return (DirectoryAccessRights)AccessMask;
 			}
 		}
 	}
@@ -23,7 +23,7 @@ namespace NativeWindows.IO
 	public sealed class DirectoryAccessRule : AccessRule
 	{
 		public DirectoryAccessRule(IdentityReference identity, DirectoryAccessRights accessRights, AccessControlType type)
-			: base(identity, (int) accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
+			: base(identity, (int)accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
 		{
 		}
 
@@ -31,7 +31,7 @@ namespace NativeWindows.IO
 		{
 			get
 			{
-				return (DirectoryAccessRights) AccessMask;
+				return (DirectoryAccessRights)AccessMask;
 			}
 		}
 	}
@@ -45,12 +45,12 @@ namespace NativeWindows.IO
 
 		public override AccessRule AccessRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AccessControlType type)
 		{
-			return new DirectoryAccessRule(identityReference, (DirectoryAccessRights) accessMask, type);
+			return new DirectoryAccessRule(identityReference, (DirectoryAccessRights)accessMask, type);
 		}
 
 		public override AuditRule AuditRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AuditFlags flags)
 		{
-			return new DirectoryAuditRule(identityReference, (DirectoryAccessRights) accessMask, flags);
+			return new DirectoryAuditRule(identityReference, (DirectoryAccessRights)accessMask, flags);
 		}
 
 		public void AddAccessRule(IdentityReference identityReference, DirectoryAccessRights accessMask, AccessControlType type)
@@ -67,7 +67,7 @@ namespace NativeWindows.IO
 		{
 			get
 			{
-				return typeof (DirectoryAccessRights);
+				return typeof(DirectoryAccessRights);
 			}
 		}
 
@@ -75,7 +75,7 @@ namespace NativeWindows.IO
 		{
 			get
 			{
-				return typeof (DirectoryAccessRule);
+				return typeof(DirectoryAccessRule);
 			}
 		}
 
@@ -83,7 +83,7 @@ namespace NativeWindows.IO
 		{
 			get
 			{
-				return typeof (DirectoryAuditRule);
+				return typeof(DirectoryAuditRule);
 			}
 		}
 	}

@@ -7,7 +7,7 @@ namespace NativeWindows.User
 	public sealed class WindowStationAuditRule : AuditRule
 	{
 		public WindowStationAuditRule(IdentityReference identity, WindowStationAccessRights accessRights, AuditFlags type)
-			: base(identity, (int) accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
+			: base(identity, (int)accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
 		{
 		}
 
@@ -15,7 +15,7 @@ namespace NativeWindows.User
 		{
 			get
 			{
-				return (WindowStationAccessRights) AccessMask;
+				return (WindowStationAccessRights)AccessMask;
 			}
 		}
 	}
@@ -23,7 +23,7 @@ namespace NativeWindows.User
 	public sealed class WindowStationAccessRule : AccessRule
 	{
 		public WindowStationAccessRule(IdentityReference identity, WindowStationAccessRights accessRights, AccessControlType type)
-			: base(identity, (int) accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
+			: base(identity, (int)accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
 		{
 		}
 
@@ -31,7 +31,7 @@ namespace NativeWindows.User
 		{
 			get
 			{
-				return (WindowStationAccessRights) AccessMask;
+				return (WindowStationAccessRights)AccessMask;
 			}
 		}
 	}
@@ -45,12 +45,12 @@ namespace NativeWindows.User
 
 		public override AccessRule AccessRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AccessControlType type)
 		{
-			return new WindowStationAccessRule(identityReference, (WindowStationAccessRights) accessMask, type);
+			return new WindowStationAccessRule(identityReference, (WindowStationAccessRights)accessMask, type);
 		}
 
 		public override AuditRule AuditRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AuditFlags flags)
 		{
-			return new WindowStationAuditRule(identityReference, (WindowStationAccessRights) accessMask, flags);
+			return new WindowStationAuditRule(identityReference, (WindowStationAccessRights)accessMask, flags);
 		}
 
 		public void AddAccessRule(IdentityReference identityReference, WindowStationAccessRights accessMask, AccessControlType type)
@@ -67,7 +67,7 @@ namespace NativeWindows.User
 		{
 			get
 			{
-				return typeof (WindowStationAccessRights);
+				return typeof(WindowStationAccessRights);
 			}
 		}
 
@@ -75,7 +75,7 @@ namespace NativeWindows.User
 		{
 			get
 			{
-				return typeof (WindowStationAccessRule);
+				return typeof(WindowStationAccessRule);
 			}
 		}
 
@@ -83,7 +83,7 @@ namespace NativeWindows.User
 		{
 			get
 			{
-				return typeof (WindowStationAuditRule);
+				return typeof(WindowStationAuditRule);
 			}
 		}
 	}

@@ -7,7 +7,7 @@ namespace NativeWindows.ProcessAndThread
 	public sealed class ThreadAuditRule : AuditRule
 	{
 		public ThreadAuditRule(IdentityReference identity, ThreadAccessRights accessRights, AuditFlags type)
-			: base(identity, (int) accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
+			: base(identity, (int)accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
 		{
 		}
 
@@ -15,7 +15,7 @@ namespace NativeWindows.ProcessAndThread
 		{
 			get
 			{
-				return (ThreadAccessRights) AccessMask;
+				return (ThreadAccessRights)AccessMask;
 			}
 		}
 	}
@@ -23,7 +23,7 @@ namespace NativeWindows.ProcessAndThread
 	public sealed class ThreadAccessRule : AccessRule
 	{
 		public ThreadAccessRule(IdentityReference identity, ThreadAccessRights accessRights, AccessControlType type)
-			: base(identity, (int) accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
+			: base(identity, (int)accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
 		{
 		}
 
@@ -31,7 +31,7 @@ namespace NativeWindows.ProcessAndThread
 		{
 			get
 			{
-				return (ThreadAccessRights) AccessMask;
+				return (ThreadAccessRights)AccessMask;
 			}
 		}
 	}
@@ -45,12 +45,12 @@ namespace NativeWindows.ProcessAndThread
 
 		public override AccessRule AccessRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AccessControlType type)
 		{
-			return new ThreadAccessRule(identityReference, (ThreadAccessRights) accessMask, type);
+			return new ThreadAccessRule(identityReference, (ThreadAccessRights)accessMask, type);
 		}
 
 		public override AuditRule AuditRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AuditFlags flags)
 		{
-			return new ThreadAuditRule(identityReference, (ThreadAccessRights) accessMask, flags);
+			return new ThreadAuditRule(identityReference, (ThreadAccessRights)accessMask, flags);
 		}
 
 		public void AddAccessRule(IdentityReference identityReference, ThreadAccessRights accessMask, AccessControlType type)
@@ -67,7 +67,7 @@ namespace NativeWindows.ProcessAndThread
 		{
 			get
 			{
-				return typeof (ThreadAccessRights);
+				return typeof(ThreadAccessRights);
 			}
 		}
 
@@ -75,7 +75,7 @@ namespace NativeWindows.ProcessAndThread
 		{
 			get
 			{
-				return typeof (ThreadAccessRule);
+				return typeof(ThreadAccessRule);
 			}
 		}
 
@@ -83,7 +83,7 @@ namespace NativeWindows.ProcessAndThread
 		{
 			get
 			{
-				return typeof (ThreadAuditRule);
+				return typeof(ThreadAuditRule);
 			}
 		}
 	}

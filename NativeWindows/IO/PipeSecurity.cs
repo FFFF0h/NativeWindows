@@ -7,7 +7,7 @@ namespace NativeWindows.IO
 	public sealed class PipeAuditRule : AuditRule
 	{
 		public PipeAuditRule(IdentityReference identity, PipeAccessRights accessRights, AuditFlags type)
-			: base(identity, (int) accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
+			: base(identity, (int)accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
 		{
 		}
 
@@ -15,7 +15,7 @@ namespace NativeWindows.IO
 		{
 			get
 			{
-				return (PipeAccessRights) AccessMask;
+				return (PipeAccessRights)AccessMask;
 			}
 		}
 	}
@@ -23,7 +23,7 @@ namespace NativeWindows.IO
 	public sealed class PipeAccessRule : AccessRule
 	{
 		public PipeAccessRule(IdentityReference identity, PipeAccessRights accessRights, AccessControlType type)
-			: base(identity, (int) accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
+			: base(identity, (int)accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
 		{
 		}
 
@@ -31,7 +31,7 @@ namespace NativeWindows.IO
 		{
 			get
 			{
-				return (PipeAccessRights) AccessMask;
+				return (PipeAccessRights)AccessMask;
 			}
 		}
 	}
@@ -45,12 +45,12 @@ namespace NativeWindows.IO
 
 		public override AccessRule AccessRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AccessControlType type)
 		{
-			return new PipeAccessRule(identityReference, (PipeAccessRights) accessMask, type);
+			return new PipeAccessRule(identityReference, (PipeAccessRights)accessMask, type);
 		}
 
 		public override AuditRule AuditRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AuditFlags flags)
 		{
-			return new PipeAuditRule(identityReference, (PipeAccessRights) accessMask, flags);
+			return new PipeAuditRule(identityReference, (PipeAccessRights)accessMask, flags);
 		}
 
 		public void AddAccessRule(IdentityReference identityReference, PipeAccessRights accessMask, AccessControlType type)
@@ -67,7 +67,7 @@ namespace NativeWindows.IO
 		{
 			get
 			{
-				return typeof (PipeAccessRights);
+				return typeof(PipeAccessRights);
 			}
 		}
 
@@ -75,7 +75,7 @@ namespace NativeWindows.IO
 		{
 			get
 			{
-				return typeof (PipeAccessRule);
+				return typeof(PipeAccessRule);
 			}
 		}
 
@@ -83,7 +83,7 @@ namespace NativeWindows.IO
 		{
 			get
 			{
-				return typeof (PipeAuditRule);
+				return typeof(PipeAuditRule);
 			}
 		}
 	}

@@ -7,7 +7,7 @@ namespace NativeWindows.User
 	public sealed class DesktopAuditRule : AuditRule
 	{
 		public DesktopAuditRule(IdentityReference identity, DesktopAccessRights accessRights, AuditFlags type)
-			: base(identity, (int) accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
+			: base(identity, (int)accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
 		{
 		}
 
@@ -15,7 +15,7 @@ namespace NativeWindows.User
 		{
 			get
 			{
-				return (DesktopAccessRights) AccessMask;
+				return (DesktopAccessRights)AccessMask;
 			}
 		}
 	}
@@ -23,7 +23,7 @@ namespace NativeWindows.User
 	public sealed class DesktopAccessRule : AccessRule
 	{
 		public DesktopAccessRule(IdentityReference identity, DesktopAccessRights accessRights, AccessControlType type)
-			: base(identity, (int) accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
+			: base(identity, (int)accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
 		{
 		}
 
@@ -31,7 +31,7 @@ namespace NativeWindows.User
 		{
 			get
 			{
-				return (DesktopAccessRights) AccessMask;
+				return (DesktopAccessRights)AccessMask;
 			}
 		}
 	}
@@ -45,12 +45,12 @@ namespace NativeWindows.User
 
 		public override AccessRule AccessRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AccessControlType type)
 		{
-			return new DesktopAccessRule(identityReference, (DesktopAccessRights) accessMask, type);
+			return new DesktopAccessRule(identityReference, (DesktopAccessRights)accessMask, type);
 		}
 
 		public override AuditRule AuditRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AuditFlags flags)
 		{
-			return new DesktopAuditRule(identityReference, (DesktopAccessRights) accessMask, flags);
+			return new DesktopAuditRule(identityReference, (DesktopAccessRights)accessMask, flags);
 		}
 
 		public void AddAccessRule(IdentityReference identityReference, DesktopAccessRights accessMask, AccessControlType type)
@@ -67,7 +67,7 @@ namespace NativeWindows.User
 		{
 			get
 			{
-				return typeof (DesktopAccessRights);
+				return typeof(DesktopAccessRights);
 			}
 		}
 
@@ -75,7 +75,7 @@ namespace NativeWindows.User
 		{
 			get
 			{
-				return typeof (DesktopAccessRule);
+				return typeof(DesktopAccessRule);
 			}
 		}
 
@@ -83,7 +83,7 @@ namespace NativeWindows.User
 		{
 			get
 			{
-				return typeof (DesktopAuditRule);
+				return typeof(DesktopAuditRule);
 			}
 		}
 	}

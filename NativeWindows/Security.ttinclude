@@ -11,7 +11,7 @@ namespace <#= namespaceName #>
 	public sealed class <#= name #>AuditRule : AuditRule
 	{
 		public <#= name #>AuditRule(IdentityReference identity, <#= name #>AccessRights accessRights, AuditFlags type)
-			: base(identity, (int) accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
+			: base(identity, (int)accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
 		{
 		}
 
@@ -19,7 +19,7 @@ namespace <#= namespaceName #>
 		{
 			get
 			{
-				return (<#= name #>AccessRights) AccessMask;
+				return (<#= name #>AccessRights)AccessMask;
 			}
 		}
 	}
@@ -27,7 +27,7 @@ namespace <#= namespaceName #>
 	public sealed class <#= name #>AccessRule : AccessRule
 	{
 		public <#= name #>AccessRule(IdentityReference identity, <#= name #>AccessRights accessRights, AccessControlType type)
-			: base(identity, (int) accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
+			: base(identity, (int)accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
 		{
 		}
 
@@ -35,7 +35,7 @@ namespace <#= namespaceName #>
 		{
 			get
 			{
-				return (<#= name #>AccessRights) AccessMask;
+				return (<#= name #>AccessRights)AccessMask;
 			}
 		}
 	}
@@ -49,12 +49,12 @@ namespace <#= namespaceName #>
 
 		public override AccessRule AccessRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AccessControlType type)
 		{
-			return new <#= name #>AccessRule(identityReference, (<#= name #>AccessRights) accessMask, type);
+			return new <#= name #>AccessRule(identityReference, (<#= name #>AccessRights)accessMask, type);
 		}
 
 		public override AuditRule AuditRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AuditFlags flags)
 		{
-			return new <#= name #>AuditRule(identityReference, (<#= name #>AccessRights) accessMask, flags);
+			return new <#= name #>AuditRule(identityReference, (<#= name #>AccessRights)accessMask, flags);
 		}
 
 		public void AddAccessRule(IdentityReference identityReference, <#= name #>AccessRights accessMask, AccessControlType type)
@@ -71,7 +71,7 @@ namespace <#= namespaceName #>
 		{
 			get
 			{
-				return typeof (<#= name #>AccessRights);
+				return typeof(<#= name #>AccessRights);
 			}
 		}
 
@@ -79,7 +79,7 @@ namespace <#= namespaceName #>
 		{
 			get
 			{
-				return typeof (<#= name #>AccessRule);
+				return typeof(<#= name #>AccessRule);
 			}
 		}
 
@@ -87,7 +87,7 @@ namespace <#= namespaceName #>
 		{
 			get
 			{
-				return typeof (<#= name #>AuditRule);
+				return typeof(<#= name #>AuditRule);
 			}
 		}
 	}

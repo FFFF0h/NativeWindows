@@ -7,7 +7,7 @@ namespace NativeWindows.ProcessAndThread
 	public sealed class ProcessAuditRule : AuditRule
 	{
 		public ProcessAuditRule(IdentityReference identity, ProcessAccessRights accessRights, AuditFlags type)
-			: base(identity, (int) accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
+			: base(identity, (int)accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
 		{
 		}
 
@@ -15,7 +15,7 @@ namespace NativeWindows.ProcessAndThread
 		{
 			get
 			{
-				return (ProcessAccessRights) AccessMask;
+				return (ProcessAccessRights)AccessMask;
 			}
 		}
 	}
@@ -23,7 +23,7 @@ namespace NativeWindows.ProcessAndThread
 	public sealed class ProcessAccessRule : AccessRule
 	{
 		public ProcessAccessRule(IdentityReference identity, ProcessAccessRights accessRights, AccessControlType type)
-			: base(identity, (int) accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
+			: base(identity, (int)accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
 		{
 		}
 
@@ -31,7 +31,7 @@ namespace NativeWindows.ProcessAndThread
 		{
 			get
 			{
-				return (ProcessAccessRights) AccessMask;
+				return (ProcessAccessRights)AccessMask;
 			}
 		}
 	}
@@ -45,12 +45,12 @@ namespace NativeWindows.ProcessAndThread
 
 		public override AccessRule AccessRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AccessControlType type)
 		{
-			return new ProcessAccessRule(identityReference, (ProcessAccessRights) accessMask, type);
+			return new ProcessAccessRule(identityReference, (ProcessAccessRights)accessMask, type);
 		}
 
 		public override AuditRule AuditRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AuditFlags flags)
 		{
-			return new ProcessAuditRule(identityReference, (ProcessAccessRights) accessMask, flags);
+			return new ProcessAuditRule(identityReference, (ProcessAccessRights)accessMask, flags);
 		}
 
 		public void AddAccessRule(IdentityReference identityReference, ProcessAccessRights accessMask, AccessControlType type)
@@ -67,7 +67,7 @@ namespace NativeWindows.ProcessAndThread
 		{
 			get
 			{
-				return typeof (ProcessAccessRights);
+				return typeof(ProcessAccessRights);
 			}
 		}
 
@@ -75,7 +75,7 @@ namespace NativeWindows.ProcessAndThread
 		{
 			get
 			{
-				return typeof (ProcessAccessRule);
+				return typeof(ProcessAccessRule);
 			}
 		}
 
@@ -83,7 +83,7 @@ namespace NativeWindows.ProcessAndThread
 		{
 			get
 			{
-				return typeof (ProcessAuditRule);
+				return typeof(ProcessAuditRule);
 			}
 		}
 	}

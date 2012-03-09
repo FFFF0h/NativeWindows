@@ -7,7 +7,7 @@ namespace NativeWindows.JobObject
 	public sealed class JobObjectAuditRule : AuditRule
 	{
 		public JobObjectAuditRule(IdentityReference identity, JobObjectAccessRights accessRights, AuditFlags type)
-			: base(identity, (int) accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
+			: base(identity, (int)accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
 		{
 		}
 
@@ -15,7 +15,7 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return (JobObjectAccessRights) AccessMask;
+				return (JobObjectAccessRights)AccessMask;
 			}
 		}
 	}
@@ -23,7 +23,7 @@ namespace NativeWindows.JobObject
 	public sealed class JobObjectAccessRule : AccessRule
 	{
 		public JobObjectAccessRule(IdentityReference identity, JobObjectAccessRights accessRights, AccessControlType type)
-			: base(identity, (int) accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
+			: base(identity, (int)accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
 		{
 		}
 
@@ -31,7 +31,7 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return (JobObjectAccessRights) AccessMask;
+				return (JobObjectAccessRights)AccessMask;
 			}
 		}
 	}
@@ -45,12 +45,12 @@ namespace NativeWindows.JobObject
 
 		public override AccessRule AccessRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AccessControlType type)
 		{
-			return new JobObjectAccessRule(identityReference, (JobObjectAccessRights) accessMask, type);
+			return new JobObjectAccessRule(identityReference, (JobObjectAccessRights)accessMask, type);
 		}
 
 		public override AuditRule AuditRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AuditFlags flags)
 		{
-			return new JobObjectAuditRule(identityReference, (JobObjectAccessRights) accessMask, flags);
+			return new JobObjectAuditRule(identityReference, (JobObjectAccessRights)accessMask, flags);
 		}
 
 		public void AddAccessRule(IdentityReference identityReference, JobObjectAccessRights accessMask, AccessControlType type)
@@ -67,7 +67,7 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return typeof (JobObjectAccessRights);
+				return typeof(JobObjectAccessRights);
 			}
 		}
 
@@ -75,7 +75,7 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return typeof (JobObjectAccessRule);
+				return typeof(JobObjectAccessRule);
 			}
 		}
 
@@ -83,7 +83,7 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return typeof (JobObjectAuditRule);
+				return typeof(JobObjectAuditRule);
 			}
 		}
 	}
