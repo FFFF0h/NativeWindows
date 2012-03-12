@@ -80,6 +80,7 @@
     </Compile>
     <Compile Include="IO\SafeFileHandleExtensions.cs" />
     <Compile Include="ProcessAndThread\ProcessAccessRights.cs" />
+    <Compile Include="ProcessAndThread\ProcessLogonFlags.cs" />
     <Compile Include="ProcessAndThread\ThreadAccessRights.cs" />
     <Compile Include="ProcessAndThread\ProcessSecurity.cs">
       <AutoGen>True</AutoGen>
@@ -170,7 +171,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
     <None Include="Security.ttinclude" />
     <None Include="JobObject\JobObjectSecurity.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
