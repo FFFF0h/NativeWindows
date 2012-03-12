@@ -1,10 +1,11 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
-using Microsoft.Win32.SafeHandles;
+using NativeWindows.ProcessAndThread;
 
 namespace NativeWindows.User
 {
-	public sealed class DesktopHandle : SafeHandleZeroOrMinusOneIsInvalid
+	public sealed class DesktopHandle : SafeHandle
 	{
 		private static class NativeMethods
 		{
@@ -21,13 +22,26 @@ namespace NativeWindows.User
 		}
 
 		public DesktopHandle()
-			: base(true)
+			: base(IntPtr.Zero, true)
+		{
+		}
+
+		private DesktopHandle(IntPtr handle, bool ownsHandle = false)
+			: base(handle, ownsHandle)
 		{
 		}
 
 		protected override bool ReleaseHandle()
 		{
 			return NativeMethods.CloseDesktop(handle);
+		}
+
+		public override bool IsInvalid
+		{
+			get
+			{
+				return handle == IntPtr.Zero || handle == new IntPtr(-1);
+			}
 		}
 	}
 }
