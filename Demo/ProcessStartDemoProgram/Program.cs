@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.DirectoryServices.AccountManagement;
 using System.Security;
+using System.Security.AccessControl;
 using System.Security.Principal;
 using NativeWindows.ProcessAndThread;
 using NativeWindows.User;
@@ -18,19 +19,24 @@ namespace ProcessStartDemoProgram
 
 			GetOrCreateUser(username, password);
 
-			UserHandle primaryUserHandle;
 			using (var userHandle = UserHandle.Logon(username, ".", GetSecureString(password)))
 			{
-				primaryUserHandle = userHandle.DuplicateTokenEx(TokenAccessRights.AllAccess, SecurityImpersonationLevel.SecurityImpersonation, TokenType.TokenPrimary);
-			}
-
-			using (primaryUserHandle)
-			{
-				using (var environmentBlockHandle = EnvironmentBlockHandle.Create(primaryUserHandle, false))
+				using (var environmentBlockHandle = EnvironmentBlockHandle.Create(userHandle, false))
 				{
 					var processStartInfo = new ProcessStartInfo();
+
+					ProcessInformation processInformation;
 					string commandLine = string.Format("\"{0}\"", typeof(TestProgramWhileTrue.Program).Assembly.Location);
-					using (var processInformation = ProcessHandle.CreateAsUser(primaryUserHandle, null, commandLine, false, ProcessCreationFlags.NewConsole | ProcessCreationFlags.Suspended | ProcessCreationFlags.UnicodeEnvironment, environmentBlockHandle, Environment.CurrentDirectory, processStartInfo))
+					if (Environment.UserInteractive)
+					{
+						processInformation = ProcessHandle.CreateWithLogin(username, string.Empty, password, ProcessLogonFlags.None, null, commandLine, ProcessCreationFlags.NoWindow | ProcessCreationFlags.UnicodeEnvironment, environmentBlockHandle, Environment.CurrentDirectory, processStartInfo);
+					}
+					else
+					{
+						processInformation = ProcessHandle.CreateAsUser(userHandle, null, commandLine, false, ProcessCreationFlags.NewConsole | ProcessCreationFlags.Suspended | ProcessCreationFlags.UnicodeEnvironment, environmentBlockHandle, Environment.CurrentDirectory, processStartInfo);
+					}
+
+					using (processInformation)
 					{
 						Process process = Process.GetProcessById(processInformation.ProcessId);
 						processInformation.ThreadHandle.Resume();
