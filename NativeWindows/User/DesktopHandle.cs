@@ -20,7 +20,8 @@ namespace NativeWindows.User
 			return NativeMethods.OpenDesktop(name, flags, inherit, desiredAccess);
 		}
 
-		public DesktopHandle() : base(true)
+		public DesktopHandle()
+			: base(true)
 		{
 		}
 

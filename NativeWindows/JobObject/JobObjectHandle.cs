@@ -35,7 +35,7 @@ namespace NativeWindows.JobObject
 
 		public static JobObjectHandle Create(string name = null)
 		{
-			JobObjectHandle jobObjectHandle = NativeMethods.CreateJobObject(IntPtr.Zero, name);
+			JobObjectHandle jobObjectHandle = NativeMethods.CreateJobObject(null, name);
 			if (jobObjectHandle.IsInvalid)
 			{
 				throw new Win32Exception();
@@ -56,7 +56,7 @@ namespace NativeWindows.JobObject
 			}
 		}
 
-		public static JobObjectHandle Open(string name, bool inheritHandle = false, JobObjectAccessRights desiredAccess = JobObjectAccessRights.All)
+		public static JobObjectHandle Open(string name, bool inheritHandle = false, JobObjectAccessRights desiredAccess = JobObjectAccessRights.AllAccess)
 		{
 			JobObjectHandle jobObjectHandle = NativeMethods.OpenJobObject(desiredAccess, inheritHandle, name);
 			if (jobObjectHandle.IsInvalid)

@@ -42,6 +42,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
@@ -59,9 +60,44 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IO\DirectoryAccessRights.cs" />
+    <Compile Include="IO\DirectorySecurity.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DirectorySecurity.tt</DependentUpon>
+    </Compile>
     <Compile Include="IO\FileAccessRights.cs" />
+    <Compile Include="IO\PipeAccessRights.cs" />
+    <Compile Include="IO\FileSecurity.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FileSecurity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IO\PipeSecurity.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PipeSecurity.tt</DependentUpon>
+    </Compile>
     <Compile Include="IO\SafeFileHandleExtensions.cs" />
+    <Compile Include="ProcessAndThread\ProcessAccessRights.cs" />
+    <Compile Include="ProcessAndThread\ThreadAccessRights.cs" />
+    <Compile Include="ProcessAndThread\ProcessSecurity.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProcessSecurity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="JobObject\JobObjectSecurity.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>JobObjectSecurity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProcessAndThread\ThreadSecurity.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ThreadSecurity.tt</DependentUpon>
+    </Compile>
     <Compile Include="SafeHandleZeroIsInvalid.cs" />
+    <Compile Include="StandardAccessRights.cs" />
     <Compile Include="User\DesktopAccessRights.cs" />
     <Compile Include="User\DesktopHandle.cs" />
     <Compile Include="User\DesktopOpenFlags.cs" />
@@ -74,8 +110,6 @@
     <Compile Include="JobObject\IJobStructure.cs" />
     <Compile Include="JobObject\JobObjectHandle.cs" />
     <Compile Include="JobObject\JobObjectAccessRights.cs" />
-    <Compile Include="JobObject\JobObjectAccessRule.cs" />
-    <Compile Include="JobObject\JobObjectSecurity.cs" />
     <Compile Include="JobObject\JobObjectType.cs" />
     <Compile Include="ProcessAndThread\DuplicateHandleOptions.cs" />
     <Compile Include="ProcessAndThread\ProcessCreationFlags.cs" />
@@ -87,12 +121,26 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="User\DesktopSecurity.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DesktopSecurity.tt</DependentUpon>
+    </Compile>
     <Compile Include="User\EnvironmentBlockHandle.cs" />
     <Compile Include="ProcessAndThread\ThreadHandle.cs" />
     <Compile Include="SecurityAttributes.cs" />
+    <Compile Include="User\SecurityImpersonationLevel.cs" />
+    <Compile Include="User\TokenAccessRights.cs" />
+    <Compile Include="User\TokenType.cs" />
     <Compile Include="User\UserHandle.cs" />
     <Compile Include="User\UserLogonProvider.cs" />
     <Compile Include="User\UserLogonType.cs" />
+    <Compile Include="User\WindowStationAccessRights.cs" />
+    <Compile Include="User\WindowStationSecurity.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WindowStationSecurity.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
@@ -116,7 +164,45 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="Security.ttinclude" />
+    <None Include="JobObject\JobObjectSecurity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>JobObjectSecurity.cs</LastGenOutput>
+    </None>
+    <None Include="User\DesktopSecurity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DesktopSecurity.cs</LastGenOutput>
+    </None>
+    <None Include="User\WindowStationSecurity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>WindowStationSecurity.cs</LastGenOutput>
+    </None>
+    <None Include="IO\FileSecurity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>FileSecurity.cs</LastGenOutput>
+    </None>
+    <None Include="IO\DirectorySecurity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DirectorySecurity.cs</LastGenOutput>
+    </None>
+    <None Include="IO\PipeSecurity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>PipeSecurity.cs</LastGenOutput>
+    </None>
+    <None Include="ProcessAndThread\ProcessSecurity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ProcessSecurity.cs</LastGenOutput>
+    </None>
+    <None Include="ProcessAndThread\ThreadSecurity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ThreadSecurity.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -18,6 +18,9 @@ namespace NativeWindows.User
 
 			[DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
 			public static extern bool LogonUser(string username, string domain, string password, UserLogonType logonType, UserLogonProvider logonProvider, out UserHandle handle);
+
+			[DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+			public static extern bool DuplicateTokenEx(UserHandle handle, TokenAccessRights desiredAccess, SecurityAttributes securityAttributes, SecurityImpersonationLevel impersonationLevel, TokenType tokenType, out UserHandle newToken);
 		}
 
 		public static UserHandle Logon(string username, string domain, SecureString password, UserLogonType logonType = UserLogonType.Interactive, UserLogonProvider logonProvider = UserLogonProvider.Default)
@@ -48,8 +51,19 @@ namespace NativeWindows.User
 			return userHandle;
 		}
 
-		public UserHandle() : base(true)
+		public UserHandle()
+			: base(true)
 		{
+		}
+
+		public UserHandle DuplicateTokenEx(TokenAccessRights desiredAccess, SecurityImpersonationLevel impersonationLevel, TokenType tokenType)
+		{
+			UserHandle newHandle;
+			if (!NativeMethods.DuplicateTokenEx(this, desiredAccess, null, impersonationLevel, tokenType, out newHandle))
+			{
+				throw new Win32Exception();
+			}
+			return newHandle;
 		}
 
 		protected override bool ReleaseHandle()

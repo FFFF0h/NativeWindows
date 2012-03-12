@@ -9,6 +9,7 @@ namespace NativeWindows
 	{
 		private int _length;
 		private IntPtr _securityDescriptor;
+
 		[MarshalAs(UnmanagedType.Bool)]
 		private bool _inheritHandle;
 

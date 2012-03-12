@@ -1,0 +1,97 @@
+﻿<#+
+	void GenerateSecurityClass(string name, string namespaceName)
+	{
+#>
+using System;
+using System.Security.AccessControl;
+using System.Security.Principal;
+
+namespace <#= namespaceName #>
+{
+	public sealed class <#= name #>AuditRule : AuditRule
+	{
+		public <#= name #>AuditRule(IdentityReference identity, <#= name #>AccessRights accessRights, AuditFlags type)
+			: base(identity, (int)accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
+		{
+		}
+
+		public <#= name #>AccessRights <#= name #>Rights
+		{
+			get
+			{
+				return (<#= name #>AccessRights)AccessMask;
+			}
+		}
+	}
+
+	public sealed class <#= name #>AccessRule : AccessRule
+	{
+		public <#= name #>AccessRule(IdentityReference identity, <#= name #>AccessRights accessRights, AccessControlType type)
+			: base(identity, (int)accessRights, false, InheritanceFlags.None, PropagationFlags.None, type)
+		{
+		}
+
+		public <#= name #>AccessRights <#= name #>Rights
+		{
+			get
+			{
+				return (<#= name #>AccessRights)AccessMask;
+			}
+		}
+	}
+
+	public class <#= name #>Security : CommonObjectSecurity
+	{
+		public <#= name #>Security(bool isContainer)
+			: base(isContainer)
+		{
+		}
+
+		public override AccessRule AccessRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AccessControlType type)
+		{
+			return new <#= name #>AccessRule(identityReference, (<#= name #>AccessRights)accessMask, type);
+		}
+
+		public override AuditRule AuditRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AuditFlags flags)
+		{
+			return new <#= name #>AuditRule(identityReference, (<#= name #>AccessRights)accessMask, flags);
+		}
+
+		public void AddAccessRule(IdentityReference identityReference, <#= name #>AccessRights accessMask, AccessControlType type)
+		{
+			AddAccessRule(new <#= name #>AccessRule(identityReference, accessMask, type));
+		}
+
+		public void AddAuditRule(IdentityReference identityReference, <#= name #>AccessRights accessMask, AuditFlags flags)
+		{
+			AddAuditRule(new <#= name #>AuditRule(identityReference, accessMask, flags));
+		}
+
+		public override Type AccessRightType
+		{
+			get
+			{
+				return typeof(<#= name #>AccessRights);
+			}
+		}
+
+		public override Type AccessRuleType
+		{
+			get
+			{
+				return typeof(<#= name #>AccessRule);
+			}
+		}
+
+		public override Type AuditRuleType
+		{
+			get
+			{
+				return typeof(<#= name #>AuditRule);
+			}
+		}
+	}
+}
+<#+
+	}
+#>
