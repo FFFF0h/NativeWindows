@@ -96,6 +96,9 @@ namespace NativeWindows.ProcessAndThread
 			[DllImport("kernel32.dll", SetLastError = true)]
 			[return: MarshalAs(UnmanagedType.Bool)]
 			public static extern bool TerminateProcess(ProcessHandle processHandle, int exitCode);
+
+			[DllImport("kernel32.dll", SetLastError = true)]
+			public static extern int GetProcessId(ProcessHandle processHandle);
 		}
 
 		public static ProcessInformation CreateAsUser(UserHandle userHandle, string applicationName, string commandLine, bool inheritHandles, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environmentHandle, string currentDirectory, ProcessStartInfo startInfo)
@@ -148,6 +151,11 @@ namespace NativeWindows.ProcessAndThread
 			{
 				return WaitForExit(TimeSpan.Zero);
 			}
+		}
+
+		public int GetProcessId()
+		{
+			return NativeMethods.GetProcessId(this);
 		}
 
 		public void Terminate(int exitCode)
