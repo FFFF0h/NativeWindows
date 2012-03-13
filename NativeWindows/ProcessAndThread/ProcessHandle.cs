@@ -99,6 +99,9 @@ namespace NativeWindows.ProcessAndThread
 
 			[DllImport("kernel32.dll", SetLastError = true)]
 			public static extern int GetProcessId(ProcessHandle processHandle);
+
+			[DllImport("kernel32.dll", SetLastError = true)]
+			public static extern ProcessHandle OpenProcess(ProcessAccessRights desiredAccess, bool inheritHandle, int processId);
 		}
 
 		public static ProcessInformation CreateAsUser(UserHandle userHandle, string applicationName, string commandLine, bool inheritHandles, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environmentHandle, string currentDirectory, ProcessStartInfo startInfo)
@@ -125,6 +128,16 @@ namespace NativeWindows.ProcessAndThread
 				throw new Win32Exception();
 			}
 			return new ProcessInformation(processInformation.ProcessHandle, processInformation.ProcessId, processInformation.ThreadHandle, processInformation.ThreadId);
+		}
+
+		public static ProcessHandle OpenProcess(int processId, ProcessAccessRights desiredAccess = ProcessAccessRights.AllAccess, bool inheritHandle = false)
+		{
+			ProcessHandle handle = NativeMethods.OpenProcess(desiredAccess, inheritHandle, processId);
+			if (handle.IsInvalid)
+			{
+				throw new Win32Exception();
+			}
+			return handle;
 		}
 
 		public static ProcessHandle GetCurrentProcess()
