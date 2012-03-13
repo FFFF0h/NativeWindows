@@ -16,6 +16,14 @@ namespace NativeWindows.ProcessAndThread
 
 			[DllImport("kernel32.dll")]
 			public static extern int SuspendThread(ThreadHandle threadHandle);
+
+			[DllImport("kernel32.dll")]
+			public static extern ThreadHandle GetCurrentThread();
+		}
+
+		public static ThreadHandle GetCurrentThread()
+		{
+			return NativeMethods.GetCurrentThread();
 		}
 
 		public ThreadHandle()

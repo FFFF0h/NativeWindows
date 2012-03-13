@@ -1,5 +1,5 @@
 ﻿<#@template language="C#"#>
 <#@include file="../Security.ttinclude"#>
 <#
-	GenerateSecurityClass("JobObject", "NativeWindows.JobObject");
+	GenerateSecurityClass("JobObject", "NativeWindows.JobObject", "ResourceType.KernelObject");
 #>

@@ -36,10 +36,10 @@ namespace NativeWindows.User
 		}
 	}
 
-	public class WindowStationSecurity : CommonObjectSecurity
+	public class WindowStationSecurity : SecurityBase
 	{
-		public WindowStationSecurity(bool isContainer)
-			: base(isContainer)
+		public WindowStationSecurity(bool isContainer = false)
+			: base(isContainer, ResourceType.WindowObject)
 		{
 		}
 

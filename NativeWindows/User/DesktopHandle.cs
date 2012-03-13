@@ -1,10 +1,11 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
-using Microsoft.Win32.SafeHandles;
+using NativeWindows.ProcessAndThread;
 
 namespace NativeWindows.User
 {
-	public sealed class DesktopHandle : SafeHandleZeroOrMinusOneIsInvalid
+	public sealed class DesktopHandle : SafeHandle
 	{
 		private static class NativeMethods
 		{
@@ -13,6 +14,27 @@ namespace NativeWindows.User
 
 			[DllImport("user32.dll", SetLastError = true)]
 			public static extern bool CloseDesktop(IntPtr desktop);
+
+			[DllImport("user32.dll", SetLastError = true)]
+			public static extern IntPtr GetThreadDesktop(ThreadHandle threadHandle);
+		}
+
+		public static DesktopHandle GetFromCurrentThread()
+		{
+			using(var handle = ThreadHandle.GetCurrentThread())
+			{
+				return GetFromThread(handle);
+			}
+		}
+
+		public static DesktopHandle GetFromThread(ThreadHandle threadHandle)
+		{
+			var handle = NativeMethods.GetThreadDesktop(threadHandle);
+			if (handle == IntPtr.Zero)
+			{
+				throw new Win32Exception();
+			}
+			return new DesktopHandle(handle);
 		}
 
 		public static DesktopHandle Open(string name, DesktopOpenFlags flags, bool inherit, DesktopAccessRights desiredAccess)
@@ -21,13 +43,26 @@ namespace NativeWindows.User
 		}
 
 		public DesktopHandle()
-			: base(true)
+			: base(IntPtr.Zero, true)
+		{
+		}
+
+		private DesktopHandle(IntPtr handle, bool ownsHandle = false)
+			: base(handle, ownsHandle)
 		{
 		}
 
 		protected override bool ReleaseHandle()
 		{
 			return NativeMethods.CloseDesktop(handle);
+		}
+
+		public override bool IsInvalid
+		{
+			get
+			{
+				return handle == IntPtr.Zero || handle == new IntPtr(-1);
+			}
 		}
 	}
 }

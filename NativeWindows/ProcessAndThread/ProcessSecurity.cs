@@ -36,10 +36,10 @@ namespace NativeWindows.ProcessAndThread
 		}
 	}
 
-	public class ProcessSecurity : CommonObjectSecurity
+	public class ProcessSecurity : SecurityBase
 	{
-		public ProcessSecurity(bool isContainer)
-			: base(isContainer)
+		public ProcessSecurity(bool isContainer = false)
+			: base(isContainer, ResourceType.KernelObject)
 		{
 		}
 

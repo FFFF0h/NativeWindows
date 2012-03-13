@@ -36,10 +36,10 @@ namespace NativeWindows.IO
 		}
 	}
 
-	public class PipeSecurity : CommonObjectSecurity
+	public class PipeSecurity : SecurityBase
 	{
-		public PipeSecurity(bool isContainer)
-			: base(isContainer)
+		public PipeSecurity(bool isContainer = false)
+			: base(isContainer, ResourceType.FileObject)
 		{
 		}
 

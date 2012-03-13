@@ -74,6 +74,9 @@ namespace NativeWindows.ProcessAndThread
 			[DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Auto)]
 			public static extern bool CreateProcessAsUser(UserHandle userHandle, string applicationName, string commandLine, SecurityAttributes processAttributes, SecurityAttributes threadAttributes, bool inheritHandles, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environment, string currentDirectory, ProcessStartInfo startInfo, out ProcessInformationOut processInformation);
 
+			[DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+			public static extern bool CreateProcessWithLogonW(string username, string domain, string password, ProcessLogonFlags logonFlags, string applicationName, string commandLine, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environment, string currentDirectory, ProcessStartInfo startupInfo, out ProcessInformationOut processInformation);
+
 			[DllImport("kernel32.dll", CharSet = CharSet.Ansi, SetLastError = true)]
 			[ResourceExposure(ResourceScope.Process)]
 			public static extern ProcessHandle GetCurrentProcess();
@@ -109,6 +112,16 @@ namespace NativeWindows.ProcessAndThread
 					return new ProcessInformation(processInformation.ProcessHandle, processInformation.ProcessId, processInformation.ThreadHandle, processInformation.ThreadId);
 				}
 			}
+		}
+
+		public static ProcessInformation CreateWithLogin(string username, string domain, string password, ProcessLogonFlags logonFlags, string applicationName, string commandLine, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environment, string currentDirectory, ProcessStartInfo startupInfo)
+		{
+			ProcessInformationOut processInformation;
+			if (!NativeMethods.CreateProcessWithLogonW(username, domain, password, logonFlags, applicationName, commandLine, creationFlags, environment, currentDirectory, startupInfo, out processInformation))
+			{
+				throw new Win32Exception();
+			}
+			return new ProcessInformation(processInformation.ProcessHandle, processInformation.ProcessId, processInformation.ThreadHandle, processInformation.ThreadId);
 		}
 
 		public static ProcessHandle GetCurrentProcess()

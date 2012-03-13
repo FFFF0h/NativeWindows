@@ -36,10 +36,10 @@ namespace NativeWindows.User
 		}
 	}
 
-	public class DesktopSecurity : CommonObjectSecurity
+	public class DesktopSecurity : SecurityBase
 	{
-		public DesktopSecurity(bool isContainer)
-			: base(isContainer)
+		public DesktopSecurity(bool isContainer = false)
+			: base(isContainer, ResourceType.WindowObject)
 		{
 		}
 

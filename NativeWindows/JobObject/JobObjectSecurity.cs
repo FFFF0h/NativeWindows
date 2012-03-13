@@ -36,10 +36,10 @@ namespace NativeWindows.JobObject
 		}
 	}
 
-	public class JobObjectSecurity : CommonObjectSecurity
+	public class JobObjectSecurity : SecurityBase
 	{
-		public JobObjectSecurity(bool isContainer)
-			: base(isContainer)
+		public JobObjectSecurity(bool isContainer = false)
+			: base(isContainer, ResourceType.KernelObject)
 		{
 		}
 

@@ -80,6 +80,7 @@
     </Compile>
     <Compile Include="IO\SafeFileHandleExtensions.cs" />
     <Compile Include="ProcessAndThread\ProcessAccessRights.cs" />
+    <Compile Include="ProcessAndThread\ProcessLogonFlags.cs" />
     <Compile Include="ProcessAndThread\ThreadAccessRights.cs" />
     <Compile Include="ProcessAndThread\ProcessSecurity.cs">
       <AutoGen>True</AutoGen>
@@ -97,6 +98,7 @@
       <DependentUpon>ThreadSecurity.tt</DependentUpon>
     </Compile>
     <Compile Include="SafeHandleZeroIsInvalid.cs" />
+    <Compile Include="SecurityBase.cs" />
     <Compile Include="StandardAccessRights.cs" />
     <Compile Include="User\DesktopAccessRights.cs" />
     <Compile Include="User\DesktopHandle.cs" />
@@ -136,6 +138,7 @@
     <Compile Include="User\UserLogonProvider.cs" />
     <Compile Include="User\UserLogonType.cs" />
     <Compile Include="User\WindowStationAccessRights.cs" />
+    <Compile Include="User\WindowStationHandle.cs" />
     <Compile Include="User\WindowStationSecurity.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -168,7 +171,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
     <None Include="Security.ttinclude" />
     <None Include="JobObject\JobObjectSecurity.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

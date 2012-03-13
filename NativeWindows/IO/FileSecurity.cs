@@ -36,10 +36,10 @@ namespace NativeWindows.IO
 		}
 	}
 
-	public class FileSecurity : CommonObjectSecurity
+	public class FileSecurity : SecurityBase
 	{
-		public FileSecurity(bool isContainer)
-			: base(isContainer)
+		public FileSecurity(bool isContainer = false)
+			: base(isContainer, ResourceType.FileObject)
 		{
 		}
 

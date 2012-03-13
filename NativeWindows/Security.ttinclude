@@ -1,5 +1,5 @@
 ﻿<#+
-	void GenerateSecurityClass(string name, string namespaceName)
+	void GenerateSecurityClass(string name, string namespaceName, string resourceType)
 	{
 #>
 using System;
@@ -40,10 +40,10 @@ namespace <#= namespaceName #>
 		}
 	}
 
-	public class <#= name #>Security : CommonObjectSecurity
+	public class <#= name #>Security : SecurityBase
 	{
-		public <#= name #>Security(bool isContainer)
-			: base(isContainer)
+		public <#= name #>Security(bool isContainer = false)
+			: base(isContainer, <#= resourceType #>)
 		{
 		}
 

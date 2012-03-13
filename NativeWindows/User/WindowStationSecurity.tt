@@ -1,5 +1,5 @@
 ﻿<#@template language="C#"#>
 <#@include file="../Security.ttinclude"#>
 <#
-	GenerateSecurityClass("WindowStation", "NativeWindows.User");
+	GenerateSecurityClass("WindowStation", "NativeWindows.User", "ResourceType.WindowObject");
 #>
