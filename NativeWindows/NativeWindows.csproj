@@ -102,6 +102,7 @@
     <Compile Include="SecurityBase.cs" />
     <Compile Include="StandardAccessRights.cs" />
     <Compile Include="ErrorHandling\SystemErrorCode.cs" />
+    <Compile Include="ErrorHandling\ErrorHelper.cs" />
     <Compile Include="ErrorHandling\SystemExceptions.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
