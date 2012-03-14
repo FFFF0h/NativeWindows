@@ -1,6 +1,6 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
+using NativeWindows.ErrorHandling;
 using NativeWindows.ProcessAndThread;
 
 namespace NativeWindows.User
@@ -32,7 +32,7 @@ namespace NativeWindows.User
 			var handle = NativeMethods.GetThreadDesktop(threadHandle);
 			if (handle == IntPtr.Zero)
 			{
-				throw new Win32Exception();
+				ErrorHelper.ThrowCustomWin32Exception();
 			}
 			return new DesktopHandle(handle);
 		}

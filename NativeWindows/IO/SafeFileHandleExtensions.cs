@@ -1,8 +1,8 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using Microsoft.Win32.SafeHandles;
+using NativeWindows.ErrorHandling;
 using NativeWindows.ProcessAndThread;
 
 namespace NativeWindows.IO
@@ -52,7 +52,7 @@ namespace NativeWindows.IO
 			SafeFileHandle targetHandle;
 			if (!NativeMethods.DuplicateHandle(sourceProcess, sourceHandle, targetProcess, out targetHandle, desiredAccess, inheritHandle, options))
 			{
-				throw new Win32Exception();
+				ErrorHelper.ThrowCustomWin32Exception();
 			}
 			return targetHandle;
 		}
@@ -62,7 +62,7 @@ namespace NativeWindows.IO
 			SafeFileHandle targetHandle;
 			if (!NativeMethods.DuplicateHandle(sourceAndTargetProcess, sourceHandle, sourceAndTargetProcess, out targetHandle, desiredAccess, inheritHandle, options))
 			{
-				throw new Win32Exception();
+				ErrorHelper.ThrowCustomWin32Exception();
 			}
 			return targetHandle;
 		}
@@ -73,7 +73,7 @@ namespace NativeWindows.IO
 			{
 				if (!NativeMethods.CreatePipe(out readPipeHandle, out writePipeHandle, securityAttributes, 0))
 				{
-					throw new Win32Exception();
+					ErrorHelper.ThrowCustomWin32Exception();
 				}
 			}
 		}

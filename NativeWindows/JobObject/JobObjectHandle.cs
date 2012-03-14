@@ -1,8 +1,8 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
+using NativeWindows.ErrorHandling;
 using NativeWindows.ProcessAndThread;
 
 namespace NativeWindows.JobObject
@@ -38,7 +38,7 @@ namespace NativeWindows.JobObject
 			JobObjectHandle jobObjectHandle = NativeMethods.CreateJobObject(null, name);
 			if (jobObjectHandle.IsInvalid)
 			{
-				throw new Win32Exception();
+				ErrorHelper.ThrowCustomWin32Exception();
 			}
 			return jobObjectHandle;
 		}
@@ -50,7 +50,7 @@ namespace NativeWindows.JobObject
 				JobObjectHandle jobObjectHandle = NativeMethods.CreateJobObject(securityAttributes, name);
 				if (jobObjectHandle.IsInvalid)
 				{
-					throw new Win32Exception();
+					ErrorHelper.ThrowCustomWin32Exception();
 				}
 				return jobObjectHandle;
 			}
@@ -61,7 +61,7 @@ namespace NativeWindows.JobObject
 			JobObjectHandle jobObjectHandle = NativeMethods.OpenJobObject(desiredAccess, inheritHandle, name);
 			if (jobObjectHandle.IsInvalid)
 			{
-				throw new Win32Exception();
+				ErrorHelper.ThrowCustomWin32Exception();
 			}
 			return jobObjectHandle;
 		}
@@ -80,7 +80,7 @@ namespace NativeWindows.JobObject
 		{
 			if (!NativeMethods.AssignProcessToJobObject(this, process.Handle))
 			{
-				throw new Win32Exception();
+				ErrorHelper.ThrowCustomWin32Exception();
 			}
 		}
 
@@ -88,7 +88,7 @@ namespace NativeWindows.JobObject
 		{
 			if (!NativeMethods.AssignProcessToJobObject(this, processHandle))
 			{
-				throw new Win32Exception();
+				ErrorHelper.ThrowCustomWin32Exception();
 			}
 		}
 
@@ -102,7 +102,7 @@ namespace NativeWindows.JobObject
 				Marshal.StructureToPtr(jobObjectStructureWrapper, structurePtr, false);
 				if (!NativeMethods.SetInformationJobObject(this, jobObjectType, structurePtr, (uint)length))
 				{
-					throw new Win32Exception();
+					ErrorHelper.ThrowCustomWin32Exception();
 				}
 			}
 			finally
@@ -127,7 +127,7 @@ namespace NativeWindows.JobObject
 			{
 				if (!NativeMethods.QueryInformationJobObject(this, jobObjectType, structurePtr, (uint)length, IntPtr.Zero))
 				{
-					throw new Win32Exception();
+					ErrorHelper.ThrowCustomWin32Exception();
 				}
 				Marshal.PtrToStructure(structurePtr, jobObjectStructureWrapper);
 			}
@@ -141,7 +141,7 @@ namespace NativeWindows.JobObject
 		{
 			if (!NativeMethods.TerminateJobObject(this, (uint)exitCode))
 			{
-				throw new Win32Exception();
+				ErrorHelper.ThrowCustomWin32Exception();
 			}
 		}
 

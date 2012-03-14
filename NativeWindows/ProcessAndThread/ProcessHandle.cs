@@ -5,6 +5,7 @@ using System.Runtime.Versioning;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Win32.SafeHandles;
+using NativeWindows.ErrorHandling;
 using NativeWindows.User;
 
 namespace NativeWindows.ProcessAndThread
@@ -32,7 +33,7 @@ namespace NativeWindows.ProcessAndThread
 				SafeWaitHandle waitHandle;
 				if (!NativeMethods.DuplicateHandle(GetCurrentProcess(), processHandle, GetCurrentProcess(), out waitHandle, 0, false, DuplicateHandleOptions.SameAccess))
 				{
-					throw new Win32Exception();
+					ErrorHelper.ThrowCustomWin32Exception();
 				}
 				SafeWaitHandle = waitHandle;
 			}
@@ -96,6 +97,12 @@ namespace NativeWindows.ProcessAndThread
 			[DllImport("kernel32.dll", SetLastError = true)]
 			[return: MarshalAs(UnmanagedType.Bool)]
 			public static extern bool TerminateProcess(ProcessHandle processHandle, int exitCode);
+
+			[DllImport("kernel32.dll", SetLastError = true)]
+			public static extern int GetProcessId(ProcessHandle processHandle);
+
+			[DllImport("kernel32.dll", SetLastError = true)]
+			public static extern ProcessHandle OpenProcess(ProcessAccessRights desiredAccess, bool inheritHandle, int processId);
 		}
 
 		public static ProcessInformation CreateAsUser(UserHandle userHandle, string applicationName, string commandLine, bool inheritHandles, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environmentHandle, string currentDirectory, ProcessStartInfo startInfo)
@@ -107,7 +114,7 @@ namespace NativeWindows.ProcessAndThread
 					ProcessInformationOut processInformation;
 					if (!NativeMethods.CreateProcessAsUser(userHandle, applicationName, commandLine, processSecurityAttributes, threadSecurityAttributes, inheritHandles, creationFlags, environmentHandle, currentDirectory, startInfo, out processInformation))
 					{
-						throw new Win32Exception();
+						ErrorHelper.ThrowCustomWin32Exception();
 					}
 					return new ProcessInformation(processInformation.ProcessHandle, processInformation.ProcessId, processInformation.ThreadHandle, processInformation.ThreadId);
 				}
@@ -122,6 +129,16 @@ namespace NativeWindows.ProcessAndThread
 				throw new Win32Exception();
 			}
 			return new ProcessInformation(processInformation.ProcessHandle, processInformation.ProcessId, processInformation.ThreadHandle, processInformation.ThreadId);
+		}
+
+		public static ProcessHandle OpenProcess(int processId, ProcessAccessRights desiredAccess = ProcessAccessRights.AllAccess, bool inheritHandle = false)
+		{
+			ProcessHandle handle = NativeMethods.OpenProcess(desiredAccess, inheritHandle, processId);
+			if (handle.IsInvalid)
+			{
+				ErrorHelper.ThrowCustomWin32Exception();
+			}
+			return handle;
 		}
 
 		public static ProcessHandle GetCurrentProcess()
@@ -150,11 +167,16 @@ namespace NativeWindows.ProcessAndThread
 			}
 		}
 
+		public int GetProcessId()
+		{
+			return NativeMethods.GetProcessId(this);
+		}
+
 		public void Terminate(int exitCode)
 		{
 			if (!NativeMethods.TerminateProcess(this, exitCode))
 			{
-				throw new Win32Exception();
+				ErrorHelper.ThrowCustomWin32Exception();
 			}
 		}
 
@@ -171,7 +193,7 @@ namespace NativeWindows.ProcessAndThread
 			int exitCode;
 			if (!NativeMethods.GetExitCodeProcess(this, out exitCode))
 			{
-				throw new Win32Exception();
+				ErrorHelper.ThrowCustomWin32Exception();
 			}
 			return exitCode;
 		}

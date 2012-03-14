@@ -60,6 +60,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ErrorHandling\SystemExceptions.ttinclude" />
     <Compile Include="IO\DirectoryAccessRights.cs" />
     <Compile Include="IO\DirectorySecurity.cs">
       <AutoGen>True</AutoGen>
@@ -100,6 +101,13 @@
     <Compile Include="SafeHandleZeroIsInvalid.cs" />
     <Compile Include="SecurityBase.cs" />
     <Compile Include="StandardAccessRights.cs" />
+    <Compile Include="ErrorHandling\SystemErrorCode.cs" />
+    <Compile Include="ErrorHandling\ErrorHelper.cs" />
+    <Compile Include="ErrorHandling\SystemExceptions.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SystemExceptions.tt</DependentUpon>
+    </Compile>
     <Compile Include="User\DesktopAccessRights.cs" />
     <Compile Include="User\DesktopHandle.cs" />
     <Compile Include="User\DesktopOpenFlags.cs" />
@@ -171,6 +179,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ErrorHandling\SystemExceptions.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SystemExceptions.cs</LastGenOutput>
+    </None>
     <None Include="Security.ttinclude" />
     <None Include="JobObject\JobObjectSecurity.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
