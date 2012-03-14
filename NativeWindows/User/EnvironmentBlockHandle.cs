@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using NativeWindows.ErrorHandling;
 
 namespace NativeWindows.User
 {
@@ -64,7 +64,7 @@ namespace NativeWindows.User
 			EnvironmentBlockHandle environmentBlockHandle;
 			if (!NativeMethods.CreateEnvironmentBlock(out environmentBlockHandle, userHandle, inherit))
 			{
-				throw new Win32Exception();
+				ErrorHelper.ThrowCustomWin32Exception();
 			}
 			return environmentBlockHandle;
 		}

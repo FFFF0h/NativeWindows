@@ -1,6 +1,6 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
+using NativeWindows.ErrorHandling;
 
 namespace NativeWindows.ProcessAndThread
 {
@@ -42,7 +42,7 @@ namespace NativeWindows.ProcessAndThread
 			int result = NativeMethods.ResumeThread(this);
 			if (result == -1)
 			{
-				throw new Win32Exception();
+				ErrorHelper.ThrowCustomWin32Exception();
 			}
 			return (uint)result;
 		}
@@ -52,7 +52,7 @@ namespace NativeWindows.ProcessAndThread
 			int result = NativeMethods.SuspendThread(this);
 			if (result == -1)
 			{
-				throw new Win32Exception();
+				ErrorHelper.ThrowCustomWin32Exception();
 			}
 			return (uint)result;
 		}

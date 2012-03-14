@@ -1,8 +1,8 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Security;
 using Microsoft.Win32.SafeHandles;
+using NativeWindows.ErrorHandling;
 
 namespace NativeWindows.User
 {
@@ -31,7 +31,7 @@ namespace NativeWindows.User
 				UserHandle userHandle;
 				if (!NativeMethods.LogonUser(username, domain, passwordPtr, logonType, logonProvider, out userHandle))
 				{
-					throw new Win32Exception();
+					ErrorHelper.ThrowCustomWin32Exception();
 				}
 				return userHandle;
 			}
@@ -46,7 +46,7 @@ namespace NativeWindows.User
 			UserHandle userHandle;
 			if (!NativeMethods.LogonUser(username, domain, password, logonType, logonProvider, out userHandle))
 			{
-				throw new Win32Exception();
+				ErrorHelper.ThrowCustomWin32Exception();
 			}
 			return userHandle;
 		}
@@ -61,7 +61,7 @@ namespace NativeWindows.User
 			UserHandle newHandle;
 			if (!NativeMethods.DuplicateTokenEx(this, desiredAccess, null, impersonationLevel, tokenType, out newHandle))
 			{
-				throw new Win32Exception();
+				ErrorHelper.ThrowCustomWin32Exception();
 			}
 			return newHandle;
 		}

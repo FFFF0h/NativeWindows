@@ -5,6 +5,7 @@ using System.Runtime.Versioning;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Win32.SafeHandles;
+using NativeWindows.ErrorHandling;
 using NativeWindows.User;
 
 namespace NativeWindows.ProcessAndThread
@@ -32,7 +33,7 @@ namespace NativeWindows.ProcessAndThread
 				SafeWaitHandle waitHandle;
 				if (!NativeMethods.DuplicateHandle(GetCurrentProcess(), processHandle, GetCurrentProcess(), out waitHandle, 0, false, DuplicateHandleOptions.SameAccess))
 				{
-					throw new Win32Exception();
+					ErrorHelper.ThrowCustomWin32Exception();
 				}
 				SafeWaitHandle = waitHandle;
 			}
@@ -113,7 +114,7 @@ namespace NativeWindows.ProcessAndThread
 					ProcessInformationOut processInformation;
 					if (!NativeMethods.CreateProcessAsUser(userHandle, applicationName, commandLine, processSecurityAttributes, threadSecurityAttributes, inheritHandles, creationFlags, environmentHandle, currentDirectory, startInfo, out processInformation))
 					{
-						throw new Win32Exception();
+						ErrorHelper.ThrowCustomWin32Exception();
 					}
 					return new ProcessInformation(processInformation.ProcessHandle, processInformation.ProcessId, processInformation.ThreadHandle, processInformation.ThreadId);
 				}
@@ -135,7 +136,7 @@ namespace NativeWindows.ProcessAndThread
 			ProcessHandle handle = NativeMethods.OpenProcess(desiredAccess, inheritHandle, processId);
 			if (handle.IsInvalid)
 			{
-				throw new Win32Exception();
+				ErrorHelper.ThrowCustomWin32Exception();
 			}
 			return handle;
 		}
@@ -175,7 +176,7 @@ namespace NativeWindows.ProcessAndThread
 		{
 			if (!NativeMethods.TerminateProcess(this, exitCode))
 			{
-				throw new Win32Exception();
+				ErrorHelper.ThrowCustomWin32Exception();
 			}
 		}
 
@@ -192,7 +193,7 @@ namespace NativeWindows.ProcessAndThread
 			int exitCode;
 			if (!NativeMethods.GetExitCodeProcess(this, out exitCode))
 			{
-				throw new Win32Exception();
+				ErrorHelper.ThrowCustomWin32Exception();
 			}
 			return exitCode;
 		}

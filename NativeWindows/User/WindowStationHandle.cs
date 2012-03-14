@@ -1,6 +1,6 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
+using NativeWindows.ErrorHandling;
 
 namespace NativeWindows.User
 {
@@ -20,7 +20,7 @@ namespace NativeWindows.User
 			IntPtr handle = NativeMethods.GetProcessWindowStation();
 			if (handle == IntPtr.Zero)
 			{
-				throw new Win32Exception();
+				ErrorHelper.ThrowCustomWin32Exception();
 			}
 			return new WindowStationHandle(handle, false);
 		}
