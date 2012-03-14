@@ -60,6 +60,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ErrorHandling\SystemExceptions.ttinclude" />
     <Compile Include="IO\DirectoryAccessRights.cs" />
     <Compile Include="IO\DirectorySecurity.cs">
       <AutoGen>True</AutoGen>
