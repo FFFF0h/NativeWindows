@@ -171,6 +171,14 @@ namespace NativeWindows.ProcessAndThread
 			}
 		}
 
+		public Task<int> Completion
+		{
+			get
+			{
+				return _exitMonitor.Value.Task;
+			}
+		}
+
 		public bool IsProcessInJob()
 		{
 			bool result;
@@ -201,14 +209,6 @@ namespace NativeWindows.ProcessAndThread
 			if (!NativeMethods.TerminateProcess(this, exitCode))
 			{
 				ErrorHelper.ThrowCustomWin32Exception();
-			}
-		}
-
-		public Task<int> Completion
-		{
-			get
-			{
-				return _exitMonitor.Value.Task;
 			}
 		}
 
