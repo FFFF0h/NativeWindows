@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Win32.SafeHandles;
 using NativeWindows.ErrorHandling;
+using NativeWindows.JobObject;
 using NativeWindows.User;
 
 namespace NativeWindows.ProcessAndThread
@@ -103,6 +104,9 @@ namespace NativeWindows.ProcessAndThread
 
 			[DllImport("kernel32.dll", SetLastError = true)]
 			public static extern ProcessHandle OpenProcess(ProcessAccessRights desiredAccess, bool inheritHandle, int processId);
+
+			[DllImport("kernel32.dll")]
+			public static extern bool IsProcessInJob(ProcessHandle processHandle, JobObjectHandle jobHandle, out bool result);
 		}
 
 		public static ProcessInformation CreateAsUser(UserHandle userHandle, string applicationName, string commandLine, bool inheritHandles, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environmentHandle, string currentDirectory, ProcessStartInfo startInfo)
@@ -157,6 +161,26 @@ namespace NativeWindows.ProcessAndThread
 		{
 			_exitMonitor = new Lazy<ProcessExitMonitor>(() => new ProcessExitMonitor(this));
 			SetHandle(handle);
+		}
+
+		public bool IsProcessInJob()
+		{
+			bool result;
+			if (!NativeMethods.IsProcessInJob(this, new JobObjectHandle(), out result))
+			{
+				ErrorHelper.ThrowCustomWin32Exception();
+			}
+			return result;
+		}
+
+		public bool IsProcessInJob(JobObjectHandle jobHandle)
+		{
+			bool result;
+			if (!NativeMethods.IsProcessInJob(this, jobHandle, out result))
+			{
+				ErrorHelper.ThrowCustomWin32Exception();
+			}
+			return result;
 		}
 
 		public bool HasExited
