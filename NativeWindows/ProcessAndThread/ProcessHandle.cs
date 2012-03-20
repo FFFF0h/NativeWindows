@@ -163,6 +163,14 @@ namespace NativeWindows.ProcessAndThread
 			SetHandle(handle);
 		}
 
+		public bool HasExited
+		{
+			get
+			{
+				return WaitForExit(TimeSpan.Zero);
+			}
+		}
+
 		public bool IsProcessInJob()
 		{
 			bool result;
@@ -181,14 +189,6 @@ namespace NativeWindows.ProcessAndThread
 				ErrorHelper.ThrowCustomWin32Exception();
 			}
 			return result;
-		}
-
-		public bool HasExited
-		{
-			get
-			{
-				return WaitForExit(TimeSpan.Zero);
-			}
 		}
 
 		public int GetProcessId()
