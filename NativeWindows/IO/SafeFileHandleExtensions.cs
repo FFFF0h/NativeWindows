@@ -69,7 +69,7 @@ namespace NativeWindows.IO
 
 		public static void CreatePipe(out SafeFileHandle readPipeHandle, out SafeFileHandle writePipeHandle)
 		{
-			using (var securityAttributes = new SecurityAttributes())
+			using (var securityAttributes = new SecurityAttributes(true))
 			{
 				if (!NativeMethods.CreatePipe(out readPipeHandle, out writePipeHandle, securityAttributes, 0))
 				{
