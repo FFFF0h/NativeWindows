@@ -109,11 +109,11 @@ namespace NativeWindows.ProcessAndThread
 			public static extern bool IsProcessInJob(ProcessHandle processHandle, JobObjectHandle jobHandle, out bool result);
 		}
 
-		public static ProcessInformation CreateAsUser(UserHandle userHandle, string applicationName, string commandLine, bool inheritHandles, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environmentHandle, string currentDirectory, ProcessStartInfo startInfo)
+		public static ProcessInformation CreateAsUser(UserHandle userHandle, string applicationName, string commandLine, bool inheritHandles, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environmentHandle, string currentDirectory, ProcessStartInfo startInfo, ProcessSecurity processSecurity = null, ThreadSecurity threadSecurity = null)
 		{
-			using (var processSecurityAttributes = new SecurityAttributes())
+			using (var processSecurityAttributes = processSecurity == null ? new SecurityAttributes() : new SecurityAttributes(processSecurity))
 			{
-				using (var threadSecurityAttributes = new SecurityAttributes())
+				using (var threadSecurityAttributes = threadSecurity == null ? new SecurityAttributes() : new SecurityAttributes(threadSecurity))
 				{
 					ProcessInformationOut processInformation;
 					if (!NativeMethods.CreateProcessAsUser(userHandle, applicationName, commandLine, processSecurityAttributes, threadSecurityAttributes, inheritHandles, creationFlags, environmentHandle, currentDirectory, startInfo, out processInformation))
