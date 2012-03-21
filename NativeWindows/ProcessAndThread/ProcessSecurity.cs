@@ -43,6 +43,11 @@ namespace NativeWindows.ProcessAndThread
 		{
 		}
 
+		public ProcessSecurity(ProcessHandle handle, AccessControlSections includeSections, bool isContainer = false)
+			: base(isContainer, ResourceType.KernelObject, handle, includeSections)
+		{
+		}
+
 		public override AccessRule AccessRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AccessControlType type)
 		{
 			return new ProcessAccessRule(identityReference, (ProcessAccessRights)accessMask, type);

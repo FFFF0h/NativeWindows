@@ -26,20 +26,38 @@ namespace ProcessStartDemoProgram
 					var processStartInfo = new ProcessStartInfo();
 
 					ProcessInformation processInformation;
+					processStartInfo.Desktop = string.Empty;
 					string commandLine = string.Format("\"{0}\"", typeof(TestProgramWhileTrue.Program).Assembly.Location);
+					var currentUser = WindowsIdentity.GetCurrent();
+					var processUser = new WindowsIdentity(userHandle.DangerousGetHandle());
+
+					var access = new ProcessSecurity();
+					access.AddAccessRule(currentUser.Owner, ProcessAccessRights.AllAccess, AccessControlType.Allow);
+					access.AddAccessRule(processUser.Owner, ProcessAccessRights.AllAccess, AccessControlType.Allow);
+
 					if (Environment.UserInteractive)
 					{
-						processInformation = ProcessHandle.CreateWithLogin(username, string.Empty, password, ProcessLogonFlags.None, null, commandLine, ProcessCreationFlags.NoWindow | ProcessCreationFlags.UnicodeEnvironment, environmentBlockHandle, Environment.CurrentDirectory, processStartInfo);
+						// Running on a desktop (non-service) will require access the current user's windowstation and desktop
+						using (var stationHandle = WindowStationHandle.GetProcessWindowStation())
+						{
+							var security = new WindowStationSecurity(stationHandle, AccessControlSections.Access);
+							security.AddAccessRule(processUser.Owner, WindowStationAccessRights.AllAccess, AccessControlType.Allow);
+							security.ApplyChangesTo(stationHandle);
+						}
+
+						using (var desktopHandle = DesktopHandle.GetFromCurrentThread())
+						{
+							var security = new DesktopSecurity(desktopHandle, AccessControlSections.Access);
+							security.AddAccessRule(processUser.Owner, DesktopAccessRights.AllAccess, AccessControlType.Allow);
+							security.ApplyChangesTo(desktopHandle);
+						}
 					}
-					else
-					{
-						processInformation = ProcessHandle.CreateAsUser(userHandle, null, commandLine, false, ProcessCreationFlags.NewConsole | ProcessCreationFlags.Suspended | ProcessCreationFlags.UnicodeEnvironment, environmentBlockHandle, Environment.CurrentDirectory, processStartInfo);
-					}
+
+					processInformation = ProcessHandle.CreateAsUser(userHandle, null, commandLine, false, ProcessCreationFlags.NewConsole | ProcessCreationFlags.UnicodeEnvironment, environmentBlockHandle, Environment.CurrentDirectory, processStartInfo, access);
 
 					using (processInformation)
 					{
 						Process process = Process.GetProcessById(processInformation.ProcessId);
-						processInformation.ThreadHandle.Resume();
 						Console.WriteLine("Press any key to kill");
 						Console.ReadKey(intercept: true);
 						process.Kill();

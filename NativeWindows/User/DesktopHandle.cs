@@ -16,25 +16,21 @@ namespace NativeWindows.User
 			public static extern bool CloseDesktop(IntPtr desktop);
 
 			[DllImport("user32.dll", SetLastError = true)]
-			public static extern IntPtr GetThreadDesktop(ThreadHandle threadHandle);
+			public static extern IntPtr GetThreadDesktop(int threadId);
+
+			[DllImport("kernel32.dll")]
+			public static extern int GetCurrentThreadId();
 		}
 
 		public static DesktopHandle GetFromCurrentThread()
 		{
-			using(var handle = ThreadHandle.GetCurrentThread())
-			{
-				return GetFromThread(handle);
-			}
-		}
-
-		public static DesktopHandle GetFromThread(ThreadHandle threadHandle)
-		{
-			var handle = NativeMethods.GetThreadDesktop(threadHandle);
+			int currentThreadId = NativeMethods.GetCurrentThreadId();
+			IntPtr handle = NativeMethods.GetThreadDesktop(currentThreadId);
 			if (handle == IntPtr.Zero)
 			{
 				ErrorHelper.ThrowCustomWin32Exception();
 			}
-			return new DesktopHandle(handle);
+			return new DesktopHandle(handle, false);
 		}
 
 		public static DesktopHandle Open(string name, DesktopOpenFlags flags, bool inherit, DesktopAccessRights desiredAccess)

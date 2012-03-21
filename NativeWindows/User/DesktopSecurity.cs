@@ -43,6 +43,11 @@ namespace NativeWindows.User
 		{
 		}
 
+		public DesktopSecurity(DesktopHandle handle, AccessControlSections includeSections, bool isContainer = false)
+			: base(isContainer, ResourceType.WindowObject, handle, includeSections)
+		{
+		}
+
 		public override AccessRule AccessRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AccessControlType type)
 		{
 			return new DesktopAccessRule(identityReference, (DesktopAccessRights)accessMask, type);

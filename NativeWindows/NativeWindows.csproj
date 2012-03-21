@@ -62,18 +62,21 @@
   <ItemGroup>
     <None Include="ErrorHandling\SystemExceptions.ttinclude" />
     <Compile Include="IO\DirectoryAccessRights.cs" />
+    <Compile Include="IO\DirectoryHandle.cs" />
     <Compile Include="IO\DirectorySecurity.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DirectorySecurity.tt</DependentUpon>
     </Compile>
     <Compile Include="IO\FileAccessRights.cs" />
+    <Compile Include="IO\FileHandle.cs" />
     <Compile Include="IO\PipeAccessRights.cs" />
     <Compile Include="IO\FileSecurity.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>FileSecurity.tt</DependentUpon>
     </Compile>
+    <Compile Include="IO\PipeHandle.cs" />
     <Compile Include="IO\PipeSecurity.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

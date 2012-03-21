@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Win32.SafeHandles;
 using NativeWindows.ErrorHandling;
+using NativeWindows.JobObject;
 using NativeWindows.User;
 
 namespace NativeWindows.ProcessAndThread
@@ -72,6 +73,9 @@ namespace NativeWindows.ProcessAndThread
 
 		private static class NativeMethods
 		{
+			[DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+			public static extern bool CreateProcess(string applicationName, string commandLine, SecurityAttributes processAttributes, SecurityAttributes threadAttributes, bool inheritHandles, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environment, string currentDirectory, ProcessStartInfo startInfo, out ProcessInformationOut processInformation);
+
 			[DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Auto)]
 			public static extern bool CreateProcessAsUser(UserHandle userHandle, string applicationName, string commandLine, SecurityAttributes processAttributes, SecurityAttributes threadAttributes, bool inheritHandles, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environment, string currentDirectory, ProcessStartInfo startInfo, out ProcessInformationOut processInformation);
 
@@ -103,13 +107,32 @@ namespace NativeWindows.ProcessAndThread
 
 			[DllImport("kernel32.dll", SetLastError = true)]
 			public static extern ProcessHandle OpenProcess(ProcessAccessRights desiredAccess, bool inheritHandle, int processId);
+
+			[DllImport("kernel32.dll")]
+			public static extern bool IsProcessInJob(ProcessHandle processHandle, JobObjectHandle jobHandle, out bool result);
 		}
 
-		public static ProcessInformation CreateAsUser(UserHandle userHandle, string applicationName, string commandLine, bool inheritHandles, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environmentHandle, string currentDirectory, ProcessStartInfo startInfo)
+		public static ProcessInformation Create(string applicationName, string commandLine, bool inheritHandles, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environmentHandle, string currentDirectory, ProcessStartInfo startInfo, ProcessSecurity processSecurity = null, ThreadSecurity threadSecurity = null)
 		{
-			using (var processSecurityAttributes = new SecurityAttributes())
+			using (var processSecurityAttributes = processSecurity == null ? new SecurityAttributes() : new SecurityAttributes(processSecurity))
 			{
-				using (var threadSecurityAttributes = new SecurityAttributes())
+				using (var threadSecurityAttributes = threadSecurity == null ? new SecurityAttributes() : new SecurityAttributes(threadSecurity))
+				{
+					ProcessInformationOut processInformation;
+					if (!NativeMethods.CreateProcess(applicationName, commandLine, processSecurityAttributes, threadSecurityAttributes, inheritHandles, creationFlags, environmentHandle, currentDirectory, startInfo, out processInformation))
+					{
+						ErrorHelper.ThrowCustomWin32Exception();
+					}
+					return new ProcessInformation(processInformation.ProcessHandle, processInformation.ProcessId, processInformation.ThreadHandle, processInformation.ThreadId);
+				}
+			}
+		}
+
+		public static ProcessInformation CreateAsUser(UserHandle userHandle, string applicationName, string commandLine, bool inheritHandles, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environmentHandle, string currentDirectory, ProcessStartInfo startInfo, ProcessSecurity processSecurity = null, ThreadSecurity threadSecurity = null)
+		{
+			using (var processSecurityAttributes = processSecurity == null ? new SecurityAttributes() : new SecurityAttributes(processSecurity))
+			{
+				using (var threadSecurityAttributes = threadSecurity == null ? new SecurityAttributes() : new SecurityAttributes(threadSecurity))
 				{
 					ProcessInformationOut processInformation;
 					if (!NativeMethods.CreateProcessAsUser(userHandle, applicationName, commandLine, processSecurityAttributes, threadSecurityAttributes, inheritHandles, creationFlags, environmentHandle, currentDirectory, startInfo, out processInformation))
@@ -167,6 +190,34 @@ namespace NativeWindows.ProcessAndThread
 			}
 		}
 
+		public Task<int> Completion
+		{
+			get
+			{
+				return _exitMonitor.Value.Task;
+			}
+		}
+
+		public bool IsProcessInJob()
+		{
+			bool result;
+			if (!NativeMethods.IsProcessInJob(this, new JobObjectHandle(), out result))
+			{
+				ErrorHelper.ThrowCustomWin32Exception();
+			}
+			return result;
+		}
+
+		public bool IsProcessInJob(JobObjectHandle jobHandle)
+		{
+			bool result;
+			if (!NativeMethods.IsProcessInJob(this, jobHandle, out result))
+			{
+				ErrorHelper.ThrowCustomWin32Exception();
+			}
+			return result;
+		}
+
 		public int GetProcessId()
 		{
 			return NativeMethods.GetProcessId(this);
@@ -177,14 +228,6 @@ namespace NativeWindows.ProcessAndThread
 			if (!NativeMethods.TerminateProcess(this, exitCode))
 			{
 				ErrorHelper.ThrowCustomWin32Exception();
-			}
-		}
-
-		public Task<int> Completion
-		{
-			get
-			{
-				return _exitMonitor.Value.Task;
 			}
 		}
 

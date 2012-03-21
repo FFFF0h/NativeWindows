@@ -43,6 +43,11 @@ namespace NativeWindows.IO
 		{
 		}
 
+		public FileSecurity(FileHandle handle, AccessControlSections includeSections, bool isContainer = false)
+			: base(isContainer, ResourceType.FileObject, handle, includeSections)
+		{
+		}
+
 		public override AccessRule AccessRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AccessControlType type)
 		{
 			return new FileAccessRule(identityReference, (FileAccessRights)accessMask, type);

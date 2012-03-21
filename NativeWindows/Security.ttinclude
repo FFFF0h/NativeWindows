@@ -40,10 +40,15 @@ namespace <#= namespaceName #>
 		}
 	}
 
-	public class <#= name #>Security : SecurityBase
+	public partial class <#= name #>Security : SecurityBase
 	{
 		public <#= name #>Security(bool isContainer = false)
 			: base(isContainer, <#= resourceType #>)
+		{
+		}
+
+		public <#= name #>Security(<#= name #>Handle handle, AccessControlSections includeSections, bool isContainer = false)
+			: base(isContainer, <#= resourceType #>, handle, includeSections)
 		{
 		}
 
