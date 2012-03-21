@@ -43,6 +43,11 @@ namespace NativeWindows.User
 		{
 		}
 
+		public WindowStationSecurity(WindowStationHandle handle, AccessControlSections includeSections, bool isContainer = false)
+			: base(isContainer, ResourceType.WindowObject, handle, includeSections)
+		{
+		}
+
 		public override AccessRule AccessRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AccessControlType type)
 		{
 			return new WindowStationAccessRule(identityReference, (WindowStationAccessRights)accessMask, type);

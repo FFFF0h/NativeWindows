@@ -10,6 +10,11 @@ namespace NativeWindows
 		{
 		}
 
+		protected SecurityBase(bool isContainer, ResourceType resourceType, SafeHandle handle, AccessControlSections includeSections)
+			: base(isContainer, resourceType, handle, includeSections)
+		{
+		}
+
 		protected AccessControlSections GetIncludedSections()
 		{
 			var sectionsChanged = AccessControlSections.None;

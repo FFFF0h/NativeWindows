@@ -43,6 +43,11 @@ namespace NativeWindows.JobObject
 		{
 		}
 
+		public JobObjectSecurity(JobObjectHandle handle, AccessControlSections includeSections, bool isContainer = false)
+			: base(isContainer, ResourceType.KernelObject, handle, includeSections)
+		{
+		}
+
 		public override AccessRule AccessRuleFactory(IdentityReference identityReference, int accessMask, bool isInherited, InheritanceFlags inheritanceFlags, PropagationFlags propagationFlags, AccessControlType type)
 		{
 			return new JobObjectAccessRule(identityReference, (JobObjectAccessRights)accessMask, type);
