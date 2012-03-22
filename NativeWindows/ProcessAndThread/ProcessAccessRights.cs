@@ -20,6 +20,7 @@ namespace NativeWindows.ProcessAndThread
 		SetInformation = 512,
 		QueryInformation = 1024,
 		SuspendResume = 2048,
+		QueryLimitedInformation = 4096,
 
 		Delete = 0x00010000,
 		ReadPermissions = 0x00020000,
@@ -27,10 +28,10 @@ namespace NativeWindows.ProcessAndThread
 		TakeOwnership = 0x00080000,
 		Synchronize = 0x00100000,
 
-		Read = StandardAccessRights.Read | VmRead | QueryInformation,
+		Read = StandardAccessRights.Read | VmRead | QueryInformation | QueryLimitedInformation,
 		Write = StandardAccessRights.Write | CreateProcess | CreateThread | VmOperation | VmWrite | DuplicateHandle | Terminate | SetQuota | SetInformation,
 		Execute = StandardAccessRights.Execute | Synchronize,
 
-		AllAccess = StandardAccessRights.Required | Synchronize | Terminate | CreateThread | SetSessionId | VmOperation | VmRead | VmWrite | DuplicateHandle | CreateProcess | SetQuota | SetInformation | QueryInformation | SuspendResume,
+		AllAccess = StandardAccessRights.Required | Synchronize | Terminate | CreateThread | SetSessionId | VmOperation | VmRead | VmWrite | DuplicateHandle | CreateProcess | SetQuota | SetInformation | QueryInformation | QueryLimitedInformation | SuspendResume,
 	}
 }
