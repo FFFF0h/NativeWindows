@@ -227,18 +227,11 @@ namespace NativeWindows.JobObject
 		{
 			get
 			{
-				return _basicLimitInformation.LimitFlags.HasFlag(JobObjectLimitFlags.KillOnJobClose);
+				return HasFlag(JobObjectLimitFlags.KillOnJobClose);
 			}
 			set
 			{
-				if (value)
-				{
-					_basicLimitInformation.LimitFlags |= JobObjectLimitFlags.KillOnJobClose;
-				}
-				else
-				{
-					_basicLimitInformation.LimitFlags &= ~JobObjectLimitFlags.KillOnJobClose;
-				}
+				SetFlag(JobObjectLimitFlags.KillOnJobClose, value);
 			}
 		}
 
@@ -309,6 +302,23 @@ namespace NativeWindows.JobObject
 			{
 				_basicLimitInformation.LimitFlags |= flag;
 				setAction(value.Value);
+			}
+		}
+
+		private bool HasFlag(JobObjectLimitFlags flag)
+		{
+			return _basicLimitInformation.LimitFlags.HasFlag(flag);
+		}
+
+		private void SetFlag(JobObjectLimitFlags flag, bool set)
+		{
+			if (set)
+			{
+				_basicLimitInformation.LimitFlags |= flag;
+			}
+			else
+			{
+				_basicLimitInformation.LimitFlags &= ~flag;
 			}
 		}
 
