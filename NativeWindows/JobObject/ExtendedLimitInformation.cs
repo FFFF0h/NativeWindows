@@ -235,6 +235,18 @@ namespace NativeWindows.JobObject
 			}
 		}
 
+		public bool BreakawayOk
+		{
+			get
+			{
+				return HasFlag(JobObjectLimitFlags.BreakawayOk);
+			}
+			set
+			{
+				SetFlag(JobObjectLimitFlags.BreakawayOk, value);
+			}
+		}
+
 		/// <summary>
 		/// If the Affinity is not null then, this member is the processor affinity for all processes associated with the job. Otherwise, this member is ignored.
 		/// The affinity must be a subset of the system affinity mask obtained by calling the GetProcessAffinityMask function. The affinity of each thread is set to this value, but threads are free to subsequently set their affinity, as long as it is a subset of the specified affinity mask. Processes cannot set their own affinity mask.
