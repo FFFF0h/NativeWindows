@@ -108,7 +108,7 @@ namespace NativeWindows.ProcessAndThread
 			[DllImport("kernel32.dll", SetLastError = true)]
 			public static extern ProcessHandle OpenProcess(ProcessAccessRights desiredAccess, bool inheritHandle, int processId);
 
-			[DllImport("kernel32.dll")]
+			[DllImport("kernel32.dll", SetLastError = true)]
 			public static extern bool IsProcessInJob(ProcessHandle processHandle, JobObjectHandle jobHandle, out bool result);
 		}
 
