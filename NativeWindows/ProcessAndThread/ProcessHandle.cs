@@ -108,8 +108,11 @@ namespace NativeWindows.ProcessAndThread
 			[DllImport("kernel32.dll", SetLastError = true)]
 			public static extern ProcessHandle OpenProcess(ProcessAccessRights desiredAccess, bool inheritHandle, int processId);
 
-			[DllImport("kernel32.dll")]
+			[DllImport("kernel32.dll", SetLastError = true)]
 			public static extern bool IsProcessInJob(ProcessHandle processHandle, JobObjectHandle jobHandle, out bool result);
+
+			[DllImport("kernel32.dll", SetLastError = true)]
+			public static extern bool IsWow64Process(ProcessHandle processHandle, [Out, MarshalAs(UnmanagedType.Bool)] out bool isWow64Process);
 		}
 
 		public static ProcessInformation Create(string applicationName, string commandLine, bool inheritHandles, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environmentHandle, string currentDirectory, ProcessStartInfo startInfo, ProcessSecurity processSecurity = null, ThreadSecurity threadSecurity = null)
@@ -119,7 +122,7 @@ namespace NativeWindows.ProcessAndThread
 				using (var threadSecurityAttributes = threadSecurity == null ? new SecurityAttributes() : new SecurityAttributes(threadSecurity))
 				{
 					ProcessInformationOut processInformation;
-					if (!NativeMethods.CreateProcess(applicationName, commandLine, processSecurityAttributes, threadSecurityAttributes, inheritHandles, creationFlags, environmentHandle, currentDirectory, startInfo, out processInformation))
+					if (!NativeMethods.CreateProcess(applicationName, commandLine, processSecurityAttributes, threadSecurityAttributes, inheritHandles, creationFlags, environmentHandle, currentDirectory, startInfo, out processInformation) || processInformation.ProcessHandle == IntPtr.Zero || processInformation.ThreadHandle == IntPtr.Zero)
 					{
 						ErrorHelper.ThrowCustomWin32Exception();
 					}
@@ -135,7 +138,7 @@ namespace NativeWindows.ProcessAndThread
 				using (var threadSecurityAttributes = threadSecurity == null ? new SecurityAttributes() : new SecurityAttributes(threadSecurity))
 				{
 					ProcessInformationOut processInformation;
-					if (!NativeMethods.CreateProcessAsUser(userHandle, applicationName, commandLine, processSecurityAttributes, threadSecurityAttributes, inheritHandles, creationFlags, environmentHandle, currentDirectory, startInfo, out processInformation))
+					if (!NativeMethods.CreateProcessAsUser(userHandle, applicationName, commandLine, processSecurityAttributes, threadSecurityAttributes, inheritHandles, creationFlags, environmentHandle, currentDirectory, startInfo, out processInformation) || processInformation.ProcessHandle == IntPtr.Zero || processInformation.ThreadHandle == IntPtr.Zero)
 					{
 						ErrorHelper.ThrowCustomWin32Exception();
 					}
@@ -147,7 +150,7 @@ namespace NativeWindows.ProcessAndThread
 		public static ProcessInformation CreateWithLogin(string username, string domain, string password, ProcessLogonFlags logonFlags, string applicationName, string commandLine, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environment, string currentDirectory, ProcessStartInfo startupInfo)
 		{
 			ProcessInformationOut processInformation;
-			if (!NativeMethods.CreateProcessWithLogonW(username, domain, password, logonFlags, applicationName, commandLine, creationFlags, environment, currentDirectory, startupInfo, out processInformation))
+			if (!NativeMethods.CreateProcessWithLogonW(username, domain, password, logonFlags, applicationName, commandLine, creationFlags, environment, currentDirectory, startupInfo, out processInformation) || processInformation.ProcessHandle == IntPtr.Zero || processInformation.ThreadHandle == IntPtr.Zero)
 			{
 				throw new Win32Exception();
 			}
@@ -206,6 +209,16 @@ namespace NativeWindows.ProcessAndThread
 				ErrorHelper.ThrowCustomWin32Exception();
 			}
 			return result;
+		}
+
+		public bool IsWow64Process()
+		{
+			bool isWow64Process;
+			if (!NativeMethods.IsWow64Process(this, out isWow64Process))
+			{
+				ErrorHelper.ThrowCustomWin32Exception();
+			}
+			return isWow64Process;
 		}
 
 		public bool IsProcessInJob(JobObjectHandle jobHandle)

@@ -17,19 +17,19 @@ namespace NativeWindows.JobObject
 			[DllImport("kernel32.dll", SetLastError = true)]
 			public static extern bool AssignProcessToJobObject(JobObjectHandle handle, ProcessHandle processHandle);
 
-			[DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+			[DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
 			public static extern JobObjectHandle CreateJobObject(SecurityAttributes jobAttributes, string name);
 
-			[DllImport("kernel32.dll")]
+			[DllImport("kernel32.dll", SetLastError = true)]
 			public static extern JobObjectHandle OpenJobObject(JobObjectAccessRights desiredAccess, bool inheritHandle, string name);
 
-			[DllImport("kernel32.dll")]
+			[DllImport("kernel32.dll", SetLastError = true)]
 			public static extern bool SetInformationJobObject(JobObjectHandle handle, JobObjectType jobObjectClass, IntPtr jobObjectInfo, uint jobObjectInfoLength);
 
-			[DllImport("kernel32.dll")]
+			[DllImport("kernel32.dll", SetLastError = true)]
 			public static extern bool QueryInformationJobObject(JobObjectHandle handle, JobObjectType jobObjectClass, IntPtr jobObjectInfo, uint jobObjectInfoLength, IntPtr returnLength);
 
-			[DllImport("kernel32.dll")]
+			[DllImport("kernel32.dll", SetLastError = true)]
 			public static extern bool TerminateJobObject(JobObjectHandle handle, uint exitCode);
 		}
 

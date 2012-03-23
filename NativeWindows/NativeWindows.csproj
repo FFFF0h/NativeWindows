@@ -111,6 +111,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SystemExceptions.tt</DependentUpon>
     </Compile>
+    <Compile Include="System\ProcessorArchitecture.cs" />
+    <Compile Include="System\SystemInfo.cs" />
+    <Compile Include="System\SystemInformation.cs" />
     <Compile Include="User\DesktopAccessRights.cs" />
     <Compile Include="User\DesktopHandle.cs" />
     <Compile Include="User\DesktopOpenFlags.cs" />
