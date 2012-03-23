@@ -110,6 +110,9 @@ namespace NativeWindows.ProcessAndThread
 
 			[DllImport("kernel32.dll", SetLastError = true)]
 			public static extern bool IsProcessInJob(ProcessHandle processHandle, JobObjectHandle jobHandle, out bool result);
+
+			[DllImport("kernel32.dll", SetLastError = true)]
+			public static extern bool IsWow64Process(ProcessHandle processHandle, [Out, MarshalAs(UnmanagedType.Bool)] out bool isWow64Process);
 		}
 
 		public static ProcessInformation Create(string applicationName, string commandLine, bool inheritHandles, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environmentHandle, string currentDirectory, ProcessStartInfo startInfo, ProcessSecurity processSecurity = null, ThreadSecurity threadSecurity = null)
@@ -206,6 +209,16 @@ namespace NativeWindows.ProcessAndThread
 				ErrorHelper.ThrowCustomWin32Exception();
 			}
 			return result;
+		}
+
+		public bool IsWow64Process()
+		{
+			bool isWow64Process;
+			if (!NativeMethods.IsWow64Process(this, out isWow64Process))
+			{
+				ErrorHelper.ThrowCustomWin32Exception();
+			}
+			return isWow64Process;
 		}
 
 		public bool IsProcessInJob(JobObjectHandle jobHandle)
