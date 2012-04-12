@@ -30,6 +30,9 @@ namespace NativeWindows.User
 
 			[DllImport("advapi32.dll", SetLastError = true)]
 			public static extern bool GetTokenInformation(IntPtr tokenHandle, TokenInformationClass tokenInformationClass, IntPtr tokenInformation, int tokenInformationLength, out int returnLength);
+
+			[DllImport("userenv.dll", CharSet = CharSet.Auto, SetLastError = true)]
+			public static extern bool LoadUserProfile(UserHandle token, ref ProfileInfo profileInfo);
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
@@ -103,6 +106,14 @@ namespace NativeWindows.User
 				ErrorHelper.ThrowCustomWin32Exception();
 			}
 			return newHandle;
+		}
+
+		public void LoadUserProfile(ref ProfileInfo profileInfo)
+		{
+			if (!NativeMethods.LoadUserProfile(this, ref profileInfo))
+			{
+				ErrorHelper.ThrowCustomWin32Exception();
+			}
 		}
 
 		public unsafe SidAndAttributes[] GetGroupsTokenInformation(TokenInformationClass tokenInformationClass)
