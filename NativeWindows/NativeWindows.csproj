@@ -148,6 +148,7 @@
     <Compile Include="User\SecurityImpersonationLevel.cs" />
     <Compile Include="User\SidAttributes.cs" />
     <Compile Include="User\TokenAccessRights.cs" />
+    <Compile Include="User\TokenInformationClass.cs" />
     <Compile Include="User\TokenType.cs" />
     <Compile Include="User\UserHandle.cs" />
     <Compile Include="User\UserLogonProvider.cs" />
