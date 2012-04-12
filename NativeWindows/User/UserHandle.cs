@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Security;
-using Microsoft.Win32.SafeHandles;
 using NativeWindows.ErrorHandling;
 
 namespace NativeWindows.User
@@ -9,7 +8,7 @@ namespace NativeWindows.User
 	/// <remarks>
 	/// This is also known as a user token in some of the native methods
 	/// </remarks>>
-	public sealed class UserHandle : SafeHandleZeroOrMinusOneIsInvalid
+	public sealed class UserHandle : SafeHandle
 	{
 		private static class NativeMethods
 		{
@@ -52,7 +51,7 @@ namespace NativeWindows.User
 		}
 
 		public UserHandle()
-			: base(true)
+			: base(IntPtr.Zero, true)
 		{
 		}
 
@@ -69,6 +68,14 @@ namespace NativeWindows.User
 		protected override bool ReleaseHandle()
 		{
 			return handle.CloseHandle();
+		}
+
+		public override bool IsInvalid
+		{
+			get
+			{
+				return handle == IntPtr.Zero || handle == new IntPtr(-1);
+			}
 		}
 	}
 }
