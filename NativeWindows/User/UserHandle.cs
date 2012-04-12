@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Security;
+using System.Security.Principal;
 using NativeWindows.ErrorHandling;
+using NativeWindows.ProcessAndThread;
 
 namespace NativeWindows.User
 {
@@ -20,6 +23,10 @@ namespace NativeWindows.User
 
 			[DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
 			public static extern bool DuplicateTokenEx(UserHandle handle, TokenAccessRights desiredAccess, SecurityAttributes securityAttributes, SecurityImpersonationLevel impersonationLevel, TokenType tokenType, out UserHandle newToken);
+
+			[DllImport("kernel32.dll", CharSet = CharSet.Ansi, SetLastError = true, BestFitMapping = false)]
+			[ResourceExposure(ResourceScope.Machine)]
+			public static extern bool DuplicateHandle(ProcessHandle sourceProcessHandle, IntPtr sourceHandle, ProcessHandle targetProcess, out IntPtr targetHandle, uint desiredAccess, bool inheritHandle, DuplicateHandleOptions options);
 		}
 
 		public static UserHandle Logon(string username, string domain, SecureString password, UserLogonType logonType = UserLogonType.Interactive, UserLogonProvider logonProvider = UserLogonProvider.Default)
@@ -50,8 +57,23 @@ namespace NativeWindows.User
 			return userHandle;
 		}
 
+		private static IntPtr DuplicateHandle(IntPtr tokenHandle)
+		{
+			IntPtr duplicated;
+			if (!NativeMethods.DuplicateHandle(ProcessHandle.GetCurrentProcess(), tokenHandle, ProcessHandle.GetCurrentProcess(), out duplicated, 0, false, DuplicateHandleOptions.SameAccess))
+			{
+				ErrorHelper.ThrowCustomWin32Exception();
+			}
+			return duplicated;
+		}
+
 		public UserHandle()
 			: base(IntPtr.Zero, true)
+		{
+		}
+
+		public UserHandle(WindowsIdentity identity)
+			: base(DuplicateHandle(identity.Token), true)
 		{
 		}
 
