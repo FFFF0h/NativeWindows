@@ -146,6 +146,7 @@
     <Compile Include="ProcessAndThread\ThreadHandle.cs" />
     <Compile Include="SecurityAttributes.cs" />
     <Compile Include="User\SecurityImpersonationLevel.cs" />
+    <Compile Include="User\SidAndAttributes.cs" />
     <Compile Include="User\SidAttributes.cs" />
     <Compile Include="User\TokenAccessRights.cs" />
     <Compile Include="User\TokenInformationClass.cs" />
