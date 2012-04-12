@@ -33,6 +33,9 @@ namespace NativeWindows.User
 
 			[DllImport("userenv.dll", CharSet = CharSet.Auto, SetLastError = true)]
 			public static extern bool LoadUserProfile(UserHandle token, ref ProfileInfo profileInfo);
+
+			[DllImport("Userenv.dll", CallingConvention = CallingConvention.Winapi, SetLastError = true, CharSet = CharSet.Auto)]
+			public static extern bool UnloadUserProfile(UserHandle token, IntPtr profileInfo);
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
@@ -111,6 +114,14 @@ namespace NativeWindows.User
 		public void LoadUserProfile(ref ProfileInfo profileInfo)
 		{
 			if (!NativeMethods.LoadUserProfile(this, ref profileInfo))
+			{
+				ErrorHelper.ThrowCustomWin32Exception();
+			}
+		}
+
+		public void UnloadUserProfile(ref ProfileInfo profileInfo)
+		{
+			if (!NativeMethods.UnloadUserProfile(this, profileInfo.Profile))
 			{
 				ErrorHelper.ThrowCustomWin32Exception();
 			}
