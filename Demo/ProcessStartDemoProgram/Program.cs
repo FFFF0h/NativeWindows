@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.DirectoryServices.AccountManagement;
+using System.Runtime.InteropServices;
 using System.Security;
-using System.Security.AccessControl;
 using System.Security.Principal;
 using NativeWindows.ProcessAndThread;
 using NativeWindows.User;
@@ -28,32 +28,37 @@ namespace ProcessStartDemoProgram
 					ProcessInformation processInformation;
 					processStartInfo.Desktop = string.Empty;
 					string commandLine = string.Format("\"{0}\"", typeof(TestProgramWhileTrue.Program).Assembly.Location);
-					var currentUser = WindowsIdentity.GetCurrent();
-					var processUser = new WindowsIdentity(userHandle.DangerousGetHandle());
 
-					var access = new ProcessSecurity();
-					access.AddAccessRule(currentUser.Owner, ProcessAccessRights.AllAccess, AccessControlType.Allow);
-					access.AddAccessRule(processUser.Owner, ProcessAccessRights.AllAccess, AccessControlType.Allow);
+					var profileInfo = new ProfileInfo();
+					profileInfo.Size = Marshal.SizeOf(typeof(ProfileInfo));
+					profileInfo.Username = username;
+					profileInfo.ProfilePath = @"C:\tmp\users\" + username;
+					profileInfo.DefaultPath = null;
+
+					userHandle.LoadUserProfile(ref profileInfo);
 
 					if (Environment.UserInteractive)
 					{
-						// Running on a desktop (non-service) will require access the current user's windowstation and desktop
-						using (var stationHandle = WindowStationHandle.GetProcessWindowStation())
-						{
-							var security = new WindowStationSecurity(stationHandle, AccessControlSections.Access);
-							security.AddAccessRule(processUser.Owner, WindowStationAccessRights.AllAccess, AccessControlType.Allow);
-							security.ApplyChangesTo(stationHandle);
-						}
-
-						using (var desktopHandle = DesktopHandle.GetFromCurrentThread())
-						{
-							var security = new DesktopSecurity(desktopHandle, AccessControlSections.Access);
-							security.AddAccessRule(processUser.Owner, DesktopAccessRights.AllAccess, AccessControlType.Allow);
-							security.ApplyChangesTo(desktopHandle);
-						}
+						processInformation = ProcessHandle.CreateWithLogin(username, "", password,
+							ProcessLogonFlags.None,
+							null,
+							commandLine,
+							ProcessCreationFlags.NewConsole | ProcessCreationFlags.UnicodeEnvironment,
+							environmentBlockHandle,
+							Environment.CurrentDirectory,
+							processStartInfo);
 					}
-
-					processInformation = ProcessHandle.CreateAsUser(userHandle, null, commandLine, false, ProcessCreationFlags.NewConsole | ProcessCreationFlags.UnicodeEnvironment, environmentBlockHandle, Environment.CurrentDirectory, processStartInfo, access);
+					else
+					{
+						processInformation = ProcessHandle.CreateAsUser(userHandle,
+							null,
+							commandLine,
+							false,
+							ProcessCreationFlags.NewConsole | ProcessCreationFlags.UnicodeEnvironment,
+							environmentBlockHandle,
+							Environment.CurrentDirectory,
+							processStartInfo);
+					}
 
 					using (processInformation)
 					{
@@ -62,6 +67,7 @@ namespace ProcessStartDemoProgram
 						Console.ReadKey(intercept: true);
 						process.Kill();
 
+						userHandle.UnloadUserProfile(ref profileInfo);
 						DeleteUser(username);
 					}
 				}

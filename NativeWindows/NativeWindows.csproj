@@ -145,6 +145,7 @@
     <Compile Include="User\EnvironmentBlockHandle.cs" />
     <Compile Include="ProcessAndThread\ThreadHandle.cs" />
     <Compile Include="SecurityAttributes.cs" />
+    <Compile Include="User\ProfileInfo.cs" />
     <Compile Include="User\SecurityImpersonationLevel.cs" />
     <Compile Include="User\SidAndAttributes.cs" />
     <Compile Include="User\SidAttributes.cs" />
