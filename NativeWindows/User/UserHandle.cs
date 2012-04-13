@@ -140,12 +140,10 @@ namespace NativeWindows.User
 			}
 
 			int tokenSize;
-			if (!NativeMethods.GetTokenInformation(handle, tokenInformationClass, IntPtr.Zero, 0, out tokenSize))
+			if (!NativeMethods.GetTokenInformation(handle, tokenInformationClass, IntPtr.Zero, 0, out tokenSize) &&
+				Marshal.GetLastWin32Error() != (int)SystemErrorCode.ErrorInsufficientBuffer)
 			{
-				if (Marshal.GetLastWin32Error() != (int)SystemErrorCode.ErrorInsufficientBuffer)
-				{
-					ErrorHelper.ThrowCustomWin32Exception();
-				}
+				ErrorHelper.ThrowCustomWin32Exception();
 			}
 
 			IntPtr tokenInformationPtr = Marshal.AllocHGlobal(tokenSize);
