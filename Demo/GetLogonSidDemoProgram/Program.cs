@@ -17,6 +17,7 @@ namespace GetLogonSidDemoProgram
 					SecurityIdentifier securityIdentifier = groups.Single().SecurityIdentifier;
 					Console.WriteLine("Is Account: {0}", securityIdentifier.IsAccountSid());
 					Console.WriteLine("SID: {0}", securityIdentifier);
+					Console.WriteLine("ProfilePath: {0}", token.GetUserProfileDirectory().FullName);
 				}
 			}
 		}
