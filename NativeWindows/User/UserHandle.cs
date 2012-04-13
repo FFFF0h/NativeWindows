@@ -1,8 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Security;
 using System.Security.Principal;
+using System.Text;
 using NativeWindows.ErrorHandling;
 using NativeWindows.ProcessAndThread;
 
@@ -36,6 +38,9 @@ namespace NativeWindows.User
 
 			[DllImport("Userenv.dll", CharSet = CharSet.Auto, SetLastError = true)]
 			public static extern bool UnloadUserProfile(UserHandle token, IntPtr profileInfo);
+
+			[DllImport("userenv.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+			public static extern bool GetUserProfileDirectory(UserHandle token, StringBuilder profileDir, ref int size);
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
@@ -125,6 +130,23 @@ namespace NativeWindows.User
 			{
 				ErrorHelper.ThrowCustomWin32Exception();
 			}
+		}
+
+		public DirectoryInfo GetUserProfileDirectory()
+		{
+			int size = 0;
+			if (!NativeMethods.GetUserProfileDirectory(this, null, ref size) &&
+				Marshal.GetLastWin32Error() != (int)SystemErrorCode.ErrorInsufficientBuffer)
+			{
+				ErrorHelper.ThrowCustomWin32Exception();
+			}
+
+			var builder = new StringBuilder(size);
+			if (!NativeMethods.GetUserProfileDirectory(this, builder, ref size))
+			{
+				ErrorHelper.ThrowCustomWin32Exception();
+			}
+			return new DirectoryInfo(builder.ToString());
 		}
 
 		public unsafe SidAndAttributes[] GetGroupsTokenInformation(TokenInformationClass tokenInformationClass)
