@@ -34,7 +34,7 @@ namespace NativeWindows.User
 			[DllImport("userenv.dll", CharSet = CharSet.Auto, SetLastError = true)]
 			public static extern bool LoadUserProfile(UserHandle token, ref ProfileInfo profileInfo);
 
-			[DllImport("Userenv.dll", CallingConvention = CallingConvention.Winapi, SetLastError = true, CharSet = CharSet.Auto)]
+			[DllImport("Userenv.dll", CharSet = CharSet.Auto, SetLastError = true)]
 			public static extern bool UnloadUserProfile(UserHandle token, IntPtr profileInfo);
 		}
 
