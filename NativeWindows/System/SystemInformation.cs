@@ -1,34 +1,33 @@
-﻿using System.Runtime.InteropServices;
-using NativeWindows.ProcessAndThread;
+using System;
+using System.Runtime.InteropServices;
 
 namespace NativeWindows.System
 {
-	public static class SystemInformation
+	[StructLayout(LayoutKind.Sequential)]
+	public struct SystemInformation
 	{
-		private static class NativeMethods
+		[StructLayout(LayoutKind.Explicit)]
+		public struct OemProcessorArchUnion
 		{
-			[DllImport("kernel32.dll")]
-			public static extern void GetSystemInfo(out SystemInfo systemInfo);
+			[FieldOffset(0)]
+			public uint OemId;
 
-			[DllImport("kernel32.dll")]
-			public static extern void GetNativeSystemInfo(out SystemInfo systemInfo);
+			[FieldOffset(0)]
+			public ProcessorArchitecture ProcessorArch;
+
+			[FieldOffset(2)]
+			public ushort Reserved;
 		}
 
-		public static SystemInfo GetSystemInfo()
-		{
-			using (var processHandle = ProcessHandle.GetCurrentProcess())
-			{
-				SystemInfo systemInfo;
-				if (processHandle.IsWow64Process())
-				{
-					NativeMethods.GetNativeSystemInfo(out systemInfo);
-				}
-				else
-				{
-					NativeMethods.GetSystemInfo(out systemInfo);
-				}
-				return systemInfo;
-			}
-		}
+		public OemProcessorArchUnion OemProcessorArch;
+		public uint PageSize;
+		public UIntPtr MinimumApplicationAddress;
+		public UIntPtr MaximumApplicationAddress;
+		public UIntPtr ActiveProcessorMask;
+		public uint NumberOfProcessors;
+		public uint ProcessorType;
+		public uint AllocationGranularity;
+		public ushort ProcessorLevel;
+		public ushort ProcessorRevision;
 	}
 }

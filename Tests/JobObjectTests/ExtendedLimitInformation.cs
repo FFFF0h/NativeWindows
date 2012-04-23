@@ -1,6 +1,7 @@
-﻿using System.Diagnostics;
-using NativeWindows.JobObject;
+﻿using NativeWindows.Processes;
+using TestProgramWhileTrue;
 using Xunit;
+using Process = System.Diagnostics.Process;
 
 namespace JobObjectTests
 {
@@ -9,7 +10,7 @@ namespace JobObjectTests
 		[Fact]
 		public void GivenJobWithKillOnJobClose_WhenDisposingJob_ThenProcessIsStopped()
 		{
-			Process process = Process.Start(typeof(TestProgramWhileTrue.Program).Assembly.Location);
+			Process process = Process.Start(typeof(Program).Assembly.Location);
 
 			using (var job = JobObjectHandle.Create())
 			{

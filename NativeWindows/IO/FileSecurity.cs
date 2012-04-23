@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.AccessControl;
 using System.Security.Principal;
+using NativeWindows.Security;
 
 namespace NativeWindows.IO
 {
@@ -36,7 +37,7 @@ namespace NativeWindows.IO
 		}
 	}
 
-	public class FileSecurity : SecurityBase
+	public partial class FileSecurity : SecurityBase
 	{
 		public FileSecurity(bool isContainer = false)
 			: base(isContainer, ResourceType.FileObject)

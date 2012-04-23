@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Security.AccessControl;
 using System.Security.Principal;
-using NativeWindows.JobObject;
+using NativeWindows.Processes;
+using Process = System.Diagnostics.Process;
 
 namespace JobObjectDemoProgram
 {

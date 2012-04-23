@@ -1,0 +1,5 @@
+﻿<#@template language="C#"#>
+<#@include file="../Security.ttinclude"#>
+<#
+	GenerateSecurityClass("Process", "Processes", "ResourceType.KernelObject");
+#>

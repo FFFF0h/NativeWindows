@@ -1,5 +1,0 @@
-﻿<#@template language="C#"#>
-<#@include file="../Security.ttinclude"#>
-<#
-	GenerateSecurityClass("Desktop", "NativeWindows.User", "ResourceType.WindowObject");
-#>

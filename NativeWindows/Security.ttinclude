@@ -1,12 +1,13 @@
 ﻿<#+
-	void GenerateSecurityClass(string name, string namespaceName, string resourceType)
+	void GenerateSecurityClass(string name, string subNamespace, string resourceType)
 	{
 #>
 using System;
 using System.Security.AccessControl;
 using System.Security.Principal;
+using NativeWindows.Security;
 
-namespace <#= namespaceName #>
+namespace NativeWindows.<#= subNamespace #>
 {
 	public sealed class <#= name #>AuditRule : AuditRule
 	{

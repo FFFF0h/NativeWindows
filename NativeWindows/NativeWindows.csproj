@@ -60,7 +60,34 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ErrorHandling\SystemExceptions.ttinclude" />
+    <Compile Include="Desktop\Desktop.cs" />
+    <Compile Include="Desktop\DesktopFactory.cs" />
+    <Compile Include="Identity\Token.cs" />
+    <Compile Include="Processes\EnvironmentBlockFactory.cs" />
+    <Compile Include="Desktop\IDesktop.cs" />
+    <Compile Include="Desktop\IDesktopFactory.cs" />
+    <Compile Include="Processes\IEnvironmentBlock.cs" />
+    <Compile Include="Processes\IEnvironmentBlockFactory.cs" />
+    <Compile Include="Processes\IJobObject.cs" />
+    <Compile Include="Processes\IJobObjectFactory.cs" />
+    <Compile Include="Processes\IProcess.cs" />
+    <Compile Include="Processes\IProcessFactory.cs" />
+    <Compile Include="Processes\IProcessInformation.cs" />
+    <Compile Include="Processes\JobObject.cs" />
+    <Compile Include="Processes\Process.cs" />
+    <Compile Include="System\ISystemInformationFactory.cs" />
+    <Compile Include="Threads\IThread.cs" />
+    <Compile Include="Threads\IThreadFactory.cs" />
+    <Compile Include="Identity\IToken.cs" />
+    <Compile Include="Identity\ITokenFactory.cs" />
+    <Compile Include="Processes\JobObjectFactory.cs" />
+    <Compile Include="Processes\ProcessFactory.cs" />
+    <Compile Include="Processes\ProcessInformation.cs" />
+    <Compile Include="System\SystemInformationFactory.cs" />
+    <Compile Include="Threads\Thread.cs" />
+    <Compile Include="Threads\ThreadFactory.cs" />
+    <Compile Include="Identity\TokenFactory.cs" />
+    <None Include="Exceptions\SystemExceptions.ttinclude" />
     <Compile Include="IO\DirectoryAccessRights.cs" />
     <Compile Include="IO\DirectoryHandle.cs" />
     <Compile Include="IO\DirectorySecurity.cs">
@@ -83,81 +110,79 @@
       <DependentUpon>PipeSecurity.tt</DependentUpon>
     </Compile>
     <Compile Include="IO\SafeFileHandleExtensions.cs" />
-    <Compile Include="ProcessAndThread\ProcessAccessRights.cs" />
-    <Compile Include="ProcessAndThread\ProcessLogonFlags.cs" />
-    <Compile Include="ProcessAndThread\ThreadAccessRights.cs" />
-    <Compile Include="ProcessAndThread\ProcessSecurity.cs">
+    <Compile Include="Processes\ProcessAccessRights.cs" />
+    <Compile Include="Processes\ProcessLogonFlags.cs" />
+    <Compile Include="Threads\ThreadAccessRights.cs" />
+    <Compile Include="Processes\ProcessSecurity.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ProcessSecurity.tt</DependentUpon>
     </Compile>
-    <Compile Include="JobObject\JobObjectSecurity.cs">
+    <Compile Include="Processes\JobObjectSecurity.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>JobObjectSecurity.tt</DependentUpon>
     </Compile>
-    <Compile Include="ProcessAndThread\ThreadSecurity.cs">
+    <Compile Include="Threads\ThreadSecurity.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ThreadSecurity.tt</DependentUpon>
     </Compile>
     <Compile Include="SafeHandleZeroIsInvalid.cs" />
-    <Compile Include="SecurityBase.cs" />
-    <Compile Include="StandardAccessRights.cs" />
-    <Compile Include="ErrorHandling\SystemErrorCode.cs" />
-    <Compile Include="ErrorHandling\ErrorHelper.cs" />
-    <Compile Include="ErrorHandling\SystemExceptions.cs">
+    <Compile Include="Security\SecurityBase.cs" />
+    <Compile Include="Security\StandardAccessRights.cs" />
+    <Compile Include="Exceptions\SystemErrorCode.cs" />
+    <Compile Include="Exceptions\ErrorHelper.cs" />
+    <Compile Include="Exceptions\SystemExceptions.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SystemExceptions.tt</DependentUpon>
     </Compile>
     <Compile Include="System\ProcessorArchitecture.cs" />
-    <Compile Include="System\SystemInfo.cs" />
     <Compile Include="System\SystemInformation.cs" />
-    <Compile Include="User\DesktopAccessRights.cs" />
-    <Compile Include="User\DesktopHandle.cs" />
-    <Compile Include="User\DesktopOpenFlags.cs" />
+    <Compile Include="Desktop\DesktopAccessRights.cs" />
+    <Compile Include="Desktop\DesktopHandle.cs" />
+    <Compile Include="Desktop\DesktopOpenFlags.cs" />
     <Compile Include="IntPtrExtensions.cs" />
-    <Compile Include="JobObject\BasicAndIoAccountingInformation.cs" />
-    <Compile Include="JobObject\BasicUiRestrictions.cs" />
-    <Compile Include="JobObject\ExtendedLimitInformation.cs" />
-    <Compile Include="JobObject\IJobObjectQueryable.cs" />
-    <Compile Include="JobObject\IJobObjectSettable.cs" />
-    <Compile Include="JobObject\IJobStructure.cs" />
-    <Compile Include="JobObject\JobObjectHandle.cs" />
-    <Compile Include="JobObject\JobObjectAccessRights.cs" />
-    <Compile Include="JobObject\JobObjectType.cs" />
-    <Compile Include="ProcessAndThread\DuplicateHandleOptions.cs" />
-    <Compile Include="ProcessAndThread\ProcessCreationFlags.cs" />
-    <Compile Include="ProcessAndThread\ProcessHandle.cs" />
-    <Compile Include="ProcessAndThread\ProcessInformation.cs" />
-    <Compile Include="ProcessAndThread\ProcessStartInfo.cs" />
-    <Compile Include="ProcessAndThread\ProcessStartInfoFlags.cs" />
+    <Compile Include="Processes\BasicAndIoAccountingInformation.cs" />
+    <Compile Include="Processes\BasicUiRestrictions.cs" />
+    <Compile Include="Processes\ExtendedLimitInformation.cs" />
+    <Compile Include="Processes\IJobObjectQueryable.cs" />
+    <Compile Include="Processes\IJobObjectSettable.cs" />
+    <Compile Include="Processes\IJobStructure.cs" />
+    <Compile Include="Processes\JobObjectHandle.cs" />
+    <Compile Include="Processes\JobObjectAccessRights.cs" />
+    <Compile Include="Processes\JobObjectType.cs" />
+    <Compile Include="DuplicateHandleOptions.cs" />
+    <Compile Include="Processes\ProcessCreationFlags.cs" />
+    <Compile Include="Processes\ProcessHandle.cs" />
+    <Compile Include="Processes\ProcessStartInfo.cs" />
+    <Compile Include="Processes\ProcessStartInfoFlags.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="User\DesktopSecurity.cs">
+    <Compile Include="Desktop\DesktopSecurity.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DesktopSecurity.tt</DependentUpon>
     </Compile>
-    <Compile Include="User\EnvironmentBlockHandle.cs" />
-    <Compile Include="ProcessAndThread\ThreadHandle.cs" />
-    <Compile Include="SecurityAttributes.cs" />
-    <Compile Include="User\ProfileInfo.cs" />
-    <Compile Include="User\SecurityImpersonationLevel.cs" />
-    <Compile Include="User\SidAndAttributes.cs" />
-    <Compile Include="User\SidAttributes.cs" />
-    <Compile Include="User\TokenAccessRights.cs" />
-    <Compile Include="User\TokenInformationClass.cs" />
-    <Compile Include="User\TokenType.cs" />
-    <Compile Include="User\UserHandle.cs" />
-    <Compile Include="User\UserLogonProvider.cs" />
-    <Compile Include="User\UserLogonType.cs" />
-    <Compile Include="User\WindowStationAccessRights.cs" />
-    <Compile Include="User\WindowStationHandle.cs" />
-    <Compile Include="User\WindowStationSecurity.cs">
+    <Compile Include="Identity\ProfileInfo.cs" />
+    <Compile Include="Processes\EnvironmentBlockHandle.cs" />
+    <Compile Include="Threads\ThreadHandle.cs" />
+    <Compile Include="Security\SecurityAttributes.cs" />
+    <Compile Include="Security\SecurityImpersonationLevel.cs" />
+    <Compile Include="Security\SidAndAttributes.cs" />
+    <Compile Include="Security\SidAttributes.cs" />
+    <Compile Include="Identity\TokenAccessRights.cs" />
+    <Compile Include="Identity\TokenInformationClass.cs" />
+    <Compile Include="Identity\TokenType.cs" />
+    <Compile Include="Identity\TokenHandle.cs" />
+    <Compile Include="Identity\UserLogonProvider.cs" />
+    <Compile Include="Identity\UserLogonType.cs" />
+    <Compile Include="WindowStations\WindowStationAccessRights.cs" />
+    <Compile Include="WindowStations\WindowStationHandle.cs" />
+    <Compile Include="WindowStations\WindowStationSecurity.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>WindowStationSecurity.tt</DependentUpon>
@@ -189,20 +214,20 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ErrorHandling\SystemExceptions.tt">
+    <None Include="Exceptions\SystemExceptions.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SystemExceptions.cs</LastGenOutput>
     </None>
     <None Include="Security.ttinclude" />
-    <None Include="JobObject\JobObjectSecurity.tt">
+    <None Include="Processes\JobObjectSecurity.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>JobObjectSecurity.cs</LastGenOutput>
     </None>
-    <None Include="User\DesktopSecurity.tt">
+    <None Include="Desktop\DesktopSecurity.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DesktopSecurity.cs</LastGenOutput>
     </None>
-    <None Include="User\WindowStationSecurity.tt">
+    <None Include="WindowStations\WindowStationSecurity.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>WindowStationSecurity.cs</LastGenOutput>
     </None>
@@ -218,15 +243,16 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PipeSecurity.cs</LastGenOutput>
     </None>
-    <None Include="ProcessAndThread\ProcessSecurity.tt">
+    <None Include="Processes\ProcessSecurity.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ProcessSecurity.cs</LastGenOutput>
     </None>
-    <None Include="ProcessAndThread\ThreadSecurity.tt">
+    <None Include="Threads\ThreadSecurity.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ThreadSecurity.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.DirectoryServices.AccountManagement;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Principal;
-using NativeWindows.ProcessAndThread;
-using NativeWindows.User;
-using ProcessStartInfo = NativeWindows.ProcessAndThread.ProcessStartInfo;
+using NativeWindows.Identity;
+using NativeWindows.Processes;
 
 namespace ProcessStartDemoProgram
 {
@@ -14,32 +12,37 @@ namespace ProcessStartDemoProgram
 	{
 		public static void Main(string[] args)
 		{
+			var tokenFactory = new TokenFactory();
+			var environmentBlockFactory = new EnvironmentBlockFactory();
+			var processFactory = new ProcessFactory();
+
 			const string username = "testuserfoo";
 			const string password = "1234";
 
 			GetOrCreateUser(username, password);
 
-			using (var userHandle = UserHandle.Logon(username, ".", GetSecureString(password)))
+			using (var token = tokenFactory.Logon(username, ".", GetSecureString(password)))
 			{
-				using (var environmentBlockHandle = EnvironmentBlockHandle.Create(userHandle, false))
+				using (var environmentBlockHandle = environmentBlockFactory.Create(token, false))
 				{
-					var processStartInfo = new ProcessStartInfo();
+					var profileInfo = new ProfileInfo
+					{
+						Size = Marshal.SizeOf(typeof(ProfileInfo)),
+						Username = username,
+						DefaultPath = null,
+					};
+					token.LoadUserProfile(ref profileInfo);
 
-					ProcessInformation processInformation;
-					processStartInfo.Desktop = string.Empty;
+					IProcessInformation processInformation;
+					var processStartInfo = new ProcessStartInfo
+					{
+						Desktop = string.Empty,
+					};
 					string commandLine = string.Format("\"{0}\"", typeof(TestProgramWhileTrue.Program).Assembly.Location);
-
-					var profileInfo = new ProfileInfo();
-					profileInfo.Size = Marshal.SizeOf(typeof(ProfileInfo));
-					profileInfo.Username = username;
-					profileInfo.ProfilePath = @"C:\tmp\users\" + username;
-					profileInfo.DefaultPath = null;
-
-					userHandle.LoadUserProfile(ref profileInfo);
 
 					if (Environment.UserInteractive)
 					{
-						processInformation = ProcessHandle.CreateWithLogin(username, "", password,
+						processInformation = processFactory.CreateWithLogin(username, "", password,
 							ProcessLogonFlags.None,
 							null,
 							commandLine,
@@ -50,7 +53,7 @@ namespace ProcessStartDemoProgram
 					}
 					else
 					{
-						processInformation = ProcessHandle.CreateAsUser(userHandle,
+						processInformation = processFactory.CreateAsUser(token,
 							null,
 							commandLine,
 							false,
@@ -62,12 +65,12 @@ namespace ProcessStartDemoProgram
 
 					using (processInformation)
 					{
-						Process process = Process.GetProcessById(processInformation.ProcessId);
 						Console.WriteLine("Press any key to kill");
 						Console.ReadKey(intercept: true);
-						process.Kill();
+						processInformation.Process.Terminate(0);
 
-						userHandle.UnloadUserProfile(ref profileInfo);
+						token.UnloadUserProfile(ref profileInfo);
+						token.DeleteUserProfile();
 						DeleteUser(username);
 					}
 				}

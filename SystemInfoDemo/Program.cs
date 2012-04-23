@@ -7,7 +7,9 @@ namespace SystemInfoDemo
 	{
 		public static void Main(string[] args)
 		{
-			SystemInfo system = SystemInformation.GetSystemInfo();
+			var factory = new SystemInformationFactory();
+
+			var system = factory.GetSystemInfo();
 			Console.WriteLine("OemId: {0}", system.OemProcessorArch.OemId);
 			Console.WriteLine("ProcessorArch: {0}", system.OemProcessorArch.ProcessorArch);
 			Console.WriteLine("ActiveProcessorMask: {0}", system.ActiveProcessorMask.ToUInt64());

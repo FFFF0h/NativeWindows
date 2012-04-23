@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Principal;
-using NativeWindows.User;
+using NativeWindows.Identity;
 
 namespace GetLogonSidDemoProgram
 {
@@ -11,7 +11,7 @@ namespace GetLogonSidDemoProgram
 		{
 			using (var windowsIdentity = WindowsIdentity.GetCurrent())
 			{
-				using (var token = new UserHandle(windowsIdentity))
+				using (var token = new TokenHandle(windowsIdentity))
 				{
 					var groups = token.GetGroupsTokenInformation(TokenInformationClass.TokenLogonSid);
 					SecurityIdentifier securityIdentifier = groups.Single().SecurityIdentifier;

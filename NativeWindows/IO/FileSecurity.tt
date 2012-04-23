@@ -1,5 +1,5 @@
 ﻿<#@template language="C#"#>
 <#@include file="../Security.ttinclude"#>
 <#
-	GenerateSecurityClass("File", "NativeWindows.IO", "ResourceType.FileObject");
+	GenerateSecurityClass("File", "IO", "ResourceType.FileObject");
 #>

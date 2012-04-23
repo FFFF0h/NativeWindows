@@ -1,4 +1,5 @@
 ﻿using System;
+using NativeWindows.Security;
 
 namespace NativeWindows.IO
 {
