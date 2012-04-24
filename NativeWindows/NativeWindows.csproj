@@ -87,7 +87,7 @@
     <Compile Include="Threads\Thread.cs" />
     <Compile Include="Threads\ThreadFactory.cs" />
     <Compile Include="Identity\TokenFactory.cs" />
-    <None Include="Exceptions\SystemExceptions.ttinclude" />
+    <None Include="SystemExceptions.ttinclude" />
     <Compile Include="IO\DirectoryAccessRights.cs" />
     <Compile Include="IO\DirectoryHandle.cs" />
     <Compile Include="IO\DirectorySecurity.cs">
@@ -131,9 +131,9 @@
     <Compile Include="SafeHandleZeroIsInvalid.cs" />
     <Compile Include="Security\SecurityBase.cs" />
     <Compile Include="Security\StandardAccessRights.cs" />
-    <Compile Include="Exceptions\SystemErrorCode.cs" />
-    <Compile Include="Exceptions\ErrorHelper.cs" />
-    <Compile Include="Exceptions\SystemExceptions.cs">
+    <Compile Include="SystemErrorCode.cs" />
+    <Compile Include="ErrorHelper.cs" />
+    <Compile Include="SystemExceptions.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SystemExceptions.tt</DependentUpon>
@@ -214,7 +214,7 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Exceptions\SystemExceptions.tt">
+    <None Include="SystemExceptions.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SystemExceptions.cs</LastGenOutput>
     </None>

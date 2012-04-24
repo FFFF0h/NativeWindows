@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.Serialization;
 
-namespace NativeWindows.Exceptions
+namespace NativeWindows
 {
 	[Serializable]
 	public partial class AccessDeniedException : Win32Exception

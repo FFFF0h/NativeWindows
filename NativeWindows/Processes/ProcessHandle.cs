@@ -5,9 +5,7 @@ using System.Runtime.Versioning;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Win32.SafeHandles;
-using NativeWindows.Exceptions;
 using NativeWindows.Identity;
-using NativeWindows.Native;
 using NativeWindows.Security;
 using NativeWindows.Threads;
 

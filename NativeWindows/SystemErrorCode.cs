@@ -1,4 +1,4 @@
-﻿namespace NativeWindows.Exceptions
+﻿namespace NativeWindows
 {
 	public enum SystemErrorCode
 	{

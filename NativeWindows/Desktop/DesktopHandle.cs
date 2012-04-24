@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using NativeWindows.Exceptions;
 
 namespace NativeWindows.Desktop
 {

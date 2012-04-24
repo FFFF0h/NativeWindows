@@ -5,8 +5,6 @@ using System.Runtime.Versioning;
 using System.Security;
 using System.Security.Principal;
 using System.Text;
-using NativeWindows.Exceptions;
-using NativeWindows.Native;
 using NativeWindows.Processes;
 using NativeWindows.Security;
 

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.InteropServices;
 
-namespace NativeWindows.Exceptions
+namespace NativeWindows
 {
 	public static class ErrorHelper
 	{

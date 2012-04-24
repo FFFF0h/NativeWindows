@@ -1,6 +1,4 @@
-﻿using NativeWindows.Native;
-
-namespace NativeWindows.IO
+﻿namespace NativeWindows.IO
 {
 	public class DirectoryHandle : SafeHandleZeroIsInvalid
 	{

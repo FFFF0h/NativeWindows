@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
 
-namespace NativeWindows.Native
+namespace NativeWindows
 {
 	[SecurityCritical]
 	[SecurityPermission(SecurityAction.InheritanceDemand, UnmanagedCode = true)]

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
-using NativeWindows.Exceptions;
-using NativeWindows.Native;
 using NativeWindows.Security;
 
 namespace NativeWindows.Processes

@@ -2,7 +2,6 @@
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using Microsoft.Win32.SafeHandles;
-using NativeWindows.Exceptions;
 using NativeWindows.Processes;
 using NativeWindows.Security;
 

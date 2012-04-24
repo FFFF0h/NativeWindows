@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace NativeWindows.Native
+namespace NativeWindows
 {
 	public static class IntPtrExtensions
 	{
