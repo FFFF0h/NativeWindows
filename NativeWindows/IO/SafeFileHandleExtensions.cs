@@ -67,9 +67,9 @@ namespace NativeWindows.IO
 			return targetHandle;
 		}
 
-		public static void CreatePipe(out SafeFileHandle readPipeHandle, out SafeFileHandle writePipeHandle)
+		public static void CreatePipe(out SafeFileHandle readPipeHandle, out SafeFileHandle writePipeHandle, PipeSecurity pipeSecurity = null)
 		{
-			using (var securityAttributes = new SecurityAttributes(true))
+			using (var securityAttributes = pipeSecurity == null ? new SecurityAttributes(true) : new SecurityAttributes(pipeSecurity))
 			{
 				if (!NativeMethods.CreatePipe(out readPipeHandle, out writePipeHandle, securityAttributes, 0))
 				{
