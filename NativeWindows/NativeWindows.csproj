@@ -66,6 +66,7 @@
     <Compile Include="Identity\LsaAccessPolicy.cs" />
     <Compile Include="Identity\LsaReferencedDomainsHandle.cs" />
     <Compile Include="Identity\LsaNamesResult.cs" />
+    <Compile Include="Identity\LsaPolicyHandle.cs" />
     <Compile Include="Identity\LsaTranslatedSidHandle.cs" />
     <Compile Include="Identity\LsaStatus.cs" />
     <Compile Include="Identity\SidNameUse.cs" />
