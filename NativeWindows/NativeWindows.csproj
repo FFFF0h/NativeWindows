@@ -63,7 +63,12 @@
     <Compile Include="Desktop\Desktop.cs" />
     <Compile Include="Desktop\DesktopFactory.cs" />
     <Compile Include="DisposableExtensions.cs" />
+    <Compile Include="Identity\ILsaPolicy.cs" />
+    <Compile Include="Identity\ILsaPolicyFactory.cs" />
     <Compile Include="Identity\LsaAccessPolicy.cs" />
+    <Compile Include="Identity\LsaLookupNamesFlags.cs" />
+    <Compile Include="Identity\LsaPolicy.cs" />
+    <Compile Include="Identity\LsaPolicyFactory.cs" />
     <Compile Include="Identity\LsaReferencedDomainsHandle.cs" />
     <Compile Include="Identity\LsaNamesResult.cs" />
     <Compile Include="Identity\LsaPolicyHandle.cs" />
