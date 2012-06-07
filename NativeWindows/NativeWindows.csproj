@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Desktop\Desktop.cs" />
     <Compile Include="Desktop\DesktopFactory.cs" />
+    <Compile Include="Identity\LsaStatus.cs" />
     <Compile Include="Identity\Token.cs" />
     <Compile Include="Processes\EnvironmentBlockFactory.cs" />
     <Compile Include="Desktop\IDesktop.cs" />
