@@ -11,6 +11,11 @@ namespace NativeWindows.Identity
 			internal static extern LsaStatus LsaFreeMemory(IntPtr handle);
 		}
 
+		public LsaReferencedDomainsHandle()
+			: base(IntPtr.Zero, true)
+		{
+		}
+
 		public LsaReferencedDomainsHandle(IntPtr handle, bool ownsHandle = true)
 			: base(handle, ownsHandle)
 		{

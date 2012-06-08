@@ -24,6 +24,11 @@ namespace NativeWindows.Identity
 			public static extern bool IsValidSid(IntPtr pSid);
 		}
 
+		public LsaTranslatedSidHandle()
+			: base(IntPtr.Zero, true)
+		{
+		}
+
 		public LsaTranslatedSidHandle(IntPtr handle, bool ownsHandle = true)
 			: base(handle, ownsHandle)
 		{

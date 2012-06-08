@@ -73,7 +73,13 @@ namespace NativeWindows.Identity
 			return handle;
 		}
 
-		public LsaPolicyHandle(IntPtr invalidHandleValue, bool ownsHandle) : base(invalidHandleValue, ownsHandle)
+		public LsaPolicyHandle()
+			: base(IntPtr.Zero, true)
+		{
+		}
+
+		public LsaPolicyHandle(IntPtr handle, bool ownsHandle)
+			: base(handle, ownsHandle)
 		{
 		}
 
