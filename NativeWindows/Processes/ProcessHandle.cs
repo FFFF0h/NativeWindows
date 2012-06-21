@@ -133,7 +133,7 @@ namespace NativeWindows.Processes
 				using (var threadSecurityAttributes = threadSecurity == null ? new SecurityAttributes() : new SecurityAttributes(threadSecurity))
 				{
 					ProcessInformationOut processInformation;
-					if (!NativeMethods.CreateProcess(applicationName, commandLine, processSecurityAttributes, threadSecurityAttributes, inheritHandles, creationFlags, environmentHandle, currentDirectory, startInfo, out processInformation) || processInformation.ProcessHandle == IntPtr.Zero || processInformation.ThreadHandle == IntPtr.Zero)
+					if (!NativeMethods.CreateProcess(applicationName, commandLine, processSecurityAttributes, threadSecurityAttributes, inheritHandles, creationFlags, environmentHandle ?? new EnvironmentBlockHandle(), currentDirectory, startInfo, out processInformation) || processInformation.ProcessHandle == IntPtr.Zero || processInformation.ThreadHandle == IntPtr.Zero)
 					{
 						ErrorHelper.ThrowCustomWin32Exception();
 					}
@@ -149,7 +149,7 @@ namespace NativeWindows.Processes
 				using (var threadSecurityAttributes = threadSecurity == null ? new SecurityAttributes() : new SecurityAttributes(threadSecurity))
 				{
 					ProcessInformationOut processInformation;
-					if (!NativeMethods.CreateProcessAsUser(tokenHandle, applicationName, commandLine, processSecurityAttributes, threadSecurityAttributes, inheritHandles, creationFlags, environmentHandle, currentDirectory, startInfo, out processInformation) || processInformation.ProcessHandle == IntPtr.Zero || processInformation.ThreadHandle == IntPtr.Zero)
+					if (!NativeMethods.CreateProcessAsUser(tokenHandle, applicationName, commandLine, processSecurityAttributes, threadSecurityAttributes, inheritHandles, creationFlags, environmentHandle ?? new EnvironmentBlockHandle(), currentDirectory, startInfo, out processInformation) || processInformation.ProcessHandle == IntPtr.Zero || processInformation.ThreadHandle == IntPtr.Zero)
 					{
 						ErrorHelper.ThrowCustomWin32Exception();
 					}
@@ -158,10 +158,10 @@ namespace NativeWindows.Processes
 			}
 		}
 
-		public static ProcessInformation CreateWithLogin(string username, string domain, string password, ProcessLogonFlags logonFlags, string applicationName, string commandLine, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environment, string currentDirectory, ProcessStartInfo startupInfo)
+		public static ProcessInformation CreateWithLogin(string username, string domain, string password, ProcessLogonFlags logonFlags, string applicationName, string commandLine, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environmentHandle, string currentDirectory, ProcessStartInfo startupInfo)
 		{
 			ProcessInformationOut processInformation;
-			if (!NativeMethods.CreateProcessWithLogonW(username, domain, password, logonFlags, applicationName, commandLine, creationFlags, environment, currentDirectory, startupInfo, out processInformation) || processInformation.ProcessHandle == IntPtr.Zero || processInformation.ThreadHandle == IntPtr.Zero)
+			if (!NativeMethods.CreateProcessWithLogonW(username, domain, password, logonFlags, applicationName, commandLine, creationFlags, environmentHandle ?? new EnvironmentBlockHandle(), currentDirectory, startupInfo, out processInformation) || processInformation.ProcessHandle == IntPtr.Zero || processInformation.ThreadHandle == IntPtr.Zero)
 			{
 				ErrorHelper.ThrowCustomWin32Exception();
 			}

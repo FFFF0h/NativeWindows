@@ -7,7 +7,7 @@ namespace NativeWindows.Processes
 	{
 		public IProcessInformation Create(string applicationName, string commandLine, bool inheritHandles, ProcessCreationFlags creationFlags, IEnvironmentBlock environment, string currentDirectory, ProcessStartInfo startInfo, ProcessSecurity processSecurity = null, ThreadSecurity threadSecurity = null)
 		{
-			return Create(applicationName, commandLine, inheritHandles, creationFlags, environment.Handle, currentDirectory, startInfo, processSecurity, threadSecurity);
+			return Create(applicationName, commandLine, inheritHandles, creationFlags, environment == null ? null : environment.Handle, currentDirectory, startInfo, processSecurity, threadSecurity);
 		}
 
 		public IProcessInformation Create(string applicationName, string commandLine, bool inheritHandles, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environment, string currentDirectory, ProcessStartInfo startInfo, ProcessSecurity processSecurity = null, ThreadSecurity threadSecurity = null)
@@ -17,7 +17,7 @@ namespace NativeWindows.Processes
 
 		public IProcessInformation CreateAsUser(IToken token, string applicationName, string commandLine, bool inheritHandles, ProcessCreationFlags creationFlags, IEnvironmentBlock environment, string currentDirectory, ProcessStartInfo startInfo, ProcessSecurity processSecurity = null, ThreadSecurity threadSecurity = null)
 		{
-			return CreateAsUser(token.Handle, applicationName, commandLine, inheritHandles, creationFlags, environment.Handle, currentDirectory, startInfo, processSecurity, threadSecurity);
+			return CreateAsUser(token.Handle, applicationName, commandLine, inheritHandles, creationFlags, environment == null ? null : environment.Handle, currentDirectory, startInfo, processSecurity, threadSecurity);
 		}
 
 		public IProcessInformation CreateAsUser(TokenHandle token, string applicationName, string commandLine, bool inheritHandles, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environment, string currentDirectory, ProcessStartInfo startInfo, ProcessSecurity processSecurity = null, ThreadSecurity threadSecurity = null)
@@ -27,7 +27,7 @@ namespace NativeWindows.Processes
 
 		public IProcessInformation CreateWithLogin(string username, string domain, string password, ProcessLogonFlags logonFlags, string applicationName, string commandLine, ProcessCreationFlags creationFlags, IEnvironmentBlock environment, string currentDirectory, ProcessStartInfo startupInfo)
 		{
-			return CreateWithLogin(username, domain, password, logonFlags, applicationName, commandLine, creationFlags, environment.Handle, currentDirectory, startupInfo);
+			return CreateWithLogin(username, domain, password, logonFlags, applicationName, commandLine, creationFlags, environment == null ? null : environment.Handle, currentDirectory, startupInfo);
 		}
 
 		public IProcessInformation CreateWithLogin(string username, string domain, string password, ProcessLogonFlags logonFlags, string applicationName, string commandLine, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environment, string currentDirectory, ProcessStartInfo startupInfo)
