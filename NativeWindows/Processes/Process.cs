@@ -80,5 +80,10 @@ namespace NativeWindows.Processes
 		{
 			return _handle.WaitForExit(timeout);
 		}
+
+		public ProcessMemoryCounters GetProcessMemoryCounters()
+		{
+			return _handle.GetProcessMemoryCounters();
+		}
 	}
 }

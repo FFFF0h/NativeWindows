@@ -18,5 +18,6 @@ namespace NativeWindows.Processes
 		void Terminate(int exitCode);
 		int GetExitCode();
 		bool WaitForExit(TimeSpan timeout);
+		ProcessMemoryCounters GetProcessMemoryCounters();
 	}
 }

@@ -29,6 +29,22 @@ namespace NativeWindows.Processes
 			public int ThreadId;
 		}
 
+		[StructLayout(LayoutKind.Sequential)]
+		private struct ProcessMemoryCountersEx
+		{
+			public uint Cb;
+			public uint PageFaultCount;
+			public IntPtr PeakWorkingSetSize;
+			public IntPtr WorkingSetSize;
+			public IntPtr QuotaPeakPagedPoolUsage;
+			public IntPtr QuotaPagedPoolUsage;
+			public IntPtr QuotaPeakNonPagedPoolUsage;
+			public IntPtr QuotaNonPagedPoolUsage;
+			public IntPtr PagefileUsage;
+			public IntPtr PeakPagefileUsage;
+			public IntPtr PrivateUsage;
+		}
+
 		private class ProcessWaitHandle : WaitHandle
 		{
 			public ProcessWaitHandle(ProcessHandle processHandle)
@@ -121,6 +137,9 @@ namespace NativeWindows.Processes
 
 			[DllImport("advapi32.dll", SetLastError = true)]
 			public static extern bool OpenProcessToken(ProcessHandle processHandle, TokenAccessRights desiredAccess, out TokenHandle tokenHandle);
+
+			[DllImport("kernel32.dll", SetLastError = true)]
+			public static extern bool K32GetProcessMemoryInfo(ProcessHandle processHandle, out ProcessMemoryCountersEx memoryCounters, int size);
 
 			[DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
 			public static extern bool QueryFullProcessImageNameW(ProcessHandle processHandle, PathFormat format, [Out] StringBuilder exeName, ref uint size);
@@ -346,6 +365,31 @@ namespace NativeWindows.Processes
 			{
 				return waitHandle.WaitOne(timeout);
 			}
+		}
+
+		public ProcessMemoryCounters GetProcessMemoryCounters()
+		{
+			ProcessMemoryCountersEx memoryCounters;
+			int size = Marshal.SizeOf(typeof(ProcessMemoryCountersEx));
+
+			if (!NativeMethods.K32GetProcessMemoryInfo(this, out memoryCounters, size))
+			{
+				ErrorHelper.ThrowCustomWin32Exception();
+			}
+
+			return new ProcessMemoryCounters
+			{
+				PageFaultCount = memoryCounters.PageFaultCount,
+				PagefileUsage = (ulong)memoryCounters.PagefileUsage.ToInt64(),
+				PeakPagefileUsage = (ulong)memoryCounters.PeakPagefileUsage.ToInt64(),
+				PeakWorkingSetSize = (ulong)memoryCounters.PeakWorkingSetSize.ToInt64(),
+				PrivateUsage = (ulong)memoryCounters.PrivateUsage.ToInt64(),
+				QuotaNonPagedPoolUsage = (ulong)memoryCounters.QuotaNonPagedPoolUsage.ToInt64(),
+				QuotaPagedPoolUsage = (ulong)memoryCounters.QuotaPagedPoolUsage.ToInt64(),
+				QuotaPeakNonPagedPoolUsage = (ulong)memoryCounters.QuotaPeakNonPagedPoolUsage.ToInt64(),
+				QuotaPeakPagedPoolUsage = (ulong)memoryCounters.QuotaPeakPagedPoolUsage.ToInt64(),
+				WorkingSetSize = (ulong)memoryCounters.WorkingSetSize.ToInt64(),
+			};
 		}
 
 		protected override bool ReleaseHandle()
