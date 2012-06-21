@@ -139,6 +139,9 @@ namespace NativeWindows.Processes
 			public static extern bool OpenProcessToken(ProcessHandle processHandle, TokenAccessRights desiredAccess, out TokenHandle tokenHandle);
 
 			[DllImport("kernel32.dll", SetLastError = true)]
+			public static extern bool GetProcessTimes(ProcessHandle processHandle, out long creationTime, out long exitTime, out long kernelTime, out long userTime);
+
+			[DllImport("kernel32.dll", SetLastError = true)]
 			public static extern bool K32GetProcessMemoryInfo(ProcessHandle processHandle, out ProcessMemoryCountersEx memoryCounters, int size);
 
 			[DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
@@ -282,6 +285,31 @@ namespace NativeWindows.Processes
 			{
 				ErrorHelper.ThrowCustomWin32Exception();
 			}
+		}
+
+		public ProcessTimes GetProcessTimes()
+		{
+			bool hasExited = HasExited;
+
+			// the units of the times below is in 100 nanoseconds
+			long creationTime; // ticks since 1/1-1601 Greenwich, England
+			long exitTime; // ticks since 1/1-1601 Greenwich, England, undefined if process is still running
+			long kernelTime;
+			long userTime;
+			if (!NativeMethods.GetProcessTimes(this, out creationTime, out exitTime, out kernelTime, out userTime))
+			{
+				ErrorHelper.ThrowCustomWin32Exception();
+			}
+
+			long offsetInTicks = new DateTime(year: 1601, month: 1, day: 1).Ticks;
+
+			return new ProcessTimes
+			{
+				CreationTime = new DateTime(ticks: offsetInTicks + creationTime, kind: DateTimeKind.Utc),
+				ExitTime = hasExited ? (DateTime?)new DateTime(ticks: offsetInTicks + exitTime, kind: DateTimeKind.Utc) : null,
+				KernelTime = new TimeSpan(ticks: kernelTime),
+				UserTime = new TimeSpan(ticks: userTime),
+			};
 		}
 
 		public int GetExitCode()
