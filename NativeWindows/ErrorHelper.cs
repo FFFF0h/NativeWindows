@@ -8,12 +8,17 @@ namespace NativeWindows
 		public static void ThrowCustomWin32Exception()
 		{
 			var error = (SystemErrorCode)Marshal.GetLastWin32Error();
-			switch (error)
+			throw GetWin32Exception(error);
+		}
+
+		public static Win32Exception GetWin32Exception(SystemErrorCode errorCode)
+		{
+			switch (errorCode)
 			{
 				case SystemErrorCode.ErrorAccessDenied:
-					throw new AccessDeniedException();
+					return new AccessDeniedException();
 				default:
-					throw new Win32Exception();
+					return new Win32Exception((int)errorCode);
 			}
 		}
 
