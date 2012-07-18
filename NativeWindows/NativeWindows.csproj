@@ -74,6 +74,7 @@
     <Compile Include="Identity\LsaPolicyHandle.cs" />
     <Compile Include="Identity\LsaTranslatedSidHandle.cs" />
     <Compile Include="Identity\LsaStatus.cs" />
+    <Compile Include="Identity\NetUserInformation.cs" />
     <Compile Include="Identity\SidNameUse.cs" />
     <Compile Include="Identity\Token.cs" />
     <Compile Include="Processes\EnvironmentBlockFactory.cs" />
