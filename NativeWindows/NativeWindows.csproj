@@ -76,6 +76,7 @@
     <Compile Include="Identity\LsaPolicyHandle.cs" />
     <Compile Include="Identity\LsaTranslatedSidHandle.cs" />
     <Compile Include="Identity\LsaStatus.cs" />
+    <Compile Include="Identity\NetLocalGroup.cs" />
     <Compile Include="Identity\NetUser.cs" />
     <Compile Include="Identity\NetUserInformation.cs" />
     <Compile Include="Identity\NetUserPrivilige.cs" />
