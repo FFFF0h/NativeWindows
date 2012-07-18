@@ -65,6 +65,7 @@
     <Compile Include="DisposableExtensions.cs" />
     <Compile Include="Identity\ILsaPolicy.cs" />
     <Compile Include="Identity\ILsaPolicyFactory.cs" />
+    <Compile Include="Identity\INetUser.cs" />
     <Compile Include="Identity\LsaAccessPolicy.cs" />
     <Compile Include="Identity\LsaLookupNamesFlags.cs" />
     <Compile Include="Identity\LsaPolicy.cs" />
