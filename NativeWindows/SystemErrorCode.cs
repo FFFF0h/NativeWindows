@@ -811,7 +811,21 @@
 		ErrorConnectedOtherPassuInt16 = 2108,
 		ErrorConnectedOtherPassuInt16Default = 2109,
 		ErrorBadUsername = 2202,
+
+		NetErrorBadPassword = 2203, // 0x0000089B
+		NetErrorGroupNotFound = 2220, // 0x000008AC
+		NetErrorUserNotFound = 2221, // 0x000008AD
+		NetErrorGroupExists = 2223, // 0x000008AF
+		NetErrorUserExists = 2224, // 0x000008B0
+		NetErrorNotPrimary = 2226, // 0x000008B2
+		NetErrorSpeGroupOp = 2234, // 0x000008BA
+		NetErrorPasswordTooShort = 2245, // 0x000008C5
+
 		ErrorNotConnected = 2250,
+
+		NetErrorInvalidComputer = 2351, // 0x0000092F
+		NetErrorLastAdmin = 2452, // 0x00000994
+
 		ErrorOpenFiles = 2401,
 		ErrorActiveConnections = 2402,
 		ErrorDeviceInUse = 2404,
