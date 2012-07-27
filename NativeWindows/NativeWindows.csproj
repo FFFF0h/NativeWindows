@@ -62,7 +62,10 @@
   <ItemGroup>
     <Compile Include="Desktop\Desktop.cs" />
     <Compile Include="Desktop\DesktopFactory.cs" />
+    <Compile Include="Diagnostics\PerformanceCounterHandle.cs" />
+    <Compile Include="Diagnostics\PerformanceQueryHandle.cs" />
     <Compile Include="DisposableExtensions.cs" />
+    <Compile Include="EventHandle.cs" />
     <Compile Include="Identity\ILsaPolicy.cs" />
     <Compile Include="Identity\ILsaPolicyFactory.cs" />
     <Compile Include="Identity\INetLocalGroup.cs" />
@@ -200,6 +203,7 @@
     <Compile Include="Identity\TokenHandle.cs" />
     <Compile Include="Identity\UserLogonProvider.cs" />
     <Compile Include="Identity\UserLogonType.cs" />
+    <Compile Include="Win32PdhException.cs" />
     <Compile Include="WindowStations\WindowStationAccessRights.cs" />
     <Compile Include="WindowStations\WindowStationHandle.cs" />
     <Compile Include="WindowStations\WindowStationSecurity.cs">
@@ -272,7 +276,9 @@
       <LastGenOutput>ThreadSecurity.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Diagnostics\progress.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

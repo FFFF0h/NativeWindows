@@ -26,5 +26,10 @@ namespace NativeWindows
 		{
 			return new Win32Exception((int)errorCode).Message;
 		}
+
+		public static Win32PdhException GetPdhException(int errorCode)
+		{
+			throw new Win32PdhException(errorCode);
+		}
 	}
 }

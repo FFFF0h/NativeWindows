@@ -1,0 +1,149 @@
+﻿using System;
+using System.Runtime.InteropServices;
+
+namespace NativeWindows.Diagnostics
+{
+	public enum PdhStatus : uint
+	{
+		CstatusValidData = 0x0,
+		CstatusNewData = 0x1,
+		CstatusNoMachine = 0x800007D0,
+		CstatusNoInstance = 0x800007D1,
+		MoreData = 0x800007D2,
+		CstatusItemNotValidated = 0x800007D3,
+		Retry = 0x800007D4,
+		NoData = 0x800007D5,
+		CalcNegativeDenominator = 0x800007D6,
+		CALC_NEGATIVE_TIMEBASE = 0x800007D7,
+		CALC_NEGATIVE_VALUE = 0x800007D8,
+		DIALOG_CANCELLED = 0x800007D9,
+		END_OF_LOG_FILE = 0x800007DA,
+		ASYNC_QUERY_TIMEOUT = 0x800007DB,
+		CANNOT_SET_DEFAULT_REALTIME_DATASOURCE = 0x800007DC,
+		UNABLE_MAP_NAME_FILES = 0x80000BD5,
+		PLA_VALIDATION_WARNING = 0x80000BF3,
+		CSTATUS_NO_OBJECT = 0xC0000BB8,
+		CSTATUS_NO_COUNTER = 0xC0000BB9,
+		CSTATUS_INVALID_DATA = 0xC0000BBA,
+		MEMORY_ALLOCATION_FAILURE = 0xC0000BBB,
+		INVALID_HANDLE = 0xC0000BBC,
+		INVALID_ARGUMENT = 0xC0000BBD,
+		FUNCTION_NOT_FOUND = 0xC0000BBE,
+		CSTATUS_NO_COUNTERNAME = 0xC0000BBF,
+		CSTATUS_BAD_COUNTERNAME = 0xC0000BC0,
+		INVALID_BUFFER = 0xC0000BC1,
+		INSUFFICIENT_BUFFER = 0xC0000BC2,
+		CANNOT_CONNECT_MACHINE = 0xC0000BC3,
+		INVALID_PATH = 0xC0000BC4,
+		INVALID_INSTANCE = 0xC0000BC5,
+		INVALID_DATA = 0xC0000BC6,
+		NO_DIALOG_DATA = 0xC0000BC7,
+		CANNOT_READ_NAME_STRINGS = 0xC0000BC8,
+		LOG_FILE_CREATE_ERROR = 0xC0000BC9,
+		LOG_FILE_OPEN_ERROR = 0xC0000BCA,
+		LOG_TYPE_NOT_FOUND = 0xC0000BCB,
+		NO_MORE_DATA = 0xC0000BCC,
+		ENTRY_NOT_IN_LOG_FILE = 0xC0000BCD,
+		DATA_SOURCE_IS_LOG_FILE = 0xC0000BCE,
+		DATA_SOURCE_IS_REAL_TIME = 0xC0000BCF,
+		UNABLE_READ_LOG_HEADER = 0xC0000BD0,
+		FILE_NOT_FOUND = 0xC0000BD1,
+		FILE_ALREADY_EXISTS = 0xC0000BD2,
+		NOT_IMPLEMENTED = 0xC0000BD3,
+		STRING_NOT_FOUND = 0xC0000BD4,
+		UNKNOWN_LOG_FORMAT = 0xC0000BD6,
+		UNKNOWN_LOGSVC_COMMAND = 0xC0000BD7,
+		LOGSVC_QUERY_NOT_FOUND = 0xC0000BD8,
+		LOGSVC_NOT_OPENED = 0xC0000BD9,
+		WBEM_ERROR = 0xC0000BDA,
+		ACCESS_DENIED = 0xC0000BDB,
+		LOG_FILE_TOO_SMALL = 0xC0000BDC,
+		INVALID_DATASOURCE = 0xC0000BDD,
+		INVALID_SQLDB = 0xC0000BDE,
+		NO_COUNTERS = 0xC0000BDF,
+		SQL_ALLOC_FAILED = 0xC0000BE0,
+		SQL_ALLOCCON_FAILED = 0xC0000BE1,
+		SQL_EXEC_DIRECT_FAILED = 0xC0000BE2,
+		SQL_FETCH_FAILED = 0xC0000BE3,
+		SQL_ROWCOUNT_FAILED = 0xC0000BE4,
+		SQL_MORE_RESULTS_FAILED = 0xC0000BE5,
+		SQL_CONNECT_FAILED = 0xC0000BE6,
+		SQL_BIND_FAILED = 0xC0000BE7,
+		CANNOT_CONNECT_WMI_SERVER = 0xC0000BE8,
+		PLA_COLLECTION_ALREADY_RUNNING = 0xC0000BE9,
+		PLA_ERROR_SCHEDULE_OVERLAP = 0xC0000BEA,
+		PLA_COLLECTION_NOT_FOUND = 0xC0000BEB,
+		PLA_ERROR_SCHEDULE_ELAPSED = 0xC0000BEC,
+		PLA_ERROR_NOSTART = 0xC0000BED,
+		PLA_ERROR_ALREADY_EXISTS = 0xC0000BEE,
+		PLA_ERROR_TYPE_MISMATCH = 0xC0000BEF,
+		PLA_ERROR_FILEPATH = 0xC0000BF0,
+		PLA_SERVICE_ERROR = 0xC0000BF1,
+		PLA_VALIDATION_ERROR = 0xC0000BF2,
+		PLA_ERROR_NAME_TOO_LONG = 0xC0000BF4,
+		INVALID_SQL_LOG_FORMAT = 0xC0000BF5,
+		COUNTER_ALREADY_IN_QUERY = 0xC0000BF6,
+		BINARY_LOG_CORRUPT = 0xC0000BF7,
+		LOG_SAMPLE_TOO_SMALL = 0xC0000BF8,
+		OS_LATER_VERSION = 0xC0000BF9,
+		OS_EARLIER_VERSION = 0xC0000BFA,
+		INCORRECT_APPEND_TIME = 0xC0000BFB,
+		UNMATCHED_APPEND_COUNTER = 0xC0000BFC,
+		SQL_ALTER_DETAIL_FAILED = 0xC0000BFD,
+		QUERY_PERF_DATA_TIMEOUT = 0xC0000BFE,
+	}
+
+	public class PerformanceCounterHandle : SafeHandle
+	{
+		private struct FormattedCounterValue
+		{
+			public uint Status;
+
+			[FieldOffset(4)]
+			public int IntValue;
+
+			[FieldOffset(4)]
+			public double DoubleValue;
+
+			[FieldOffset(4)]
+			public long LongValue;
+
+			[FieldOffset(4)]
+			public IntPtr StringValue; // char* or wchar_t*
+		}
+
+		private static class NativeMethods
+		{
+			// PDH_STATUS PdhGetRawCounterValue(__in   PDH_HCOUNTER hCounter,__out  LPDWORD lpdwType,__out  PPDH_RAW_COUNTER pValue);
+			// PDH_STATUS PdhGetFormattedCounterValue(__in   PDH_HCOUNTER hCounter,__in   DWORD dwFormat,__out  LPDWORD lpdwType,__out  PPDH_FMT_COUNTERVALUE pValue);
+			// PDH_STATUS PdhGetFormattedCounterArray(__in     PDH_HCOUNTER hCounter,__in     DWORD dwFormat,__inout  LPDWORD lpdwBufferSize,__out    LPDWORD lpdwBufferCount,__out    PPDH_FMT_COUNTERVALUE_ITEM ItemBuffer);
+
+			// PDH_STATUS PdhRemoveCounter(__in  PDH_HCOUNTER hCounter);
+			[DllImport("Pdh.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+			public static extern int PdhRemoveCounter(IntPtr handle);
+		}
+
+		public PerformanceCounterHandle()
+			: base(IntPtr.Zero, true)
+		{
+		}
+
+		public PerformanceCounterHandle(IntPtr handle, bool ownsHandle = true)
+			: base(handle, ownsHandle)
+		{
+		}
+
+		protected override bool ReleaseHandle()
+		{
+			return NativeMethods.PdhRemoveCounter(handle) == (int)SystemErrorCode.ErrorSuccess;
+		}
+
+		public override bool IsInvalid
+		{
+			get
+			{
+				return handle == IntPtr.Zero;
+			}
+		}
+	}
+}

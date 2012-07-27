@@ -1,0 +1,87 @@
+﻿Performance Counter Functions:
+---
+AllocateMemory
+FreeMemory
+ClosePerformanceData
+CollectPerformanceData
+ControlCallback
+CounterCleanup
+CounterInitialize
+CounterPathCallBack
+LoadPerfCounterTextStrings
+OpenPerformanceData
+
+PdhAddCounter														Progress
+PdhAddEnglishCounter										Progress
+PdhBindInputDataSource
+PdhBrowseCounters
+PdhBrowseCountersH
+PdhCalculateCounterFromRawValue
+PdhCloseLog
+PdhCloseQuery														Progress
+PdhCollectQueryData											Progress
+PdhCollectQueryDataEx
+PdhCollectQueryDataWithTime
+PdhComputeCounterStatistics
+PdhConnectMachine
+PdhEnumLogSetNames
+PdhEnumMachines
+PdhEnumMachinesH
+PdhEnumObjectItems
+PdhEnumObjectItemsH
+PdhEnumObjects
+PdhEnumObjectsH
+PdhExpandCounterPath
+PdhExpandWildCardPath
+PdhExpandWildCardPathH
+PdhFormatFromRawValue
+PdhGetCounterInfo
+PdhGetCounterTimeBase
+PdhGetDataSourceTimeRange
+PdhGetDataSourceTimeRangeH
+PdhGetDefaultPerfCounter
+PdhGetDefaultPerfCounterH
+PdhGetDefaultPerfObject
+PdhGetDefaultPerfObjectH
+PdhGetDllVersion
+PdhGetFormattedCounterArray
+PdhGetFormattedCounterValue							Progress
+PdhGetLogFileSize
+PdhGetRawCounterArray
+PdhGetRawCounterValue
+PdhIsRealTimeQuery
+PdhLookupPerfIndexByName
+PdhLookupPerfNameByIndex
+PdhMakeCounterPath
+PdhOpenLog
+PdhOpenQuery														Progress
+PdhOpenQueryH
+PdhParseCounterPath
+PdhParseInstanceName
+PdhReadRawLogRecord
+PdhRemoveCounter
+PdhSelectDataSource
+PdhSetCounterScaleFactor
+PdhSetDefaultRealTimeDataSource
+PdhSetQueryTimeRange
+PdhUpdateLog
+PdhUpdateLogFileCatalog
+PdhValidatePath
+PdhValidatePathEx
+
+PerfCreateInstance
+PerfDecrementULongCounterValue
+PerfDecrementULongLongCounterValue
+PerfDeleteInstance
+PerfIncrementULongCounterValue
+PerfIncrementULongLongCounterValue
+PerfQueryInstance
+PerfSetCounterRefValue
+PerfSetCounterSetInfo
+PerfSetULongCounterValue
+PerfSetULongLongCounterValue
+PerfStartProvider
+PerfStartProviderEx
+PerfStopProvider
+
+UnloadPerfCounterTextStrings
