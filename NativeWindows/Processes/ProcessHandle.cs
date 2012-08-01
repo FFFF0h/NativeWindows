@@ -82,6 +82,9 @@ namespace NativeWindows.Processes
 			[DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
 			public static extern bool CreateProcessWithLogonW(string username, string domain, string password, ProcessLogonFlags logonFlags, string applicationName, string commandLine, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environment, string currentDirectory, ProcessStartInfo startupInfo, out ProcessInformationOut processInformation);
 
+			[DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+			public static extern bool CreateProcessWithTokenW(TokenHandle tokenHandle, ProcessLogonFlags logonFlags, string applicationName, string commandLine, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environment, string currentDirectory, ProcessStartInfo startupInfo, out ProcessInformationOut processInformation);
+
 			[DllImport("kernel32.dll", CharSet = CharSet.Ansi, SetLastError = true)]
 			[ResourceExposure(ResourceScope.Process)]
 			public static extern ProcessHandle GetCurrentProcess();
@@ -153,6 +156,16 @@ namespace NativeWindows.Processes
 			if (!NativeMethods.CreateProcessWithLogonW(username, domain, password, logonFlags, applicationName, commandLine, creationFlags, environment, currentDirectory, startupInfo, out processInformation) || processInformation.ProcessHandle == IntPtr.Zero || processInformation.ThreadHandle == IntPtr.Zero)
 			{
 				throw new Win32Exception();
+			}
+			return new ProcessInformation(processInformation.ProcessHandle, processInformation.ProcessId, processInformation.ThreadHandle, processInformation.ThreadId);
+		}
+
+		public static ProcessInformation CreateWithToken(TokenHandle tokenHandle, ProcessLogonFlags logonFlags, string applicationName, string commandLine, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environment, string currentDirectory, ProcessStartInfo startupInfo)
+		{
+			ProcessInformationOut processInformation;
+			if (!NativeMethods.CreateProcessWithTokenW(tokenHandle, logonFlags, applicationName, commandLine, creationFlags, environment, currentDirectory, startupInfo, out processInformation) || processInformation.ProcessHandle == IntPtr.Zero || processInformation.ThreadHandle == IntPtr.Zero)
+			{
+				ErrorHelper.ThrowCustomWin32Exception();
 			}
 			return new ProcessInformation(processInformation.ProcessHandle, processInformation.ProcessId, processInformation.ThreadHandle, processInformation.ThreadId);
 		}

@@ -35,6 +35,16 @@ namespace NativeWindows.Processes
 			return ProcessHandle.CreateWithLogin(username, domain, password, logonFlags, applicationName, commandLine, creationFlags, environment, currentDirectory, startupInfo);
 		}
 
+		public IProcessInformation CreateWithToken(IToken token, ProcessLogonFlags logonFlags, string applicationName, string commandLine, ProcessCreationFlags creationFlags, IEnvironmentBlock environment, string currentDirectory, ProcessStartInfo startupInfo)
+		{
+			return ProcessHandle.CreateWithToken(token.Handle, logonFlags, applicationName, commandLine, creationFlags, environment.Handle, currentDirectory, startupInfo);
+		}
+
+		public IProcessInformation CreateWithToken(TokenHandle token, ProcessLogonFlags logonFlags, string applicationName, string commandLine, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environment, string currentDirectory, ProcessStartInfo startupInfo)
+		{
+			return ProcessHandle.CreateWithToken(token, logonFlags, applicationName, commandLine, creationFlags, environment, currentDirectory, startupInfo);
+		}
+
 		public IProcess OpenProcess(int processId, ProcessAccessRights desiredAccess = ProcessAccessRights.AllAccess, bool inheritHandle = false)
 		{
 			var handle = ProcessHandle.OpenProcess(processId, desiredAccess, inheritHandle);
