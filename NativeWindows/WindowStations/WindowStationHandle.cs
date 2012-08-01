@@ -15,6 +15,9 @@ namespace NativeWindows.WindowStations
 
 			[DllImport("user32", CharSet = CharSet.Unicode, SetLastError = true)]
 			public static extern IntPtr OpenWindowStation(string name, bool inheritHandle, WindowStationAccessRights desiredAccess);
+
+			[DllImport("user32", CharSet = CharSet.Unicode, SetLastError = true)]
+			public static extern bool SetProcessWindowStation(WindowStationHandle handle);
 		}
 
 		public static WindowStationHandle GetProcessWindowStation()
@@ -40,6 +43,14 @@ namespace NativeWindows.WindowStations
 		public WindowStationHandle(IntPtr invalidHandleValue, bool ownsHandle)
 			: base(invalidHandleValue, ownsHandle)
 		{
+		}
+
+		public void SetProcessWindowStation()
+		{
+			if (!NativeMethods.SetProcessWindowStation(this))
+			{
+				ErrorHelper.ThrowCustomWin32Exception();
+			}
 		}
 
 		protected override bool ReleaseHandle()
