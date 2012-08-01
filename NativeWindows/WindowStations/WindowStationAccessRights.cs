@@ -4,7 +4,7 @@ using NativeWindows.Security;
 namespace NativeWindows.WindowStations
 {
 	[Flags]
-	public enum WindowStationAccessRights
+	public enum WindowStationAccessRights : uint
 	{
 		None = 0,
 
