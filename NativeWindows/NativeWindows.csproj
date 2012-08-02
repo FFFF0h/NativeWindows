@@ -95,6 +95,9 @@
     <Compile Include="Processes\IProcessInformation.cs" />
     <Compile Include="Processes\JobObject.cs" />
     <Compile Include="Processes\Process.cs" />
+    <Compile Include="Registry\HKey.cs" />
+    <Compile Include="MarshalHGlobal.cs" />
+    <Compile Include="Registry\Registry.cs" />
     <Compile Include="System\ISystemInformationFactory.cs" />
     <Compile Include="Threads\IThread.cs" />
     <Compile Include="Threads\IThreadFactory.cs" />
