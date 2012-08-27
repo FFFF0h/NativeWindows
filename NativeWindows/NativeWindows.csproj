@@ -97,6 +97,7 @@
     <Compile Include="Processes\JobObject.cs" />
     <Compile Include="Processes\PathFormat.cs" />
     <Compile Include="Processes\Process.cs" />
+    <Compile Include="Security\SecurityDescriptorHandle.cs" />
     <Compile Include="Security\SecurityInformation.cs" />
     <Compile Include="System\ISystemInformationFactory.cs" />
     <Compile Include="Threads\IThread.cs" />
