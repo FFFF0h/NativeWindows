@@ -1,6 +1,6 @@
 ﻿namespace NativeWindows
 {
-	public enum SystemErrorCode
+	public enum SystemErrorCode : uint
 	{
 		ErrorSuccess = 0,
 		ErrorInvalidFunction = 1,
