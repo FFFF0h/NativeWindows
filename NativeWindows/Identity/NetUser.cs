@@ -39,6 +39,11 @@ namespace NativeWindows.Identity
 				ref UserInfo1 userInfo,
 				out uint parameterErrorIndex);
 
+			[DllImport("netapi32.dll")]
+			public static extern SystemErrorCode NetUserDel(
+				[MarshalAs(UnmanagedType.LPWStr)]string serverName,
+				[MarshalAs(UnmanagedType.LPWStr)]string username);
+
 			[DllImport("netapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
 			public static extern SystemErrorCode NetUserGetInfo(
 				[MarshalAs(UnmanagedType.LPWStr)]string serverName,
@@ -65,6 +70,15 @@ namespace NativeWindows.Identity
 			uint parameterErrorIndex;
 			var result = NativeMethods.NetUserAdd(serverName, 1, ref userInfo1, out parameterErrorIndex);
 			if (result != SystemErrorCode.ErrorSuccess)
+			{
+				throw ErrorHelper.GetWin32Exception(result);
+			}
+		}
+
+		public void Delete(string username, string serverName = null)
+		{
+			var result = NativeMethods.NetUserDel(serverName, username);
+			if (result != SystemErrorCode.ErrorSuccess && result != SystemErrorCode.NetErrorUserNotFound)
 			{
 				throw ErrorHelper.GetWin32Exception(result);
 			}
