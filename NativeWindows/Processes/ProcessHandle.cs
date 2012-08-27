@@ -298,6 +298,45 @@ namespace NativeWindows.Processes
 			return new FileInfo(processName.ToString());
 		}
 
+		/// <summary>
+		/// This method requires READ_CONTROL and PROCESS_QUERY_INFORMATION
+		/// </summary>
+		public string GetUsername()
+		{
+			try
+			{
+				using (var token = OpenProcessToken(TokenAccessRights.Query | TokenAccessRights.QuerySource))
+				{
+					var userInformation = token.GetUserTokenInformation();
+					if (userInformation.SidHandle.IsValid())
+					{
+						return userInformation.SidHandle.GetUsername();
+					}
+				}
+			}
+			catch (AccessDeniedException)
+			{
+				// ignore and continue
+				//
+				// OpenProcessToken will return access denied for cross user processes when not running as a non-SYSTEM user
+				// we will have to do an workarround.with alternative method (this should only happen when not running as SYSTEM).
+			}
+
+			using (var securityDescriptor = SecurityDescriptorHandle.GetUserObjectSecurity(handle, SecurityInformation.OwnerSecurityInformation))
+			{
+				bool defaulted;
+				using (var sidHandle = securityDescriptor.GetSecurityDescriptorOwner(out defaulted))
+				{
+					var username = sidHandle.GetUsername();
+					if (username == "Administrators" || username == "Builtin")
+					{
+						return "SYSTEM";
+					}
+					return username;
+				}
+			}
+		}
+
 		public bool WaitForExit(TimeSpan timeout)
 		{
 			if (IsInvalid || IsClosed)
