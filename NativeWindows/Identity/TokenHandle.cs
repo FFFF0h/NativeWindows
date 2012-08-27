@@ -185,7 +185,7 @@ namespace NativeWindows.Identity
 					ErrorHelper.ThrowCustomWin32Exception();
 				}
 				var userStructure = (NativeTokenUser)Marshal.PtrToStructure(tokenInformationPtr, typeof(NativeTokenUser));
-				return new SidAndAttributes(userStructure.User.Attributes, userStructure.User.Sid);
+				return new SidAndAttributes(userStructure.User.Attributes, new SidHandle(userStructure.User.Sid));
 			}
 			finally
 			{
@@ -227,7 +227,7 @@ namespace NativeWindows.Identity
 				{
 					var arrayElementPtr = new IntPtr(start + i * sizeof(NativeSidAndAttributes));
 					var group = (NativeSidAndAttributes)Marshal.PtrToStructure(arrayElementPtr, typeof(NativeSidAndAttributes));
-					groups[i] = new SidAndAttributes(group.Attributes, group.Sid);
+					groups[i] = new SidAndAttributes(group.Attributes, new SidHandle(group.Sid));
 				}
 				return groups;
 			}
