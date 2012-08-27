@@ -116,6 +116,9 @@ namespace NativeWindows.Processes
 
 			[DllImport("kernel32.dll", SetLastError = true)]
 			public static extern bool IsWow64Process(ProcessHandle processHandle, [Out] [MarshalAs(UnmanagedType.Bool)] out bool isWow64Process);
+
+			[DllImport("advapi32.dll", SetLastError = true)]
+			public static extern bool OpenProcessToken(ProcessHandle processHandle, TokenAccessRights desiredAccess, out TokenHandle tokenHandle);
 		}
 
 		public static ProcessInformation Create(string applicationName, string commandLine, bool inheritHandles, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environmentHandle, string currentDirectory, ProcessStartInfo startInfo, ProcessSecurity processSecurity = null, ThreadSecurity threadSecurity = null)
@@ -265,6 +268,16 @@ namespace NativeWindows.Processes
 				ErrorHelper.ThrowCustomWin32Exception();
 			}
 			return exitCode;
+		}
+
+		public TokenHandle OpenProcessToken(TokenAccessRights desiredAccess)
+		{
+			TokenHandle tokenHandle;
+			if (!NativeMethods.OpenProcessToken(this, desiredAccess, out tokenHandle))
+			{
+				ErrorHelper.ThrowCustomWin32Exception();
+			}
+			return tokenHandle;
 		}
 
 		public bool WaitForExit(TimeSpan timeout)
