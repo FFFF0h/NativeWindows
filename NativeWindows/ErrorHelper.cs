@@ -11,6 +11,12 @@ namespace NativeWindows
 			throw GetWin32Exception(error);
 		}
 
+		public static Win32Exception GetWin32Exception()
+		{
+			var error = (SystemErrorCode)Marshal.GetLastWin32Error();
+			return GetWin32Exception(error);
+		}
+
 		public static Win32Exception GetWin32Exception(SystemErrorCode errorCode)
 		{
 			switch (errorCode)
