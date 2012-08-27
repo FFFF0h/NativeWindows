@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Win32.SafeHandles;
@@ -119,6 +121,9 @@ namespace NativeWindows.Processes
 
 			[DllImport("advapi32.dll", SetLastError = true)]
 			public static extern bool OpenProcessToken(ProcessHandle processHandle, TokenAccessRights desiredAccess, out TokenHandle tokenHandle);
+
+			[DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+			public static extern bool QueryFullProcessImageNameW(ProcessHandle processHandle, PathFormat format, [Out] StringBuilder exeName, ref uint size);
 		}
 
 		public static ProcessInformation Create(string applicationName, string commandLine, bool inheritHandles, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environmentHandle, string currentDirectory, ProcessStartInfo startInfo, ProcessSecurity processSecurity = null, ThreadSecurity threadSecurity = null)
@@ -278,6 +283,19 @@ namespace NativeWindows.Processes
 				ErrorHelper.ThrowCustomWin32Exception();
 			}
 			return tokenHandle;
+		}
+
+		public FileInfo GetProcessFilename()
+		{
+			var processName = new StringBuilder(32767);
+			uint size = (uint)processName.Capacity;
+
+			if (!NativeMethods.QueryFullProcessImageNameW(this, PathFormat.Win32PathFormat, processName, ref size))
+			{
+				throw ErrorHelper.GetWin32Exception();
+			}
+
+			return new FileInfo(processName.ToString());
 		}
 
 		public bool WaitForExit(TimeSpan timeout)
