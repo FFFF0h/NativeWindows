@@ -11,5 +11,6 @@ namespace NativeWindows.Identity
 		Invalid = 7,
 		Unknown = 8,
 		Computer = 9,
+		Label = 10,
 	}
 }
