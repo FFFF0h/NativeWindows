@@ -94,6 +94,7 @@
     <Compile Include="Processes\IProcessFactory.cs" />
     <Compile Include="Processes\IProcessInformation.cs" />
     <Compile Include="Processes\JobObject.cs" />
+    <Compile Include="Processes\PathFormat.cs" />
     <Compile Include="Processes\Process.cs" />
     <Compile Include="System\ISystemInformationFactory.cs" />
     <Compile Include="Threads\IThread.cs" />
