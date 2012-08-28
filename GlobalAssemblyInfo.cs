@@ -1,7 +1,7 @@
 using System.Reflection;
 
 [assembly: AssemblyCompany("AppHarbor")]
-[assembly: AssemblyCopyright("Copyright © AppHarbor 2011")]
+[assembly: AssemblyCopyright("Copyright © AppHarbor 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
