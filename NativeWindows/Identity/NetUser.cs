@@ -39,7 +39,7 @@ namespace NativeWindows.Identity
 				ref UserInfo1 userInfo,
 				out uint parameterErrorIndex);
 
-			[DllImport("netapi32.dll")]
+			[DllImport("netapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
 			public static extern SystemErrorCode NetUserDel(
 				[MarshalAs(UnmanagedType.LPWStr)]string serverName,
 				[MarshalAs(UnmanagedType.LPWStr)]string username);
