@@ -6,13 +6,13 @@ namespace NativeWindows.Security
 {
 	public class SidAndAttributes
 	{
-		private readonly SidHandle _sid;
 		private readonly SidAttributes _attributes;
+		private readonly SecurityIdentifier _securityIdentifier;
 
-		public SidAndAttributes(SidAttributes attributes, SidHandle sid)
+		public SidAndAttributes(SidAttributes attributes, IntPtr sid)
 		{
+			_securityIdentifier = new SecurityIdentifier(sid);
 			_attributes = attributes;
-			_sid = sid;
 		}
 
 		public SidAttributes Attributes
@@ -27,15 +27,7 @@ namespace NativeWindows.Security
 		{
 			get
 			{
-				return new SecurityIdentifier(_sid.DangerousGetHandle());
-			}
-		}
-
-		public SidHandle SidHandle
-		{
-			get
-			{
-				return _sid;
+				return _securityIdentifier;
 			}
 		}
 	}

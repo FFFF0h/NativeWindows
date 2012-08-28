@@ -308,9 +308,10 @@ namespace NativeWindows.Processes
 				using (var token = OpenProcessToken(TokenAccessRights.Query | TokenAccessRights.QuerySource))
 				{
 					var userInformation = token.GetUserTokenInformation();
-					if (userInformation.SidHandle.IsValid())
+
+					if (userInformation.SecurityIdentifier.IsValid())
 					{
-						return userInformation.SidHandle.GetUsername();
+						return userInformation.SecurityIdentifier.GetUsername();
 					}
 				}
 			}
@@ -325,15 +326,13 @@ namespace NativeWindows.Processes
 			using (var securityDescriptor = SecurityDescriptorHandle.GetUserObjectSecurity(handle, SecurityInformation.OwnerSecurityInformation))
 			{
 				bool defaulted;
-				using (var sidHandle = securityDescriptor.GetSecurityDescriptorOwner(out defaulted))
+				var sidHandle = securityDescriptor.GetSecurityDescriptorOwner(out defaulted);
+				var username = sidHandle.GetUsername();
+				if (username == "Administrators" || username == "Builtin")
 				{
-					var username = sidHandle.GetUsername();
-					if (username == "Administrators" || username == "Builtin")
-					{
-						return "SYSTEM";
-					}
-					return username;
+					return "SYSTEM";
 				}
+				return username;
 			}
 		}
 

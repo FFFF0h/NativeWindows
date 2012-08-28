@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Security.Principal;
 using NativeWindows.Identity;
 
 namespace NativeWindows.Security
@@ -50,14 +51,14 @@ namespace NativeWindows.Security
 		{
 		}
 
-		public SidHandle GetSecurityDescriptorOwner(out bool ownerDefaulted)
+		public SecurityIdentifier GetSecurityDescriptorOwner(out bool ownerDefaulted)
 		{
 			IntPtr sidPtr;
 			if (!NativeMethods.GetSecurityDescriptorOwner(this, out sidPtr, out ownerDefaulted))
 			{
 				throw ErrorHelper.GetWin32Exception();
 			}
-			return new SidHandle(sidPtr);
+			return new SecurityIdentifier(sidPtr);
 		}
 
 		protected override bool ReleaseHandle()

@@ -80,7 +80,7 @@
     <Compile Include="Identity\NetUser.cs" />
     <Compile Include="Identity\NetUserInformation.cs" />
     <Compile Include="Identity\NetUserPrivilige.cs" />
-    <Compile Include="Identity\SidHandle.cs" />
+    <Compile Include="Identity\SecurityIdentifierExtensions.cs" />
     <Compile Include="Identity\SidNameUse.cs" />
     <Compile Include="Identity\Token.cs" />
     <Compile Include="Identity\NetUserFlags.cs" />
