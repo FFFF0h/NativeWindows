@@ -6,5 +6,6 @@ namespace NativeWindows.Identity
 		bool Exists(string username, string serverName = null);
 		NetUserInformation GetInformation(string username, string serverName = null);
 		void SetInformation(NetUserInformation information, string serverName = null);
+		void Delete(string username, string serverName = null);
 	}
 }
