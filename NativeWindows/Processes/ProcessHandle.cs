@@ -29,6 +29,22 @@ namespace NativeWindows.Processes
 			public int ThreadId;
 		}
 
+		[StructLayout(LayoutKind.Sequential)]
+		private struct ProcessMemoryCountersEx
+		{
+			public uint Cb;
+			public uint PageFaultCount;
+			public IntPtr PeakWorkingSetSize;
+			public IntPtr WorkingSetSize;
+			public IntPtr QuotaPeakPagedPoolUsage;
+			public IntPtr QuotaPagedPoolUsage;
+			public IntPtr QuotaPeakNonPagedPoolUsage;
+			public IntPtr QuotaNonPagedPoolUsage;
+			public IntPtr PagefileUsage;
+			public IntPtr PeakPagefileUsage;
+			public IntPtr PrivateUsage;
+		}
+
 		private class ProcessWaitHandle : WaitHandle
 		{
 			public ProcessWaitHandle(ProcessHandle processHandle)
@@ -122,6 +138,12 @@ namespace NativeWindows.Processes
 			[DllImport("advapi32.dll", SetLastError = true)]
 			public static extern bool OpenProcessToken(ProcessHandle processHandle, TokenAccessRights desiredAccess, out TokenHandle tokenHandle);
 
+			[DllImport("kernel32.dll", SetLastError = true)]
+			public static extern bool GetProcessTimes(ProcessHandle processHandle, out long creationTime, out long exitTime, out long kernelTime, out long userTime);
+
+			[DllImport("kernel32.dll", SetLastError = true)]
+			public static extern bool K32GetProcessMemoryInfo(ProcessHandle processHandle, out ProcessMemoryCountersEx memoryCounters, int size);
+
 			[DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
 			public static extern bool QueryFullProcessImageNameW(ProcessHandle processHandle, PathFormat format, [Out] StringBuilder exeName, ref uint size);
 		}
@@ -133,7 +155,7 @@ namespace NativeWindows.Processes
 				using (var threadSecurityAttributes = threadSecurity == null ? new SecurityAttributes() : new SecurityAttributes(threadSecurity))
 				{
 					ProcessInformationOut processInformation;
-					if (!NativeMethods.CreateProcess(applicationName, commandLine, processSecurityAttributes, threadSecurityAttributes, inheritHandles, creationFlags, environmentHandle, currentDirectory, startInfo, out processInformation) || processInformation.ProcessHandle == IntPtr.Zero || processInformation.ThreadHandle == IntPtr.Zero)
+					if (!NativeMethods.CreateProcess(applicationName, commandLine, processSecurityAttributes, threadSecurityAttributes, inheritHandles, creationFlags, environmentHandle ?? new EnvironmentBlockHandle(), currentDirectory, startInfo, out processInformation) || processInformation.ProcessHandle == IntPtr.Zero || processInformation.ThreadHandle == IntPtr.Zero)
 					{
 						ErrorHelper.ThrowCustomWin32Exception();
 					}
@@ -149,7 +171,7 @@ namespace NativeWindows.Processes
 				using (var threadSecurityAttributes = threadSecurity == null ? new SecurityAttributes() : new SecurityAttributes(threadSecurity))
 				{
 					ProcessInformationOut processInformation;
-					if (!NativeMethods.CreateProcessAsUser(tokenHandle, applicationName, commandLine, processSecurityAttributes, threadSecurityAttributes, inheritHandles, creationFlags, environmentHandle, currentDirectory, startInfo, out processInformation) || processInformation.ProcessHandle == IntPtr.Zero || processInformation.ThreadHandle == IntPtr.Zero)
+					if (!NativeMethods.CreateProcessAsUser(tokenHandle, applicationName, commandLine, processSecurityAttributes, threadSecurityAttributes, inheritHandles, creationFlags, environmentHandle ?? new EnvironmentBlockHandle(), currentDirectory, startInfo, out processInformation) || processInformation.ProcessHandle == IntPtr.Zero || processInformation.ThreadHandle == IntPtr.Zero)
 					{
 						ErrorHelper.ThrowCustomWin32Exception();
 					}
@@ -158,10 +180,10 @@ namespace NativeWindows.Processes
 			}
 		}
 
-		public static ProcessInformation CreateWithLogin(string username, string domain, string password, ProcessLogonFlags logonFlags, string applicationName, string commandLine, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environment, string currentDirectory, ProcessStartInfo startupInfo)
+		public static ProcessInformation CreateWithLogin(string username, string domain, string password, ProcessLogonFlags logonFlags, string applicationName, string commandLine, ProcessCreationFlags creationFlags, EnvironmentBlockHandle environmentHandle, string currentDirectory, ProcessStartInfo startupInfo)
 		{
 			ProcessInformationOut processInformation;
-			if (!NativeMethods.CreateProcessWithLogonW(username, domain, password, logonFlags, applicationName, commandLine, creationFlags, environment, currentDirectory, startupInfo, out processInformation) || processInformation.ProcessHandle == IntPtr.Zero || processInformation.ThreadHandle == IntPtr.Zero)
+			if (!NativeMethods.CreateProcessWithLogonW(username, domain, password, logonFlags, applicationName, commandLine, creationFlags, environmentHandle ?? new EnvironmentBlockHandle(), currentDirectory, startupInfo, out processInformation) || processInformation.ProcessHandle == IntPtr.Zero || processInformation.ThreadHandle == IntPtr.Zero)
 			{
 				ErrorHelper.ThrowCustomWin32Exception();
 			}
@@ -265,6 +287,31 @@ namespace NativeWindows.Processes
 			}
 		}
 
+		public ProcessTimes GetProcessTimes()
+		{
+			bool hasExited = HasExited;
+
+			// the units of the times below is in 100 nanoseconds
+			long creationTime; // ticks since 1/1-1601 Greenwich, England
+			long exitTime; // ticks since 1/1-1601 Greenwich, England, undefined if process is still running
+			long kernelTime;
+			long userTime;
+			if (!NativeMethods.GetProcessTimes(this, out creationTime, out exitTime, out kernelTime, out userTime))
+			{
+				ErrorHelper.ThrowCustomWin32Exception();
+			}
+
+			long offsetInTicks = new DateTime(year: 1601, month: 1, day: 1).Ticks;
+
+			return new ProcessTimes
+			{
+				CreationTime = new DateTime(ticks: offsetInTicks + creationTime, kind: DateTimeKind.Utc),
+				ExitTime = hasExited ? (DateTime?)new DateTime(ticks: offsetInTicks + exitTime, kind: DateTimeKind.Utc) : null,
+				KernelTime = new TimeSpan(ticks: kernelTime),
+				UserTime = new TimeSpan(ticks: userTime),
+			};
+		}
+
 		public int GetExitCode()
 		{
 			int exitCode;
@@ -346,6 +393,31 @@ namespace NativeWindows.Processes
 			{
 				return waitHandle.WaitOne(timeout);
 			}
+		}
+
+		public ProcessMemoryCounters GetProcessMemoryCounters()
+		{
+			ProcessMemoryCountersEx memoryCounters;
+			int size = Marshal.SizeOf(typeof(ProcessMemoryCountersEx));
+
+			if (!NativeMethods.K32GetProcessMemoryInfo(this, out memoryCounters, size))
+			{
+				ErrorHelper.ThrowCustomWin32Exception();
+			}
+
+			return new ProcessMemoryCounters
+			{
+				PageFaultCount = memoryCounters.PageFaultCount,
+				PagefileUsage = (ulong)memoryCounters.PagefileUsage.ToInt64(),
+				PeakPagefileUsage = (ulong)memoryCounters.PeakPagefileUsage.ToInt64(),
+				PeakWorkingSetSize = (ulong)memoryCounters.PeakWorkingSetSize.ToInt64(),
+				PrivateUsage = (ulong)memoryCounters.PrivateUsage.ToInt64(),
+				QuotaNonPagedPoolUsage = (ulong)memoryCounters.QuotaNonPagedPoolUsage.ToInt64(),
+				QuotaPagedPoolUsage = (ulong)memoryCounters.QuotaPagedPoolUsage.ToInt64(),
+				QuotaPeakNonPagedPoolUsage = (ulong)memoryCounters.QuotaPeakNonPagedPoolUsage.ToInt64(),
+				QuotaPeakPagedPoolUsage = (ulong)memoryCounters.QuotaPeakPagedPoolUsage.ToInt64(),
+				WorkingSetSize = (ulong)memoryCounters.WorkingSetSize.ToInt64(),
+			};
 		}
 
 		protected override bool ReleaseHandle()
