@@ -20,7 +20,7 @@ namespace SystemInfoDemo
 			Console.WriteLine("PageSize: {0}", system.PageSize);
 			Console.WriteLine("ProcessorLevel: {0}", system.ProcessorLevel);
 			Console.WriteLine("ProcessorRevision: {0}", system.ProcessorRevision);
-			Console.WriteLine("ProcessorType: {0}", system.ProcessorType);
+			Console.WriteLine("ProcessorType:   {0}", system.ProcessorType);
 		}
 	}
 }
