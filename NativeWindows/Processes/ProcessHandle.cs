@@ -56,6 +56,12 @@ namespace NativeWindows.Processes
 				}
 				SafeWaitHandle = waitHandle;
 			}
+
+            public void Dispose()
+            {
+                this.Dispose(true);
+                GC.SuppressFinalize(this);
+            }
 		}
 
 		private class ProcessExitMonitor
